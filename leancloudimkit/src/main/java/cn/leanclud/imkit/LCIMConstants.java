@@ -23,5 +23,5 @@ public class LCIMConstants {
   /**
    * LCIMConversationActivity 中头像点击事件发送的 action
    */
-  public static final String AVATAR_CLICK_action = "avatar_click_action";
+  public static final String AVATAR_CLICK_ACTION = getPrefixConstant("avatar_click_action");
 }
