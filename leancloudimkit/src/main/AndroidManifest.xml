@@ -1,9 +1,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cn.leanclud.leancloudimkit">
+          package="cn.leanclud.imkit">
 
     <application android:allowBackup="true"
                  android:label="@string/app_name">
 
+        <activity android:name="cn.leanclud.imkit.LCIMConversationActivity"/>
+        <activity android:name="cn.leanclud.imkit.LCIMImageActivity"/>
+
+        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.avos.avoscloud.PushService" />
     </application>
 
 </manifest>

@@ -1,14 +1,14 @@
-package cn.leanclud.leancloudimkit.controller;
+package cn.leanclud.imkit;
 
 /**
  * Created by wli on 16/2/2.
  */
-public class UserProfile {
+public class LCIMUserProfile {
   private String userId;
   private String avatarUrl;
   private String userName;
 
-  public UserProfile(String userId, String avatarUrl, String userName) {
+  public LCIMUserProfile(String userId, String avatarUrl, String userName) {
     this.userId = userId;
     this.avatarUrl = avatarUrl;
     this.userName = userName;

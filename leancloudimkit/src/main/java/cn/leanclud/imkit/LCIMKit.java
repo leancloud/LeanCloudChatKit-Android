@@ -1,4 +1,4 @@
-package cn.leanclud.leancloudimkit.controller;
+package cn.leanclud.imkit;
 
 import android.content.Context;
 
@@ -9,25 +9,25 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
  * Created by wli on 16/2/2.
  * TODO: 稍后添加注释
  */
-public final class ChatManager {
+public final class LCIMKit {
 
-  private static ChatManager chatManager;
-  private ProfileProvider profileProvider;
+  private static LCIMKit lcimKit;
+  private LCIMProfileProvider profileProvider;
   private String currentClientId;
 
-  private ChatManager() {}
+  private LCIMKit() {}
 
-  public static synchronized ChatManager getInstance() {
-    if (null == chatManager) {
-      chatManager = new ChatManager();
+  public static synchronized LCIMKit getInstance() {
+    if (null == lcimKit) {
+      lcimKit = new LCIMKit();
     }
-    return chatManager;
+    return lcimKit;
   }
 
   public void init(Context context, String appId, String appKey) {
   }
 
-  public void setProfileProvider(ProfileProvider profileProvider) {
+  public void setProfileProvider(LCIMProfileProvider profileProvider) {
     this.profileProvider =  profileProvider;
   }
 
