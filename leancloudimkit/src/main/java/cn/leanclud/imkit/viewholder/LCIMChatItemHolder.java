@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.im.v2.AVIMMessage;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.event.LCIMLeftChatItemClickEvent;
 import cn.leanclud.imkit.event.LCIMMessageResendEvent;
-import cn.leanclud.imkit.utils.Utils;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -65,7 +67,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
   @Override
   public void bindData(Object o) {
     message = (AVIMMessage) o;
-    timeView.setText(Utils.millisecsToDateString(message.getTimestamp()));
+    timeView.setText(millisecsToDateString(message.getTimestamp()));
 
     // TODO
 //    ProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
@@ -121,6 +123,14 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
 
   public void showUserName(boolean isShow) {
     nameView.setVisibility(isShow ? View.VISIBLE : View.GONE);
+  }
+
+  //TODO 展示更人性一点
+  private static String millisecsToDateString(long timestamp) {
+    long gap = System.currentTimeMillis() - timestamp;
+
+    SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
+    return format.format(new Date(timestamp));
   }
 }
 

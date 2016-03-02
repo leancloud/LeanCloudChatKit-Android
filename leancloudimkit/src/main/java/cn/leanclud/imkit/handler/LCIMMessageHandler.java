@@ -10,7 +10,7 @@ import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
-import cn.leanclud.imkit.utils.NotificationUtils;
+import cn.leanclud.imkit.utils.LCIMNotificationUtils;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -43,7 +43,7 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
       } else {
 //        UnreadCountCache.getInstance().insertConversation(message.getConversationId());
         if (!message.getFrom().equals(client.getClientId())) {
-          if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
+          if (LCIMNotificationUtils.isShowNotification(conversation.getConversationId())) {
             sendNotification(message, conversation);
           }
 //          UnreadCountCache.getInstance().increaseUnreadCount(message.getConversationId());

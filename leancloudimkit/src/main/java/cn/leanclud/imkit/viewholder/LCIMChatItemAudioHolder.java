@@ -9,15 +9,15 @@ import android.widget.TextView;
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.utils.PathUtils;
-import cn.leanclud.imkit.view.PlayButton;
+import cn.leanclud.imkit.utils.LCIMPathUtils;
+import cn.leanclud.imkit.view.LCIMPlayButton;
 
 /**
  * Created by wli on 15/9/17.
  */
 public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
 
-  protected PlayButton playButton;
+  protected LCIMPlayButton playButton;
   protected TextView durationView;
 
   public LCIMChatItemAudioHolder(Context context, ViewGroup root, boolean isLeft) {
@@ -32,7 +32,7 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
     } else {
       conventLayout.addView(View.inflate(getContext(), R.layout.lcim_chat_item_right_audio_layout, null));
     }
-    playButton = (PlayButton) itemView.findViewById(R.id.chat_item_audio_play_btn);
+    playButton = (LCIMPlayButton) itemView.findViewById(R.id.chat_item_audio_play_btn);
     durationView = (TextView) itemView.findViewById(R.id.chat_item_audio_duration_view);
   }
 
@@ -46,7 +46,7 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
       if (!TextUtils.isEmpty(localFilePath)) {
         playButton.setPath(localFilePath);
       } else {
-        String path = PathUtils.getChatFilePath(getContext(), audioMessage.getMessageId());
+        String path = LCIMPathUtils.getChatFilePath(getContext(), audioMessage.getMessageId());
         playButton.setPath(path);
 
         //TODO 下载语音文件

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.utils.EmotionHelper;
+import cn.leanclud.imkit.utils.LCIMEmotionHelper;
 
 
 /**
@@ -54,7 +54,7 @@ public class LCIMChatEmotionGridAdapter extends BaseAdapter {
     ImageView emotionImageView = findViewById(conView, R.id.emotionImageView);
     String emotion = (String) getItem(position);
     emotion = emotion.substring(1, emotion.length() - 1);
-    Bitmap bitmap = EmotionHelper.getEmojiDrawable(context, emotion);
+    Bitmap bitmap = LCIMEmotionHelper.getEmojiDrawable(context, emotion);
     emotionImageView.setImageBitmap(bitmap);
     return conView;
   }

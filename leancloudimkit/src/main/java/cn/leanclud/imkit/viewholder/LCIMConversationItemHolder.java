@@ -1,5 +1,6 @@
 package cn.leanclud.imkit.viewholder;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,14 +11,17 @@ import android.widget.TextView;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.AVIMReservedMessageType;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
-import cn.leanclud.imkit.utils.Utils;
+import cn.leanclud.imkit.utils.LCIMEmotionHelper;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -78,7 +82,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
             Date date = new Date(avimMessage.getTimestamp());
             SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
             timeView.setText(format.format(date));
-            messageView.setText(Utils.getMessageeShorthand(getContext(), avimMessage));
+            messageView.setText(getMessageeShorthand(getContext(), avimMessage));
           } else {
             timeView.setText("");
             messageView.setText("");
@@ -100,4 +104,25 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
       return new LCIMConversationItemHolder(parent);
     }
   };
+
+  private static CharSequence getMessageeShorthand(Context context, AVIMMessage message) {
+    if (message instanceof AVIMTypedMessage) {
+      AVIMReservedMessageType type = AVIMReservedMessageType.getAVIMReservedMessageType(
+        ((AVIMTypedMessage) message).getMessageType());
+      switch (type) {
+        case TextMessageType:
+          return LCIMEmotionHelper.replace(context, ((AVIMTextMessage) message).getText());
+        case ImageMessageType:
+          return "[图片]";
+        case LocationMessageType:
+          return "[位置]";
+        case AudioMessageType:
+          return "[语音]";
+        default:
+          return "[未知]";
+      }
+    } else {
+      return message.getContent();
+    }
+  }
 }

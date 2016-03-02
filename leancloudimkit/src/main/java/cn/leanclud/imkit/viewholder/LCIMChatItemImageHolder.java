@@ -15,8 +15,8 @@ import java.io.File;
 
 import cn.leanclud.imkit.activity.LCIMImageActivity;
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.utils.Constants;
-import cn.leanclud.imkit.utils.PathUtils;
+import cn.leanclud.imkit.utils.LCIMConstants;
+import cn.leanclud.imkit.utils.LCIMPathUtils;
 
 /**
  * Created by wli on 15/9/17.
@@ -44,8 +44,8 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), LCIMImageActivity.class);
-        intent.putExtra(Constants.IMAGE_LOCAL_PATH, PathUtils.getChatFilePath(getContext(), message.getMessageId()));
-        intent.putExtra(Constants.IMAGE_URL, ((AVIMImageMessage) message).getFileUrl());
+        intent.putExtra(LCIMConstants.IMAGE_LOCAL_PATH, LCIMPathUtils.getChatFilePath(getContext(), message.getMessageId()));
+        intent.putExtra(LCIMConstants.IMAGE_URL, ((AVIMImageMessage) message).getFileUrl());
         getContext().startActivity(intent);
       }
     });
@@ -63,7 +63,7 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
         Picasso.with(getContext().getApplicationContext()).load(new File(localFilePath)).into(contentView);
       } else {
         //TODO test
-        String url = PathUtils.getChatFilePath(getContext(), imageMsg.getMessageId());
+        String url = LCIMPathUtils.getChatFilePath(getContext(), imageMsg.getMessageId());
         Picasso.with(getContext().getApplicationContext()).load(url).into(contentView);
       }
     }
