@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <cn.leanclud.imkit.view.RecordButton
+        <cn.leanclud.imkit.view.LCIMRecordButton
             android:id="@+id/input_bar_btn_record"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -22,7 +22,7 @@
             android:text="@string/lcim_chat_bottom_record_layout_pressToRecord"
             android:visibility="gone"/>
 
-        <cn.leanclud.imkit.view.EmotionEditText
+        <cn.leanclud.imkit.view.LCIMEmotionEditText
             android:id="@+id/input_bar_et_emotion"
             android:layout_width="match_parent"
             android:layout_height="40dp"

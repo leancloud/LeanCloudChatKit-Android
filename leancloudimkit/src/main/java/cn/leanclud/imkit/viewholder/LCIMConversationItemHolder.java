@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVCallback;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
@@ -22,6 +24,7 @@ import java.util.Date;
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
 import cn.leanclud.imkit.utils.LCIMEmotionHelper;
+import cn.leanclud.imkit.utils.LCIMUtils;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -64,12 +67,13 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
 //        avatarView.setImageBitmap(ConversationManager.getConversationIcon(conversation));
 //      }
 
-//      ConversationManager.getConversationName(conversation, new AVCallback<String>() {
-//        @Override
-//        protected void internalDone0(String s, AVException e) {
-//          nameView.setText(s);
-//        }
-//      });
+      //TODO
+      LCIMUtils.getConversationName(conversation, new AVCallback<String>() {
+        @Override
+        protected void internalDone0(String s, AVException e) {
+          nameView.setText(s);
+        }
+      });
 
 //      int num = room.getUnreadCount();
 //      unreadView.setText(num + "");

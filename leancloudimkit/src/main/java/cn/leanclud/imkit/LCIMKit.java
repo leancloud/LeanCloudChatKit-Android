@@ -142,7 +142,7 @@ public final class LCIMKit {
   }
 
   public AVIMClient getClient() {
-    if (TextUtils.isEmpty(currentClientId)) {
+    if (!TextUtils.isEmpty(currentClientId)) {
       return AVIMClient.getInstance(currentClientId);
     }
     return null;
