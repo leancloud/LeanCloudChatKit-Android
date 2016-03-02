@@ -1,0 +1,11 @@
+package cn.leanclud.imkit.event;
+
+/**
+ * Created by wli on 15/12/16.
+ */
+public class LCIMConnectionChangeEvent {
+  public boolean isConnect;
+  public LCIMConnectionChangeEvent(boolean isConnect) {
+    this.isConnect = isConnect;
+  }
+}
