@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/lcim_common_blue</item>
+        <item name="colorPrimaryDark">@color/lcim_common_blue</item>
+        <item name="colorAccent">@color/lcim_common_blue</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:editTextStyle">@style/LCIMEditText</item>
+    </style>
+
+
+    <!-- activity -->
+    <style name="LCIMActivity" parent="AppTheme"/>
+
+    <style name="LCIMActivity.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/lcim_common_blue</item>
+        <item name="colorPrimaryDark">@color/lcim_common_blue</item>
+        <item name="colorAccent">@color/lcim_common_blue</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:editTextStyle">@style/LCIMEditText</item>
+    </style>
+
+    <style name="LCIMActivity.FullScreen" >
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+    <!-- divider -->
+    <style name="LCIMDividerLine">
+        <item name="android:background">@color/lcim_divider_line_color</item>
+    </style>
+
+    <style name="LCIMDividerLine.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/lcim_divider_line_height</item>
+    </style>
+
+    <style name="LCIMDividerLine.Vertical">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">@dimen/lcim_divider_line_height</item>
+    </style>
+
+
+    <!-- editText -->
+    <style name="LCIMEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="LCIMEditText.UserName">
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLength">30</item>
+    </style>
+
+    <style name="LCIMEditText.Password">
+        <item name="android:singleLine">true</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <!-- text appearance -->
+    <style name="LCIMTextAppearance"/>
+
+    <style name="LCIMTextAppearance.Large">
+        <item name="android:textSize">@dimen/lcim_textsize_large</item>
+    </style>
+
+    <style name="LCIMTextAppearance.Large.Gray">
+        <item name="android:textColor">@color/lcim_common_gray</item>
+    </style>
+
+    <style name="LCIMTextAppearance.Normal">
+        <item name="android:textSize">@dimen/lcim_textsize_normal</item>
+    </style>
+
+    <style name="LCIMTextAppearance.Normal.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="LCIMTextAppearance.Normal.Gray">
+        <item name="android:textColor">@color/lcim_common_gray</item>
+    </style>
+
+    <style name="LCIMTextAppearance.Small"/>
+
+    <!-- Avatar -->
+    <style name="LCIMAvatar">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <!--<item name="android:src">@drawable/chat_default_user_avatar</item>-->
+    </style>
+
+    <style name="LCIMAvatar.Large">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="LCIMAvatar.Small">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+</resources>
