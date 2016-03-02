@@ -24,4 +24,13 @@ public class LCIMConstants {
    * LCIMConversationActivity 中头像点击事件发送的 action
    */
   public static final String AVATAR_CLICK_ACTION = getPrefixConstant("avatar_click_action");
+
+
+  // LCIMImageActivity
+  public static final String IMAGE_LOCAL_PATH = getPrefixConstant("image_local_path");
+  public static final String IMAGE_URL = getPrefixConstant("image_url");
+
+  //Notification
+  public static final String NOTOFICATION_TAG = getPrefixConstant("notification_tag");
+  public static final String NOTIFICATION_SYSTEM = getPrefixConstant("notification_system_chat");
 }
