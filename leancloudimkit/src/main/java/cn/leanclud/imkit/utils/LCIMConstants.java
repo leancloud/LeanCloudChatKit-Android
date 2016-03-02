@@ -1,4 +1,4 @@
-package cn.leanclud.imkit;
+package cn.leanclud.imkit.utils;
 
 /**
  * Created by wli on 16/2/29.

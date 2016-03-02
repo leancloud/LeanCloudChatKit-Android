@@ -1,4 +1,4 @@
-package cn.leanclud.imkit;
+package cn.leanclud.imkit.activity;
 
 import android.support.v7.app.AppCompatActivity;
 
