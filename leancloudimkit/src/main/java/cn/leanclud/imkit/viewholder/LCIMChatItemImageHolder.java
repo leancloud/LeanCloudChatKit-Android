@@ -3,6 +3,7 @@ package cn.leanclud.imkit.viewholder;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,6 +25,8 @@ import cn.leanclud.imkit.utils.LCIMPathUtils;
 public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
 
   protected ImageView contentView;
+  private static final int MAX_DEFAULT_HEIGHT = 400;
+  private static final int MAX_DEFAULT_WIDTH = 300;
 
   public LCIMChatItemImageHolder(Context context, ViewGroup root, boolean isLeft) {
     super(context, root, isLeft);
@@ -59,12 +62,32 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
     if (message instanceof AVIMImageMessage) {
       AVIMImageMessage imageMsg = (AVIMImageMessage) message;
       String localFilePath = imageMsg.getLocalFilePath();
+
+      // 图片的真是高度与宽度
+      double actualHight = imageMsg.getHeight();
+      double actualWidth = imageMsg.getWidth();
+
+      double viewHeight = MAX_DEFAULT_HEIGHT;
+      double viewWidth = MAX_DEFAULT_WIDTH;
+
+      if (0 != actualHight && 0 != actualWidth) {
+        // 要保证图片的长宽比不变
+        double ratio = actualHight / actualWidth;
+        if (ratio > viewHeight / viewWidth) {
+          viewHeight = (actualHight > viewHeight ? viewHeight : actualHight);
+          viewWidth = viewHeight / ratio;
+        } else {
+          viewWidth = (actualWidth > viewWidth ? viewWidth : actualWidth);
+          viewHeight = viewWidth * ratio;
+        }
+      }
+
       if (!TextUtils.isEmpty(localFilePath)) {
-        Picasso.with(getContext().getApplicationContext()).load(new File(localFilePath)).into(contentView);
+        Picasso.with(getContext().getApplicationContext()).load(new File(localFilePath)).
+          resize((int) viewWidth, (int) viewHeight).centerCrop().into(contentView);
       } else {
-        //TODO test
-        String url = LCIMPathUtils.getChatFilePath(getContext(), imageMsg.getMessageId());
-        Picasso.with(getContext().getApplicationContext()).load(url).into(contentView);
+        Picasso.with(getContext().getApplicationContext()).load(imageMsg.getFileUrl()).
+          resize((int) viewWidth, (int) viewHeight).centerCrop().into(contentView);
       }
     }
   }
