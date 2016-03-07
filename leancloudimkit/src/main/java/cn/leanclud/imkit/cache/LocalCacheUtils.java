@@ -4,14 +4,15 @@ package cn.leanclud.imkit.cache;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.avos.avoscloud.okhttp.Call;
+import com.avos.avoscloud.okhttp.OkHttpClient;
+import com.avos.avoscloud.okhttp.Request;
+import com.avos.avoscloud.okhttp.Response;
 
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class LocalCacheUtils {
    */
   private static Set<String> isDownloadingFile;
 
-  private static DefaultHttpClient httpClient;
+  static OkHttpClient client = new OkHttpClient();
 
   static {
     downloadCallBackMap = new HashMap<String, ArrayList<DownLoadCallback>>();
@@ -63,11 +64,11 @@ public class LocalCacheUtils {
     }
   }
 
-  private synchronized static DefaultHttpClient getDefaultHttpClient() {
-    if (httpClient == null) {
-      httpClient = new DefaultHttpClient();
+  private synchronized static OkHttpClient getDefaultHttpClient() {
+    if (client == null) {
+      client = new OkHttpClient();
     }
-    return httpClient;
+    return client;
   }
 
   public static void downloadFileAsync(final String url, final String localPath) {
@@ -92,7 +93,7 @@ public class LocalCacheUtils {
         new AsyncTask<Void, Void, Exception>() {
           @Override
           protected Exception doInBackground(Void... params) {
-            return downloadFile(url, localPath);
+            return downloadWithOKHttp(url, localPath);
           }
 
           @Override
@@ -105,23 +106,27 @@ public class LocalCacheUtils {
     }
   }
 
-  private static Exception downloadFile(String url, String localPath) {
+  private static Exception downloadWithOKHttp(String url, String localPath) {
     File file = new File(localPath);
     Exception result = null;
+    OkHttpClient httpClient = new OkHttpClient();
+    Call call = httpClient.newCall(new Request.Builder().url(url).get().build());
     FileOutputStream outputStream = null;
     InputStream inputStream = null;
     try {
-      outputStream = new FileOutputStream(file);
-      HttpGet get = new HttpGet(url);
-      HttpResponse response = getDefaultHttpClient().execute(get);
-      HttpEntity entity = response.getEntity();
-      inputStream = entity.getContent();
-      byte[] buffer = new byte[4096];
-      int len;
-      while ((len = inputStream.read(buffer)) != -1) {
-        outputStream.write(buffer, 0, len);
+      Response response = call.execute();
+      if (response.code() == 200) {
+        outputStream = new FileOutputStream(file);
+        inputStream = response.body().byteStream();
+          byte[] buffer = new byte[4096];
+          int len;
+          while ((len = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, len);
+          }
+      } else {
+        result = new Exception("response code is " + response.code());
       }
-    } catch (Exception e) {
+    } catch (IOException e) {
       result = e;
       if (file.exists()) {
         file.delete();
