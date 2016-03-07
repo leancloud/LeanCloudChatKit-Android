@@ -30,7 +30,6 @@ import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.cache.UnreadCountCache;
 import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
 import cn.leanclud.imkit.utils.LCIMConversationUtils;
-import cn.leanclud.imkit.utils.LCIMEmotionHelper;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -163,7 +162,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         ((AVIMTypedMessage) message).getMessageType());
       switch (type) {
         case TextMessageType:
-          return LCIMEmotionHelper.replace(context, ((AVIMTextMessage) message).getText());
+          return ((AVIMTextMessage) message).getText();
         case ImageMessageType:
           return "[图片]";
         case LocationMessageType:

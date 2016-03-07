@@ -2,31 +2,20 @@ package cn.leanclud.imkit.view;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.text.Editable;
-import android.text.Selection;
-import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.adapter.LCIMChatEmotionGridAdapter;
-import cn.leanclud.imkit.adapter.LCIMChatEmotionPagerAdapter;
 import cn.leanclud.imkit.event.LCIMInputBottomBarEvent;
 import cn.leanclud.imkit.event.LCIMInputBottomBarLocationClickEvent;
 import cn.leanclud.imkit.event.LCIMInputBottomBarRecordEvent;
 import cn.leanclud.imkit.event.LCIMInputBottomBarTextEvent;
-import cn.leanclud.imkit.utils.LCIMEmotionHelper;
 import cn.leanclud.imkit.utils.LCIMPathUtils;
 import cn.leanclud.imkit.utils.LCIMSoftInputUtils;
 import de.greenrobot.event.EventBus;
@@ -45,14 +34,9 @@ public class LCIMInputBottomBar extends LinearLayout {
   private View actionBtn;
 
   /**
-   * 表情 Button
-   */
-  private View emotionBtn;
-
-  /**
    * 文本输入框
    */
-  private LCIMEmotionEditText contentEditText;
+  private EditText contentEditText;
 
   /**
    * 发送文本的Button
@@ -73,13 +57,6 @@ public class LCIMInputBottomBar extends LinearLayout {
    * 底部的layout，包含 emotionLayout 与 actionLayout
    */
   private View moreLayout;
-
-  /**
-   * 表情 layout
-   */
-  private View emotionLayout;
-
-  private ViewPager emotionPager;
 
   /**
    * 录音按钮
@@ -121,14 +98,11 @@ public class LCIMInputBottomBar extends LinearLayout {
   private void initView(Context context) {
     View.inflate(context, R.layout.lcim_chat_input_bottom_bar_layout, this);
     actionBtn = findViewById(R.id.input_bar_btn_action);
-    emotionBtn = findViewById(R.id.input_bar_btn_motion);
-    contentEditText = (LCIMEmotionEditText) findViewById(R.id.input_bar_et_emotion);
+    contentEditText = (EditText)findViewById(R.id.input_bar_et_content);
     sendTextBtn = findViewById(R.id.input_bar_btn_send_text);
     voiceBtn = findViewById(R.id.input_bar_btn_voice);
     keyboardBtn = findViewById(R.id.input_bar_btn_keyboard);
     moreLayout = findViewById(R.id.input_bar_layout_more);
-    emotionLayout = findViewById(R.id.input_bar_layout_emotion);
-    emotionPager = (ViewPager) findViewById(R.id.input_bar_viewpager_emotin);
     recordBtn = (LCIMRecordButton) findViewById(R.id.input_bar_btn_record);
 
     actionLayout = findViewById(R.id.input_bar_layout_action);
@@ -137,7 +111,6 @@ public class LCIMInputBottomBar extends LinearLayout {
     pictureBtn = findViewById(R.id.input_bar_btn_picture);
 
     setEditTextChangeListener();
-    initEmotionPager();
     initRecordBtn();
 
     actionBtn.setOnClickListener(new OnClickListener() {
@@ -147,19 +120,6 @@ public class LCIMInputBottomBar extends LinearLayout {
           (GONE == moreLayout.getVisibility() || GONE == actionLayout.getVisibility());
         moreLayout.setVisibility(showActionView ? VISIBLE : GONE);
         actionLayout.setVisibility(showActionView ? VISIBLE : GONE);
-        emotionLayout.setVisibility(View.GONE);
-        LCIMSoftInputUtils.hideSoftInput(getContext(), contentEditText);
-      }
-    });
-
-    emotionBtn.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        boolean showEmotionView =
-          (GONE == moreLayout.getVisibility() || GONE == emotionLayout.getVisibility());
-        moreLayout.setVisibility(showEmotionView ? VISIBLE : GONE);
-        emotionLayout.setVisibility(showEmotionView ? VISIBLE : GONE);
-        actionLayout.setVisibility(View.GONE);
         LCIMSoftInputUtils.hideSoftInput(getContext(), contentEditText);
       }
     });
@@ -232,46 +192,6 @@ public class LCIMInputBottomBar extends LinearLayout {
           LCIMInputBottomBarEvent.INPUTBOTTOMBAR_LOCATION_ACTION, getTag()));
       }
     });
-  }
-
-  /**
-   * 初始化 emotionPager
-   */
-  private void initEmotionPager() {
-    List<View> views = new ArrayList<View>();
-    for (int i = 0; i < LCIMEmotionHelper.emojiGroups.size(); i++) {
-      views.add(getEmotionGridView(i));
-    }
-    LCIMChatEmotionPagerAdapter pagerAdapter = new LCIMChatEmotionPagerAdapter(views);
-    emotionPager.setOffscreenPageLimit(3);
-    emotionPager.setAdapter(pagerAdapter);
-  }
-
-  private View getEmotionGridView(int pos) {
-    LayoutInflater inflater = LayoutInflater.from(getContext());
-    View emotionView = inflater.inflate(R.layout.lcim_chat_emotion_gridview, null, false);
-    GridView gridView = (GridView) emotionView.findViewById(R.id.gridview);
-    final LCIMChatEmotionGridAdapter chatEmotionGridAdapter = new LCIMChatEmotionGridAdapter(getContext());
-    List<String> pageEmotions = LCIMEmotionHelper.emojiGroups.get(pos);
-    chatEmotionGridAdapter.setDatas(pageEmotions);
-    gridView.setAdapter(chatEmotionGridAdapter);
-    gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String emotionText = (String) parent.getAdapter().getItem(position);
-        int start = contentEditText.getSelectionStart();
-        StringBuffer sb = new StringBuffer(contentEditText.getText());
-        sb.replace(contentEditText.getSelectionStart(), contentEditText.getSelectionEnd(), emotionText);
-        contentEditText.setText(sb.toString());
-
-        CharSequence info = contentEditText.getText();
-        if (info instanceof Spannable) {
-          Spannable spannable = (Spannable) info;
-          Selection.setSelection(spannable, start + emotionText.length());
-        }
-      }
-    });
-    return gridView;
   }
 
   /**

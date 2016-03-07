@@ -9,7 +9,6 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.utils.LCIMEmotionHelper;
 
 
 /**
@@ -41,7 +40,7 @@ public class LCIMChatItemTextHolder extends LCIMChatItemHolder {
     AVIMMessage message = (AVIMMessage) o;
     if (message instanceof AVIMTextMessage) {
       AVIMTextMessage textMessage = (AVIMTextMessage) message;
-      contentView.setText(LCIMEmotionHelper.replace(getContext(), textMessage.getText()));
+      contentView.setText(textMessage.getText());
     }
   }
 }

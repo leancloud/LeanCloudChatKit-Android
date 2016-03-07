@@ -22,8 +22,8 @@
             android:text="@string/lcim_chat_bottom_record_layout_pressToRecord"
             android:visibility="gone"/>
 
-        <cn.leanclud.imkit.view.LCIMEmotionEditText
-            android:id="@+id/input_bar_et_emotion"
+        <EditText
+            android:id="@+id/input_bar_et_content"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"

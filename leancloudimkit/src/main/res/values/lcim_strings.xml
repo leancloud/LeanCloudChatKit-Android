@@ -10,7 +10,6 @@
     <string name="lcim_chat_bottom_picture">照片</string>
     <string name="lcim_chat_bottom_camera">拍摄</string>
     <string name="lcim_chat_bottom_location">位置</string>
-    <string name="lcim_chat_emotion">表情</string>
     <string name="lcim_chat_record_button_slideUpToCancel">手指上滑，取消发送</string>
     <string name="lcim_chat_record_button_releaseToCancel">松开手指，取消录音</string>
     <string name="lcim_chat_activity_select_picture">选择图片</string>
