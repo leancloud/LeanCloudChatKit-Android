@@ -69,7 +69,6 @@
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:singleLine="true"
-            android:text="fsadf"/>
+            android:singleLine="true"/>
     </LinearLayout>
 </LinearLayout>

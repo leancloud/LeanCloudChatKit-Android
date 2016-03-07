@@ -1,6 +1,7 @@
 package cn.leanclud.imkit.viewholder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -22,6 +23,7 @@ import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.cache.ProfileCache;
 import cn.leanclud.imkit.event.LCIMLeftChatItemClickEvent;
 import cn.leanclud.imkit.event.LCIMMessageResendEvent;
+import cn.leanclud.imkit.utils.LCIMConstants;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -67,6 +69,8 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
       errorView = (ImageView) itemView.findViewById(R.id.chat_right_tv_error);
       statusView = (TextView) itemView.findViewById(R.id.chat_right_tv_status);
     }
+
+    setAvatarClickEvent();
   }
 
   @Override
@@ -127,6 +131,18 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
 
   public void showUserName(boolean isShow) {
     nameView.setVisibility(isShow ? View.VISIBLE : View.GONE);
+  }
+
+  private void setAvatarClickEvent() {
+    avatarView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent();
+        intent.setAction(LCIMConstants.AVATAR_CLICK_ACTION);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        getContext().startActivity(intent);
+      }
+    });
   }
 
   //TODO 展示更人性一点

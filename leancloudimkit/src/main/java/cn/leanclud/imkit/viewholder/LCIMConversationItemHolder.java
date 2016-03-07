@@ -16,12 +16,14 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMReservedMessageType;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
-import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.cache.UnreadCountCache;
@@ -62,41 +64,19 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
   public void bindData(Object o) {
     final AVIMConversation conversation = (AVIMConversation) o;
     if (null != conversation) {
-
-      LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
-        @Override
-        protected void internalDone0(String s, AVException e) {
-          nameView.setText(s);
-        }
-      });
-
-      LCIMConversationUtils.getConversationIcon(conversation, new AVCallback<String>() {
-        @Override
-        protected void internalDone0(String s, AVException e) {
-          if (!TextUtils.isEmpty(s)) {
-            Picasso.with(getContext()).load(s).into(avatarView);
+      if (TextUtils.isEmpty(conversation.getCreator())) {
+        conversation.fetchInfoInBackground(new AVIMConversationCallback() {
+          @Override
+          public void done(AVIMException e) {
+            updateNameAndIcon(conversation);
           }
-        }
-      });
+        });
+      } else {
+        updateNameAndIcon(conversation);
+      }
 
-      int num = UnreadCountCache.getInstance().getUnreadCount(conversation.getConversationId());
-      unreadView.setText(num + "");
-      unreadView.setVisibility(num > 0 ? View.VISIBLE : View.GONE);
-
-      conversation.getLastMessage(new AVIMSingleMessageQueryCallback() {
-        @Override
-        public void done(AVIMMessage avimMessage, AVIMException e) {
-          if (null != avimMessage) {
-            Date date = new Date(avimMessage.getTimestamp());
-            SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
-            timeView.setText(format.format(date));
-            messageView.setText(getMessageeShorthand(getContext(), avimMessage));
-          } else {
-            timeView.setText("");
-            messageView.setText("");
-          }
-        }
-      });
+      updateUnreadCount(conversation);
+      updateMessage(conversation);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -104,6 +84,54 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         }
       });
     }
+  }
+
+  private void updateNameAndIcon(AVIMConversation conversation) {
+    LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
+      @Override
+      protected void internalDone0(String s, AVException e) {
+        nameView.setText(s);
+      }
+    });
+
+    LCIMConversationUtils.getConversationIcon(conversation, new AVCallback<String>() {
+      @Override
+      protected void internalDone0(String s, AVException e) {
+        if (!TextUtils.isEmpty(s)) {
+          Picasso.with(getContext()).load(s).into(avatarView);
+        }
+      }
+    });
+  }
+
+  private void updateUnreadCount(AVIMConversation conversation) {
+    int num = UnreadCountCache.getInstance().getUnreadCount(conversation.getConversationId());
+    unreadView.setText(num + "");
+    unreadView.setVisibility(num > 0 ? View.VISIBLE : View.GONE);
+  }
+
+  /**
+   * 更新最后一条消息
+   * queryMessages
+   * @param conversation
+   */
+  private void updateMessage(AVIMConversation conversation) {
+    // TODO 此处如果调用 AVIMConversation.getLastMessage 的话会造成一直读取缓存数据造成展示不对
+    // 所以使用 queryMessages，但是这个接口还是很难有，需要 sdk 对这个进行支持
+    conversation.queryMessages(1, new AVIMMessagesQueryCallback() {
+      @Override
+      public void done(List<AVIMMessage> list, AVIMException e) {
+        if (null != list && !list.isEmpty()) {
+          Date date = new Date(list.get(0).getTimestamp());
+          SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
+          timeView.setText(format.format(date));
+          messageView.setText(getMessageeShorthand(getContext(), list.get(0)));
+        } else {
+          timeView.setText("");
+          messageView.setText("");
+        }
+      }
+    });
   }
 
   public static ViewHolderCreator HOLDER_CREATOR = new ViewHolderCreator<LCIMConversationItemHolder>() {
