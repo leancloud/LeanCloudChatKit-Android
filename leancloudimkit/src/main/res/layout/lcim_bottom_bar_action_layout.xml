@@ -3,9 +3,10 @@
     android:id="@+id/input_bar_layout_action"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/lcim_bottom_bar_height"
+    android:layout_height="@dimen/lcim_bottom_bar_action_layout_height"
     android:orientation="horizontal"
     android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:visibility="gone"
     android:weightSum="4">
 

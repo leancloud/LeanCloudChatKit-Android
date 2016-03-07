@@ -23,7 +23,7 @@
     <dimen name="lcim_bottom_bar_button_size">30dp</dimen>
     <dimen name="lcim_bottom_bar_motion_layout_height">140dp</dimen>
     <dimen name="lcim_bottom_bar_button_margin">5dp</dimen>
-    <dimen name="lcim_bottom_bar_more_height">140dp</dimen>
+    <dimen name="lcim_bottom_bar_action_layout_height">140dp</dimen>
 
     <!-- chat item -->
     <dimen name="lcim_chat_horizontal_margin">15dp</dimen>
