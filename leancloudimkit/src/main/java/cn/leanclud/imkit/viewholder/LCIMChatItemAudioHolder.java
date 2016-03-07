@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 
 import cn.leanclud.imkit.R;
+import cn.leanclud.imkit.cache.LocalCacheUtils;
 import cn.leanclud.imkit.utils.LCIMPathUtils;
 import cn.leanclud.imkit.view.LCIMPlayButton;
 
@@ -48,9 +49,7 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
       } else {
         String path = LCIMPathUtils.getChatFilePath(getContext(), audioMessage.getMessageId());
         playButton.setPath(path);
-
-        //TODO 下载语音文件
-//        LocalCacheUtils.downloadFileAsync(audioMessage.getFileUrl(), path);
+        LocalCacheUtils.downloadFileAsync(audioMessage.getFileUrl(), path);
       }
     }
   }
