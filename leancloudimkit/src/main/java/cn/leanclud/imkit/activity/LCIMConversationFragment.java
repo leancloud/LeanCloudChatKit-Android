@@ -1,11 +1,13 @@
 package cn.leanclud.imkit.activity;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,7 +17,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -49,9 +50,8 @@ import de.greenrobot.event.EventBus;
  */
 public class LCIMConversationFragment extends Fragment {
 
-  private static final int TAKE_CAMERA_REQUEST = 2;
-  private static final int GALLERY_REQUEST = 0;
-  private static final int GALLERY_KITKAT_REQUEST = 3;
+  static final int REQUEST_IMAGE_CAPTURE = 1;
+  static final int REQUEST_IMAGE_PICK = 2;
 
   protected AVIMConversation imConversation;
 
@@ -102,7 +102,6 @@ public class LCIMConversationFragment extends Fragment {
                 if (null != list && list.size() > 0) {
                   itemAdapter.addMessageList(list);
                   itemAdapter.notifyDataSetChanged();
-
                   layoutManager.scrollToPositionWithOffset(list.size() - 1, 0);
                 }
               }
@@ -219,7 +218,6 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
-//TODO
 //  public void onEvent(MessageEvent messageEvent) {
 //    final AVIMTypedMessage message = messageEvent.getMessage();
 //    if (message.getConversationId().equals(conversation
@@ -249,10 +247,10 @@ public class LCIMConversationFragment extends Fragment {
     if (null != imConversation && null != event && imConversation.getConversationId().equals(event.tag)) {
       switch (event.eventAction) {
         case LCIMInputBottomBarEvent.INPUTBOTTOMBAR_IMAGE_ACTION:
-          selectImageFromLocal();
+          dispatchTakePictureIntent();
           break;
         case LCIMInputBottomBarEvent.INPUTBOTTOMBAR_CAMERA_ACTION:
-          selectImageFromCamera();
+          dispatchPickPictureIntent();
           break;
       }
     }
@@ -266,27 +264,39 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
-  public void selectImageFromLocal() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-      Intent intent = new Intent();
-      intent.setType("image/*");
-      intent.setAction(Intent.ACTION_GET_CONTENT);
-      startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.lcim_chat_activity_select_picture)),
-        GALLERY_REQUEST);
-    } else {
-      Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-      intent.addCategory(Intent.CATEGORY_OPENABLE);
-      intent.setType("image/*");
-      startActivityForResult(intent, GALLERY_KITKAT_REQUEST);
+  private void dispatchTakePictureIntent() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    Uri imageUri = Uri.fromFile(new File(localCameraPath));
+    takePictureIntent.putExtra("crop", "true");
+    takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+      startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
   }
 
-  public void selectImageFromCamera() {
-    Intent takePictureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+  private void dispatchPickPictureIntent() {
     Uri imageUri = Uri.fromFile(new File(localCameraPath));
-    takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
-    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-      startActivityForResult(takePictureIntent, TAKE_CAMERA_REQUEST);
+    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, null);
+    photoPickerIntent.putExtra("return-data", false);
+    photoPickerIntent.putExtra("crop", "true");
+    photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+    photoPickerIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+    photoPickerIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+    startActivityForResult(photoPickerIntent, REQUEST_IMAGE_PICK);
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (Activity.RESULT_OK == resultCode) {
+      switch (requestCode) {
+        case REQUEST_IMAGE_CAPTURE:
+          sendImage(localCameraPath);
+          break;
+        case REQUEST_IMAGE_PICK:
+          sendImage(getRealPathFromURI(getActivity(), data.getData()));
+          break;
+      }
     }
   }
 
@@ -294,52 +304,17 @@ public class LCIMConversationFragment extends Fragment {
     layoutManager.scrollToPositionWithOffset(itemAdapter.getItemCount() - 1, 0);
   }
 
-  protected boolean filterException(Exception e) {
-    if (e != null) {
-      e.printStackTrace();
-      toast(e.getMessage());
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  protected void toast(String str) {
-    Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
-  }
-
-  @TargetApi(Build.VERSION_CODES.KITKAT)
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (resultCode == Activity.RESULT_OK) {
-      switch (requestCode) {
-        case GALLERY_REQUEST:
-        case GALLERY_KITKAT_REQUEST:
-          if (data == null) {
-            toast("return intent is null");
-            return;
-          }
-          Uri uri;
-          if (requestCode == GALLERY_REQUEST) {
-            uri = data.getData();
-          } else {
-            //for Android 4.4
-            uri = data.getData();
-            final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-              | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
-          }
-
-          //TODO
-//          String localSelectPath = ProviderPathUtils.getPath(getActivity(), uri);
-//          inputBottomBar.hideMoreLayout();
-//          sendImage(localSelectPath);
-          break;
-        case TAKE_CAMERA_REQUEST:
-          inputBottomBar.hideMoreLayout();
-          sendImage(localCameraPath);
-          break;
+  private String getRealPathFromURI(Context context, Uri contentUri) {
+    Cursor cursor = null;
+    try {
+      String[] proj = { MediaStore.Images.Media.DATA };
+      cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+      int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+      cursor.moveToFirst();
+      return cursor.getString(column_index);
+    } finally {
+      if (cursor != null) {
+        cursor.close();
       }
     }
   }
@@ -379,5 +354,9 @@ public class LCIMConversationFragment extends Fragment {
         itemAdapter.notifyDataSetChanged();
       }
     });
+  }
+
+  private boolean filterException(Exception e) {
+    return true;
   }
 }
