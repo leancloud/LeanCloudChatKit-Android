@@ -37,6 +37,8 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
   private final int ITEM_RIGHT_AUDIO = 203;
   private final int ITEM_RIGHT_LOCATION = 204;
 
+  private final int ITEM_UNKNOWN = 300;
+
   // 时间间隔最小为十分钟
   private final static long TIME_INTERVAL = 1000 * 60 * 3;
   private boolean isShowUserName = true;
@@ -44,6 +46,7 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
   private List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
 
   public LCIMMultipleItemAdapter() {
+    super();
   }
 
   public void setMessageList(List<AVIMMessage> messages) {
@@ -72,6 +75,7 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     switch (viewType) {
+      case ITEM_LEFT:
       case ITEM_LEFT_TEXT:
         return new LCIMChatItemTextHolder(parent.getContext(), parent, true);
       case ITEM_LEFT_IMAGE:
@@ -80,6 +84,7 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
         return new LCIMChatItemAudioHolder(parent.getContext(), parent, true);
       case ITEM_LEFT_LOCATION:
         return new LCIMChatItemLocationHolder(parent.getContext(), parent, true);
+      case ITEM_RIGHT:
       case ITEM_RIGHT_TEXT:
         return new LCIMChatItemTextHolder(parent.getContext(), parent, false);
       case ITEM_RIGHT_IMAGE:
@@ -89,7 +94,6 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
       case ITEM_RIGHT_LOCATION:
         return new LCIMChatItemLocationHolder(parent.getContext(), parent, false);
       default:
-        //TODO 此处还要判断左右
         return new LCIMChatItemTextHolder(parent.getContext(), parent, true);
     }
   }
@@ -105,7 +109,6 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
 
   @Override
   public int getItemViewType(int position) {
-    //TODO 如果是自定义的数据类型该如何
     AVIMMessage message = messageList.get(position);
     if (null != message && message instanceof AVIMTypedMessage) {
       AVIMTypedMessage typedMessage = (AVIMTypedMessage) message;
@@ -122,7 +125,7 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
         return isMe ? ITEM_RIGHT : ITEM_LEFT;
       }
     }
-    return 8888;
+    return ITEM_UNKNOWN;
   }
 
   @Override

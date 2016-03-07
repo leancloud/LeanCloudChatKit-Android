@@ -22,6 +22,7 @@ import java.util.Set;
 
 /**
  * Created by wli on 15/9/29.
+ * 用于下载文件，会主动合并重复的下载
  */
 public class LocalCacheUtils {
 
@@ -36,11 +37,15 @@ public class LocalCacheUtils {
    */
   private static Set<String> isDownloadingFile;
 
-  static OkHttpClient client = new OkHttpClient();
+  /**
+   * OkHttpClient 的 实例，官方不建议创建多个，所以这里搞了一个 static 实例
+   */
+  private static OkHttpClient okHttpClient;
 
   static {
     downloadCallBackMap = new HashMap<String, ArrayList<DownLoadCallback>>();
     isDownloadingFile = new HashSet<String>();
+    okHttpClient = new OkHttpClient();
   }
 
   private static void addDownloadCallback(String path, DownLoadCallback callback) {
@@ -64,21 +69,32 @@ public class LocalCacheUtils {
     }
   }
 
-  private synchronized static OkHttpClient getDefaultHttpClient() {
-    if (client == null) {
-      client = new OkHttpClient();
-    }
-    return client;
-  }
-
+  /**
+   * 异步下载文件到指定位置
+   * @param url 需要下载远程地址
+   * @param localPath 下载到本地的文件存放的位置
+   */
   public static void downloadFileAsync(final String url, final String localPath) {
     downloadFileAsync(url, localPath, false);
   }
 
+  /**
+   * 异步下载文件到指定位置
+   * @param url 需要下载远程地址
+   * @param localPath 下载到本地的文件存放的位置
+   * @param overlay 是否覆盖原文件
+   */
   public static void downloadFileAsync(final String url, final String localPath, boolean overlay) {
     downloadFile(url, localPath, overlay, null);
   }
 
+  /**
+   * 异步下载文件到指定位置
+   * @param url 需要下载远程地址
+   * @param localPath 下载到本地的文件存放的位置
+   * @param overlay 是否覆盖原文件
+   * @param callback 下载完后的回调
+   */
   public static void downloadFile(final String url, final String localPath,
     boolean overlay, final DownLoadCallback callback) {
     if (TextUtils.isEmpty(url) || TextUtils.isEmpty(localPath)) {
@@ -109,8 +125,7 @@ public class LocalCacheUtils {
   private static Exception downloadWithOKHttp(String url, String localPath) {
     File file = new File(localPath);
     Exception result = null;
-    OkHttpClient httpClient = new OkHttpClient();
-    Call call = httpClient.newCall(new Request.Builder().url(url).get().build());
+    Call call = okHttpClient.newCall(new Request.Builder().url(url).get().build());
     FileOutputStream outputStream = null;
     InputStream inputStream = null;
     try {

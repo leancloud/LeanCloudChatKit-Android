@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVCallback;
@@ -19,7 +18,7 @@ import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.cache.UnreadCountCache;
 import cn.leanclud.imkit.utils.LCIMConstants;
-import cn.leanclud.imkit.utils.LCIMUtils;
+import cn.leanclud.imkit.utils.LCIMConversationUtils;
 
 /**
  * Created by wli on 16/2/29.
@@ -44,7 +43,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
   }
 
   private void initByIntent(Intent intent) {
-    if (TextUtils.isEmpty(LCIMKit.getInstance().getCurrentUserId())) {
+    if (null == LCIMKit.getInstance().getClient()) {
       showToast("please login first!");
       finish();
       return;
@@ -79,12 +78,8 @@ public class LCIMConversationActivity extends AppCompatActivity {
   protected void updateConversation(AVIMConversation conversation) {
     if (null != conversation) {
       conversationFragment.setConversation(conversation);
-
-      //TODO 异步
       UnreadCountCache.getInstance().clearUnread(conversation.getConversationId());
-
-      //TODO LCIMUtils 是否应该去掉
-      LCIMUtils.getConversationName(conversation, new AVCallback<String>() {
+      LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
         @Override
         protected void internalDone0(String s, AVException e) {
           initActionBar(s);
@@ -103,7 +98,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
         @Override
         public void done(AVIMConversation avimConversation, AVIMException e) {
           if (null != e) {
-            Toast.makeText(LCIMConversationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            showToast(e.getMessage());
           } else {
             updateConversation(avimConversation);
           }

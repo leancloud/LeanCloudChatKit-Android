@@ -54,13 +54,11 @@ public class LCIMConversationFragment extends Fragment {
   static final int REQUEST_IMAGE_PICK = 2;
 
   protected AVIMConversation imConversation;
-
   protected LCIMMultipleItemAdapter itemAdapter;
   protected RecyclerView recyclerView;
   protected LinearLayoutManager layoutManager;
   protected SwipeRefreshLayout refreshLayout;
   protected LCIMInputBottomBar inputBottomBar;
-
   protected String localCameraPath;
 
   @Nullable
@@ -326,10 +324,8 @@ public class LCIMConversationFragment extends Fragment {
   }
 
   private void sendImage(String imagePath) {
-    AVIMImageMessage imageMsg = null;
     try {
-      imageMsg = new AVIMImageMessage(imagePath);
-      sendMessage(imageMsg);
+      sendMessage(new AVIMImageMessage(imagePath));
     } catch (IOException e) {
       e.printStackTrace();
     }

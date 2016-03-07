@@ -21,7 +21,9 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
 
   protected List<T> dataList = new ArrayList<T>();
 
-  public LCIMCommonListAdapter() {}
+  public LCIMCommonListAdapter() {
+    super();
+  }
 
   public LCIMCommonListAdapter(Class<?> vhClass) {
     this.vhClass = vhClass;

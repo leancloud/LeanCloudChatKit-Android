@@ -64,7 +64,6 @@ public class LCIMPathUtils {
    */
   public static String getPicturePathByCurrentTime(Context context) {
     String path = new File(getAvailableCacheDir(context), "picture_" + System.currentTimeMillis()).getAbsolutePath();
-//    LogUtils.d("picture path ", path);
     return path;
   }
 }

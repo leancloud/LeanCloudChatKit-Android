@@ -10,7 +10,7 @@ import cn.leanclud.imkit.cache.ProfileCache;
 /**
  * Created by wli on 16/3/2.
  */
-public class LCIMUtils {
+public class LCIMConversationUtils {
   //调用前保证 Conversation 数据完整
   private static String getConversationPeerId(AVIMConversation conversation) {
     if (null != conversation && 2 == conversation.getMembers().size()) {

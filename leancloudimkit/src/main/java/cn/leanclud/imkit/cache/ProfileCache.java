@@ -23,13 +23,18 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by wli on 16/2/25.
+ * 用户信息缓存
+ * 流程：
+ * 1、如果内存中有则从内存中获取
+ * 2、如果内存中没有则从 db 中获取
+ * 3、如果 db 中没有则通过调用开发者设置的回调 LCIMProfileProvider.getProfiles 来获取
+ *    同时获取到的数据会缓存到内存与 db
  */
 public class ProfileCache {
 
   private static final String USER_NAME = "user_name";
   private static final String USER_AVATAR = "user_avatar";
   private static final String USER_ID = "user_id";
-
 
   private Map<String, LCIMUserProfile> userMap;
   private LocalStorage profileDBHelper;
@@ -47,15 +52,26 @@ public class ProfileCache {
     return profileCache;
   }
 
-  public void initDB(Context context, String clientId) {
+  /**
+   * 因为只有在第一次的时候需要设置 Context 以及 clientId，所以单独拎出一个函数主动调用初始化
+   * 避免 getInstance 传入过多参数
+   * @param context
+   * @param clientId
+   */
+  public synchronized void initDB(Context context, String clientId) {
     profileDBHelper = new LocalStorage(context, clientId, "ProfileCache");
   }
 
-  public void getCachedUser(final String objectId, final AVCallback<LCIMUserProfile> callback) {
-    if (userMap.containsKey(objectId)) {
-      callback.internalDone(userMap.get(objectId), null);
+  /**
+   * 根据 id 获取用户信息
+   * @param id
+   * @param callback
+   */
+  public synchronized void getCachedUser(final String id, final AVCallback<LCIMUserProfile> callback) {
+    if (userMap.containsKey(id)) {
+      callback.internalDone(userMap.get(id), null);
     } else {
-      profileDBHelper.getDatas(Arrays.asList(objectId), new AVCallback<List<String>>() {
+      profileDBHelper.getDatas(Arrays.asList(id), new AVCallback<List<String>>() {
         @Override
         protected void internalDone0(List<String> dataList, AVException e) {
           if (null != dataList && !dataList.isEmpty()) {
@@ -63,7 +79,7 @@ public class ProfileCache {
             userMap.put(userProfile.getUserId(), userProfile);
             callback.internalDone(getUserProfileFromJson(dataList.get(0)), null);
           } else {
-            getUserProfile(objectId, new AVCallback<LCIMUserProfile>() {
+            getUserProfile(id, new AVCallback<LCIMUserProfile>() {
               @Override
               protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
                 if (null != e) {
@@ -82,6 +98,11 @@ public class ProfileCache {
     }
   }
 
+  /**
+   * 根据 id 通过开发者设置的回调获取用户信息
+   * @param id
+   * @param callback
+   */
   private void getUserProfile(String id, final AVCallback<LCIMUserProfile> callback) {
     LCIMProfileProvider profileProvider = LCIMKit.getInstance().getProfileProvider();
     if (null != profileProvider) {
@@ -98,6 +119,11 @@ public class ProfileCache {
     }
   }
 
+  /**
+   * 根据 id 获取用户名
+   * @param id
+   * @param callback
+   */
   public void getUserName(String id, final AVCallback<String> callback) {
     getCachedUser(id, new AVCallback<LCIMUserProfile>() {
       @Override
@@ -111,6 +137,11 @@ public class ProfileCache {
     });
   }
 
+  /**
+   * 根据 id 获取用户头像
+   * @param id
+   * @param callback
+   */
   public void getUserAvatar(String id, final AVCallback<String> callback) {
     getCachedUser(id, new AVCallback<LCIMUserProfile>() {
       @Override
@@ -124,11 +155,21 @@ public class ProfileCache {
     });
   }
 
-  public boolean hasCachedUser(String id) {
+  /**
+   * 内存中是否包相关 LCIMUserProfile 的信息
+   * @param id
+   * @return
+   */
+  public synchronized boolean hasCachedUser(String id) {
     return userMap.containsKey(id);
   }
 
-  public void cacheUser(LCIMUserProfile userProfile) {
+  /**
+   * 缓存 LCIMUserProfile 信息，更新缓存同时也更新 db
+   * 如果开发者 LCIMUserProfile 信息变化，可以通过调用此方法刷新缓存
+   * @param userProfile
+   */
+  public synchronized void cacheUser(LCIMUserProfile userProfile) {
     if (null != userProfile) {
       userMap.put(userProfile.getUserId(), userProfile);
       profileDBHelper.insertData(userProfile.getUserId(), getStringFormUserProfile(userProfile));

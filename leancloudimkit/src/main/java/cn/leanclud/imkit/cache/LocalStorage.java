@@ -26,7 +26,10 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by wli on 16/2/25.
- * 1、因为忽略了具体数据格式，所以更新具体属性的时候必须更新整条记录
+ * key value 形式的存储，只能存储 String，其他数据也要转化成 String 存储
+ * 因为忽略了具体数据格式，所以更新具体属性的时候必须更新整条记录
+ *
+ * 因为最终读与写的操作都是在 readDbThread 线程中进行，所以不需要考虑线程安全问题
  */
 public class LocalStorage extends SQLiteOpenHelper {
 
@@ -46,7 +49,7 @@ public class LocalStorage extends SQLiteOpenHelper {
   private static final String TABLE_KEY_CONTENT = "content";
 
   /**
-   * 具体内容的更新时间，方便排序使用
+   * 具体内容的更新时间，方便排序使用，使用的是本地时间，如果本地时间出错则此排序会出现问题
    */
   private static final String TABLE_KEY_UPDATE_TIME = "update_time";
 
@@ -56,8 +59,6 @@ public class LocalStorage extends SQLiteOpenHelper {
     TABLE_KEY_UPDATE_TIME + " VARCHAR(32)" +
     ")";
   private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS %s";
-  private static final String SQL_SELECT_BY_ID = "select %s from %s";
-  private static final String SQL_GET_COUNT = "select count(%s) from %s";
 
   private static final int DB_VERSION = 1;
 
@@ -65,7 +66,6 @@ public class LocalStorage extends SQLiteOpenHelper {
 
   private HandlerThread readDbThread;
   private Handler readDbHandler;
-  private Handler mainThreadHandler;
 
   public LocalStorage(Context context, String clientId, String tableName) {
     super(context, DB_NAME_PREFIX, null, DB_VERSION);
@@ -82,7 +82,6 @@ public class LocalStorage extends SQLiteOpenHelper {
     readDbThread = new HandlerThread("");
     readDbThread.start();
     readDbHandler = new Handler(readDbThread.getLooper());
-    mainThreadHandler = new Handler(context.getMainLooper());
   }
 
   @Override
@@ -98,6 +97,9 @@ public class LocalStorage extends SQLiteOpenHelper {
     }
   }
 
+  /**
+   * 因为 onCreate 为初始化 db 的时候才调用的，所以多表的情况下需要主动调用此函数来创建表
+   */
   private void createTable() {
     getWritableDatabase().execSQL(String.format(SQL_CREATE_TABLE, tableName));
   }
@@ -106,6 +108,10 @@ public class LocalStorage extends SQLiteOpenHelper {
     return true;
   }
 
+  /**
+   * 获取所有的 Key 值
+   * @param callback 获取后会执行此回调
+   */
   public void getIds(final AVCallback<List<String>> callback) {
     readDbHandler.post(new Runnable() {
       @Override
@@ -115,6 +121,11 @@ public class LocalStorage extends SQLiteOpenHelper {
     });
   }
 
+  /**
+   * 根据 key 值获对应的 values
+   * @param ids 需要的获取数据的 key
+   * @param callback 获取后会执行此回调
+   */
   public void getDatas(final List<String> ids, final AVCallback<List<String>> callback) {
     readDbHandler.post(new Runnable() {
       @Override
@@ -124,19 +135,33 @@ public class LocalStorage extends SQLiteOpenHelper {
     });
   }
 
+  /**
+   * 插入数据,注意 idList 与 valueList 是一一对应的
+   * @param idList
+   * @param valueList
+   */
   public void insertDatas(final List<String> idList, final List<String> valueList) {
     readDbHandler.post(new Runnable() {
       @Override
       public void run() {
-        insert(idList, valueList);
+        insertSync(idList, valueList);
       }
     });
   }
 
+  /**
+   * 插入数据,注意 id 与 value 是对应的
+   * @param id
+   * @param value
+   */
   public void insertData(String id, String value) {
     insertDatas(Arrays.asList(id), Arrays.asList(value));
   }
 
+  /**
+   * 删除数据
+   * @param ids
+   */
   public void deleteDatas(final List<String> ids) {
     readDbHandler.post(new Runnable() {
       @Override
@@ -146,6 +171,9 @@ public class LocalStorage extends SQLiteOpenHelper {
     });
   }
 
+  /**
+   * 获取 key 值，此为同步方法
+   */
   private List<String> getIdsSync() {
     String queryString = "SELECT " + TABLE_KEY_ID + " FROM " + tableName;
     SQLiteDatabase database = getReadableDatabase();
@@ -154,14 +182,12 @@ public class LocalStorage extends SQLiteOpenHelper {
     while (cursor.moveToNext()) {
       dataList.add(cursor.getString(cursor.getColumnIndex(TABLE_KEY_ID)));
     }
+    cursor.close();
     return dataList;
   }
 
   /**
-   * 查
-   *
-   * @param ids 若 id 为空则返回所有数据
-   * @return
+   * 获取数据，此为同步方法
    */
   private List<String> getDatasSync(List<String> ids) {
     String queryString = "SELECT * FROM " + tableName;
@@ -175,16 +201,14 @@ public class LocalStorage extends SQLiteOpenHelper {
     while (cursor.moveToNext()) {
       dataList.add(cursor.getString(cursor.getColumnIndex(TABLE_KEY_CONTENT)));
     }
+    cursor.close();
     return dataList;
   }
 
   /**
-   * 增
-   *
-   * @param idList
-   * @param valueList
+   * 插入数据，此为同步方法
    */
-  private void insert(List<String> idList, List<String> valueList) {
+  private void insertSync(List<String> idList, List<String> valueList) {
     SQLiteDatabase db = getWritableDatabase();
     db.beginTransaction();
     for (int i = 0; i < valueList.size(); i++) {
@@ -199,7 +223,7 @@ public class LocalStorage extends SQLiteOpenHelper {
   }
 
   /**
-   * 删
+   * 输出数据，此为同步方法
    */
   private void deleteSync(List<String> ids) {
     String queryString = joinListWithApostrophe(ids);

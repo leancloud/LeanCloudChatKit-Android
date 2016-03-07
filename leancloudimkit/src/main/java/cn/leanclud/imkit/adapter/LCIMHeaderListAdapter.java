@@ -46,7 +46,7 @@ public class LCIMHeaderListAdapter<T> extends LCIMCommonListAdapter<T> {
 
   @Override
   public long getItemId(int position) {
-    if (position == 0 && position == getItemCount() - 1) {
+    if (0 == position && position == getItemCount() - 1) {
       return -1;
     }
     return super.getItemId(position);
