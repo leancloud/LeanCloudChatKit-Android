@@ -16,6 +16,8 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.leanclud.imkit.cache.ProfileCache;
+import cn.leanclud.imkit.cache.UnreadCountCache;
 import cn.leanclud.imkit.handler.LCIMClientEventHandler;
 import cn.leanclud.imkit.handler.LCIMConversationHandler;
 import cn.leanclud.imkit.handler.LCIMMessageHandler;
@@ -68,6 +70,10 @@ public final class LCIMKit {
     this.profileProvider = profileProvider;
   }
 
+  public LCIMProfileProvider getProfileProvider() {
+    return profileProvider;
+  }
+
   public void setSignatureFactory(SignatureFactory signatureFactory) {
     AVIMClient.setSignatureFactory(signatureFactory);
   }
@@ -78,8 +84,8 @@ public final class LCIMKit {
       public void done(AVIMClient avimClient, AVIMException e) {
         if (null == e) {
           currentClientId = clientId;
-//          ProfileCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
-//          UnreadCountCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
+          ProfileCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
+          UnreadCountCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
         }
         callback.internalDone(avimClient, e);
       }
@@ -92,47 +98,6 @@ public final class LCIMKit {
       public void done(AVIMClient avimClient, AVIMException e) {
         currentClientId = null;
         callback.internalDone(avimClient, e);
-      }
-    });
-  }
-
-  public void getUserProfile(String id, final AVCallback<LCIMUserProfile> callback) {
-    if (null != profileProvider) {
-      profileProvider.getProfiles(Arrays.asList(id), new LCIMProfilesCallBack() {
-        @Override
-        public void done(List<LCIMUserProfile> userList, Exception e) {
-          if (null == userList || userList.isEmpty()) {
-            callback.internalDone(null, new AVException(new Throwable("can not find current id!")));
-          } else {
-            callback.internalDone(userList.get(0), null);
-          }
-        }
-      });
-    }
-  }
-
-  public void getUserName(String id, final AVCallback<String> callback) {
-    getUserProfile(id, new AVCallback<LCIMUserProfile>() {
-      @Override
-      protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
-        if (null != e) {
-          callback.internalDone(null, e);
-        } else {
-          callback.internalDone(userProfile.getUserName(), null);
-        }
-      }
-    });
-  }
-
-  public void getUserAvatar(String id, final AVCallback<String> callback) {
-    getUserProfile(id, new AVCallback<LCIMUserProfile>() {
-      @Override
-      protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
-        if (null != e) {
-          callback.internalDone(null, e);
-        } else {
-          callback.internalDone(userProfile.getAvatarUrl(), null);
-        }
       }
     });
   }

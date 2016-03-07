@@ -9,12 +9,17 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVCallback;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cn.leanclud.imkit.LCIMUserProfile;
 import cn.leanclud.imkit.R;
+import cn.leanclud.imkit.cache.ProfileCache;
 import cn.leanclud.imkit.event.LCIMLeftChatItemClickEvent;
 import cn.leanclud.imkit.event.LCIMMessageResendEvent;
 import de.greenrobot.event.EventBus;
@@ -69,14 +74,13 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     message = (AVIMMessage) o;
     timeView.setText(millisecsToDateString(message.getTimestamp()));
 
-    // TODO
-//    ProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
-//      @Override
-//      protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
-//        nameView.setText(userProfile.getUserName());
-//        Picasso.with(getContext()).load(userProfile.getAvatarUrl()).into(avatarView);
-//      }
-//    });
+    ProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
+      @Override
+      protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
+        nameView.setText(userProfile.getUserName());
+        Picasso.with(getContext()).load(userProfile.getAvatarUrl()).into(avatarView);
+      }
+    });
 
     switch (message.getMessageStatus()) {
       case AVIMMessageStatusFailed:

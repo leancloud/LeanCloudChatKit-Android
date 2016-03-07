@@ -1,6 +1,7 @@
 package cn.leanclud.imkit.viewholder;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,11 +18,13 @@ import com.avos.avoscloud.im.v2.AVIMReservedMessageType;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cn.leanclud.imkit.R;
+import cn.leanclud.imkit.cache.UnreadCountCache;
 import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
 import cn.leanclud.imkit.utils.LCIMEmotionHelper;
 import cn.leanclud.imkit.utils.LCIMUtils;
@@ -59,15 +62,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
   public void bindData(Object o) {
     final AVIMConversation conversation = (AVIMConversation) o;
     if (null != conversation) {
-//      if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {
-//        String userId = ConversationHelper.otherIdOfConversation(conversation);
-//        String avatar = ThirdPartUserUtils.getInstance().getUserAvatar(userId);
-//        ImageLoader.getInstance().displayImage(avatar, avatarView, PhotoUtils.avatarImageOptions);
-//      } else {
-//        avatarView.setImageBitmap(ConversationManager.getConversationIcon(conversation));
-//      }
 
-      //TODO
       LCIMUtils.getConversationName(conversation, new AVCallback<String>() {
         @Override
         protected void internalDone0(String s, AVException e) {
@@ -75,9 +70,18 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         }
       });
 
-//      int num = room.getUnreadCount();
-//      unreadView.setText(num + "");
-//      unreadView.setVisibility(num > 0 ? View.VISIBLE : View.GONE);
+      LCIMUtils.getConversationIcon(conversation, new AVCallback<String>() {
+        @Override
+        protected void internalDone0(String s, AVException e) {
+          if (!TextUtils.isEmpty(s)) {
+            Picasso.with(getContext()).load(s).into(avatarView);
+          }
+        }
+      });
+
+      int num = UnreadCountCache.getInstance().getUnreadCount(conversation.getConversationId());
+      unreadView.setText(num + "");
+      unreadView.setVisibility(num > 0 ? View.VISIBLE : View.GONE);
 
       conversation.getLastMessage(new AVIMSingleMessageQueryCallback() {
         @Override

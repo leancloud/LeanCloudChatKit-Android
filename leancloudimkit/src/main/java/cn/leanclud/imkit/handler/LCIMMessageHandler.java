@@ -1,6 +1,10 @@
 package cn.leanclud.imkit.handler;
 
 import android.content.Context;
+import android.content.Intent;
+
+import com.avos.avoscloud.AVCallback;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
@@ -8,8 +12,12 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
 import cn.leanclud.imkit.LCIMKit;
+import cn.leanclud.imkit.LCIMUserProfile;
 import cn.leanclud.imkit.R;
+import cn.leanclud.imkit.cache.ProfileCache;
+import cn.leanclud.imkit.cache.UnreadCountCache;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
+import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.utils.LCIMNotificationUtils;
 import de.greenrobot.event.EventBus;
 
@@ -41,13 +49,14 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
       if (!client.getClientId().equals(LCIMKit.getInstance().getCurrentUserId())) {
         client.close(null);
       } else {
-//        UnreadCountCache.getInstance().insertConversation(message.getConversationId());
         if (!message.getFrom().equals(client.getClientId())) {
           if (LCIMNotificationUtils.isShowNotification(conversation.getConversationId())) {
             sendNotification(message, conversation);
           }
-//          UnreadCountCache.getInstance().increaseUnreadCount(message.getConversationId());
+          UnreadCountCache.getInstance().increaseUnreadCount(message.getConversationId());
           sendEvent(message, conversation);
+        } else {
+          UnreadCountCache.getInstance().insertConversation(message.getConversationId());
         }
       }
     }
@@ -75,18 +84,17 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
     if (null != conversation && null != message) {
       final String notificationContent = message instanceof AVIMTextMessage ?
         ((AVIMTextMessage) message).getText() : context.getString(R.string.lcim_unspport_message_type);
-//      ProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
-//        @Override
-//        protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
-//          String title = userProfile.getUserName();
-//
-//          Intent intent = new Intent();
-//          intent.setAction("com.avoscloud.chat.intent.client_notification");
-//          intent.putExtra(Constants.CONVERSATION_ID, conversation.getConversationId());
-//          intent.putExtra(Constants.MEMBER_ID, message.getFrom());
-//          NotificationUtils.showNotification(context, title, notificationContent, null, intent);
-//        }
-//      });
+      ProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
+        @Override
+        protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
+          String title = userProfile.getUserName();
+          Intent intent = new Intent();
+          intent.setAction("com.avoscloud.chat.intent.clinotification");
+          intent.putExtra(LCIMConstants.CONVERSATION_ID, conversation.getConversationId());
+          intent.putExtra(LCIMConstants.PEER_ID, message.getFrom());
+          LCIMNotificationUtils.showNotification(context, title, notificationContent, null, intent);
+        }
+      });
     }
   }
 }
