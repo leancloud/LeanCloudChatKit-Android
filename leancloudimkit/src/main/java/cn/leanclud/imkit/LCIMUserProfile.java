@@ -8,7 +8,7 @@ public class LCIMUserProfile {
   private String avatarUrl;
   private String userName;
 
-  public LCIMUserProfile(String userId, String avatarUrl, String userName) {
+  public LCIMUserProfile(String userId, String userName, String avatarUrl) {
     this.userId = userId;
     this.avatarUrl = avatarUrl;
     this.userName = userName;
