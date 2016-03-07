@@ -27,6 +27,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,8 +66,6 @@ public class LCIMConversationFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.lcim_conversation_fragment, container, false);
-
-    localCameraPath = LCIMPathUtils.getPicturePathByCurrentTime(getContext());
 
     recyclerView = (RecyclerView) view.findViewById(R.id.fragment_chat_rv_chat);
     refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_chat_srl_pullrefresh);
@@ -245,10 +244,10 @@ public class LCIMConversationFragment extends Fragment {
     if (null != imConversation && null != event && imConversation.getConversationId().equals(event.tag)) {
       switch (event.eventAction) {
         case LCIMInputBottomBarEvent.INPUTBOTTOMBAR_IMAGE_ACTION:
-          dispatchTakePictureIntent();
+          dispatchPickPictureIntent();
           break;
         case LCIMInputBottomBarEvent.INPUTBOTTOMBAR_CAMERA_ACTION:
-          dispatchPickPictureIntent();
+          dispatchTakePictureIntent();
           break;
       }
     }
@@ -263,9 +262,10 @@ public class LCIMConversationFragment extends Fragment {
   }
 
   private void dispatchTakePictureIntent() {
+    localCameraPath = LCIMPathUtils.getPicturePathByCurrentTime(getContext());
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     Uri imageUri = Uri.fromFile(new File(localCameraPath));
-    takePictureIntent.putExtra("crop", "true");
+    takePictureIntent.putExtra("return-data", false);
     takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
       startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -273,12 +273,7 @@ public class LCIMConversationFragment extends Fragment {
   }
 
   private void dispatchPickPictureIntent() {
-    Uri imageUri = Uri.fromFile(new File(localCameraPath));
     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, null);
-    photoPickerIntent.putExtra("return-data", false);
-    photoPickerIntent.putExtra("crop", "true");
-    photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-    photoPickerIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
     photoPickerIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
     startActivityForResult(photoPickerIntent, REQUEST_IMAGE_PICK);
   }
@@ -323,6 +318,10 @@ public class LCIMConversationFragment extends Fragment {
     sendMessage(message);
   }
 
+  /**
+   * TODO 上传的图片最好要压缩一下
+   * @param imagePath
+   */
   private void sendImage(String imagePath) {
     try {
       sendMessage(new AVIMImageMessage(imagePath));

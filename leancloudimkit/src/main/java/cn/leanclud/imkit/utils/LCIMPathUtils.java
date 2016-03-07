@@ -11,13 +11,6 @@ import java.io.File;
  */
 public class LCIMPathUtils {
 
-  private static File checkAndMkdirs(File file) {
-    if (!file.exists()) {
-      file.mkdirs();
-    }
-    return file;
-  }
-
   private static boolean isExternalStorageWritable() {
     String state = Environment.getExternalStorageState();
     return Environment.MEDIA_MOUNTED.equals(state);
@@ -38,13 +31,7 @@ public class LCIMPathUtils {
     }
   }
 
-  /**
-   * 可能文件会被清除掉，需要检查是否存在
-   *
-   * @param id
-   * @return
-   */
-  public static String getChatFilePath(Context context, String id) {
+  public static String getAudioCachePath(Context context, String id) {
     return (TextUtils.isEmpty(id) ? null : new File(getAvailableCacheDir(context), id).getAbsolutePath());
   }
 
