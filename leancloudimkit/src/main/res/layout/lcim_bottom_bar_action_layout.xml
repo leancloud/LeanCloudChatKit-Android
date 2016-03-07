@@ -38,5 +38,6 @@
         android:drawablePadding="10dp"
         android:drawableTop="@drawable/lcim_bottom_bar_location_button_bg"
         android:gravity="center"
+        android:visibility="gone"
         android:text="@string/lcim_chat_bottom_location"/>
 </LinearLayout>
