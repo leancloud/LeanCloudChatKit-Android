@@ -21,6 +21,7 @@ import cn.leanclud.imkit.utils.LCIMPathUtils;
 
 /**
  * Created by wli on 15/9/17.
+ * 聊天页面中的图片 item 对应的 holder
  */
 public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
 

@@ -8,9 +8,19 @@ import cn.leanclud.imkit.cache.ProfileCache;
 
 /**
  * Created by wli on 16/3/2.
+ * 和 Conversation 相关的 Util 类
  */
 public class LCIMConversationUtils {
 
+  /**
+   * 获取会话名称
+   * 优先级：
+   * 1、AVIMConersation name 属性
+   * 2、单聊：对方用户名
+   *    群聊：成员用户名合并
+   * @param conversation
+   * @param callback
+   */
   public static void getConversationName(final AVIMConversation conversation, final AVCallback<String> callback) {
     if (null == callback) {
       return;
@@ -27,6 +37,14 @@ public class LCIMConversationUtils {
     }
   }
 
+  /**
+   * 获取回话的 icon
+   * 单聊：对方用户的头像
+   * 群聊：成员头像合并
+   * TODO 群聊头像合并
+   * @param conversation
+   * @param callback
+   */
   public static void getConversationIcon(final AVIMConversation conversation, AVCallback<String> callback) {
     if (null != conversation) {
       if (conversation.isTransient() && conversation.getMembers().size() > 2) {

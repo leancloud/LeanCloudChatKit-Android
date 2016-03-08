@@ -13,6 +13,7 @@ import cn.leanclud.imkit.R;
 
 /**
  * Created by wli on 15/9/17.
+ * 聊天页面中的文本 item 对应的 holder
  */
 public class LCIMChatItemTextHolder extends LCIMChatItemHolder {
 

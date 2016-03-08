@@ -16,6 +16,7 @@ import cn.leanclud.imkit.view.LCIMPlayButton;
 
 /**
  * Created by wli on 15/9/17.
+ * 聊天页面中的语音 item 对应的 holder
  */
 public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
 

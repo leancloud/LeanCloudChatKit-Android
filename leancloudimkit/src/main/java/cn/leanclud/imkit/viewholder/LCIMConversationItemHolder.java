@@ -34,6 +34,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by wli on 15/10/8.
+ * 会话 item 对应的 holder
  */
 public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
 

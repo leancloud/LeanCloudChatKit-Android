@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Created by wli on 15/8/26.
+ * Notification 相关的 Util
  */
 public class LCIMNotificationUtils {
 
@@ -61,7 +62,6 @@ public class LCIMNotificationUtils {
 
   public static void showNotification(Context context, String title, String content, String sound, Intent intent) {
     intent.setFlags(0);
-//    int notificationId = (new Random()).nextInt();
     PendingIntent contentIntent = PendingIntent.getBroadcast(context, REPLY_NOTIFY_ID, intent, 0);
     NotificationCompat.Builder mBuilder =
       new NotificationCompat.Builder(context)

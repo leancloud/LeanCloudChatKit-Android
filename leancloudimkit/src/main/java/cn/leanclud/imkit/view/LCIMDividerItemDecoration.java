@@ -10,6 +10,7 @@ import android.view.View;
 
 /**
  * Created by wli on 15/12/8.
+ * RecyclerView 的分割线
  */
 public class LCIMDividerItemDecoration extends RecyclerView.ItemDecoration {
   private static final int[] ATTRS = new int[]{android.R.attr.listDivider};

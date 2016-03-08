@@ -14,6 +14,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by wli on 15/9/17.
+ * 聊天页面中的地理位置 item 对应的 holder
  */
 public class LCIMChatItemLocationHolder extends LCIMChatItemHolder {
 

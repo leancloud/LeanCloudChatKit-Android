@@ -6,6 +6,7 @@ import java.io.IOException;
 
 /**
  * Created by lzw on 14/12/19.
+ * 语音播放相关的 helper 类
  */
 public class LCIMAudioHelper {
   private static LCIMAudioHelper audioHelper;
@@ -25,10 +26,17 @@ public class LCIMAudioHelper {
     return audioHelper;
   }
 
+  /**
+   * 获取当前语音的文件地址
+   * @return
+   */
   public String getAudioPath() {
     return audioPath;
   }
 
+  /**
+   * 停止播放
+   */
   public void stopPlayer() {
     if (mediaPlayer != null) {
       mediaPlayer.stop();
@@ -37,22 +45,37 @@ public class LCIMAudioHelper {
     }
   }
 
+  /**
+   * 暂停播放
+   */
   public void pausePlayer() {
     if (mediaPlayer != null) {
       mediaPlayer.pause();
     }
   }
 
+  /**
+   * 判断当前是否正在播放
+   * @return
+   */
   public boolean isPlaying() {
     return mediaPlayer.isPlaying();
   }
 
+  /**
+   * 重新播放
+   */
   public void restartPlayer() {
     if (mediaPlayer != null && mediaPlayer.isPlaying() == false) {
       mediaPlayer.start();
     }
   }
 
+  /**
+   * 播放语音文件
+   * @param path
+   * @param finishCallback
+   */
   public synchronized void playAudio(String path, Runnable finishCallback) {
     if (onceStart) {
       mediaPlayer.reset();
@@ -75,7 +98,7 @@ public class LCIMAudioHelper {
     }
   }
 
-  public void tryRunFinishCallback() {
+  private void tryRunFinishCallback() {
     if (finishCallback != null) {
       finishCallback.run();
       finishCallback = null;
