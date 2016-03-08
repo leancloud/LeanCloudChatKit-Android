@@ -34,10 +34,10 @@ import java.util.List;
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.adapter.LCIMChatAdapter;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
-import cn.leanclud.imkit.event.LCIMIMTypeMessageResendEvent;
 import cn.leanclud.imkit.event.LCIMInputBottomBarEvent;
 import cn.leanclud.imkit.event.LCIMInputBottomBarRecordEvent;
 import cn.leanclud.imkit.event.LCIMInputBottomBarTextEvent;
+import cn.leanclud.imkit.event.LCIMMessageResendEvent;
 import cn.leanclud.imkit.utils.LCIMNotificationUtils;
 import cn.leanclud.imkit.utils.LCIMPathUtils;
 import cn.leanclud.imkit.view.LCIMInputBottomBar;
@@ -212,7 +212,7 @@ public class LCIMConversationFragment extends Fragment {
   /**
    * 重新发送已经发送失败的消息
    */
-  public void onEvent(LCIMIMTypeMessageResendEvent event) {
+  public void onEvent(LCIMMessageResendEvent event) {
     if (null != imConversation && null != event &&
       null != event.message &&  imConversation.getConversationId().equals(event.message.getConversationId())) {
       if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == event.message.getMessageStatus()

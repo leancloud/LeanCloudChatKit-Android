@@ -9,7 +9,7 @@ import java.util.List;
 
 import cn.leanclud.imkit.cache.ConversationItemCache;
 import cn.leanclud.imkit.event.LCIMConversationChangeEvent;
-import cn.leanclud.imkit.event.LCIMUnreadCountChangeEvent;
+import cn.leanclud.imkit.event.LCIMOfflineMessageCountChangeEvent;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -34,7 +34,7 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
   public void onOfflineMessagesUnread(AVIMClient client, AVIMConversation conversation, int unreadCount) {
     if (unreadCount > 0) {
       ConversationItemCache.getInstance().increaseUnreadCount(conversation.getConversationId(), unreadCount);
-      EventBus.getDefault().post(new LCIMUnreadCountChangeEvent());
+      EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent());
     }
   }
 

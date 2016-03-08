@@ -21,7 +21,7 @@ import cn.leanclud.imkit.adapter.LCIMCommonListAdapter;
 import cn.leanclud.imkit.cache.ConversationItemCache;
 import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
-import cn.leanclud.imkit.event.LCIMUnreadCountChangeEvent;
+import cn.leanclud.imkit.event.LCIMOfflineMessageCountChangeEvent;
 import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.view.LCIMDividerItemDecoration;
 import cn.leanclud.imkit.viewholder.LCIMConversationItemHolder;
@@ -100,7 +100,7 @@ public class LCIMConversationListFragment extends Fragment {
     getContext().startActivity(intent);
   }
 
-  public void onEvent(LCIMUnreadCountChangeEvent updateEvent) {
+  public void onEvent(LCIMOfflineMessageCountChangeEvent updateEvent) {
     updateConversationList();
   }
 }

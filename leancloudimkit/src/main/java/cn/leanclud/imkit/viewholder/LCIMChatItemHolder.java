@@ -21,7 +21,6 @@ import java.util.Date;
 import cn.leanclud.imkit.LCIMUserProfile;
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.cache.ProfileCache;
-import cn.leanclud.imkit.event.LCIMLeftChatItemClickEvent;
 import cn.leanclud.imkit.event.LCIMMessageResendEvent;
 import cn.leanclud.imkit.utils.LCIMConstants;
 import de.greenrobot.event.EventBus;
@@ -71,6 +70,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     }
 
     setAvatarClickEvent();
+    setResendClickEvent();
   }
 
   @Override
@@ -113,18 +113,6 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     }
   }
 
-  public void onErrorClick(View view) {
-    LCIMMessageResendEvent event = new LCIMMessageResendEvent();
-    event.message = message;
-    EventBus.getDefault().post(event);
-  }
-
-  public void onNameClick(View view) {
-    LCIMLeftChatItemClickEvent clickEvent = new LCIMLeftChatItemClickEvent();
-    clickEvent.userId = nameView.getText().toString();
-    EventBus.getDefault().post(clickEvent);
-  }
-
   public void showTimeView(boolean isShow) {
     timeView.setVisibility(isShow ? View.VISIBLE : View.GONE);
   }
@@ -133,6 +121,9 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     nameView.setVisibility(isShow ? View.VISIBLE : View.GONE);
   }
 
+  /**
+   * 设置头像点击按钮的事件
+   */
   private void setAvatarClickEvent() {
     avatarView.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -141,6 +132,20 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
         intent.setAction(LCIMConstants.AVATAR_CLICK_ACTION);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         getContext().startActivity(intent);
+      }
+    });
+  }
+
+  /**
+   * 设置发送失败的叹号按钮的事件
+   */
+  private void setResendClickEvent() {
+    errorView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        LCIMMessageResendEvent event = new LCIMMessageResendEvent();
+        event.message = message;
+        EventBus.getDefault().post(event);
       }
     });
   }
