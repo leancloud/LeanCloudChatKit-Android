@@ -21,7 +21,7 @@ import cn.leanclud.imkit.handler.LCIMMessageHandler;
 
 /**
  * Created by wli on 16/2/2.
- * TODO: 稍后添加注释
+ * LeanCloudIMKit 的管理类
  */
 public final class LCIMKit {
 
@@ -29,8 +29,7 @@ public final class LCIMKit {
   private LCIMProfileProvider profileProvider;
   private String currentClientId;
 
-  private LCIMKit() {
-  }
+  private LCIMKit() {}
 
   public static synchronized LCIMKit getInstance() {
     if (null == lcimKit) {
@@ -39,6 +38,12 @@ public final class LCIMKit {
     return lcimKit;
   }
 
+  /**
+   * 初始化 LeanCloudIMKit，此函数要在 Application 的 onCreate 中调用
+   * @param context
+   * @param appId
+   * @param appKey
+   */
   public void init(Context context, String appId, String appKey) {
     if (TextUtils.isEmpty(appId)) {
       throw new IllegalArgumentException("appId can not be empty!");
@@ -63,18 +68,35 @@ public final class LCIMKit {
     AVIMClient.setOfflineMessagePush(true);
   }
 
+  /**
+   * 设置用户体系
+   * @param profileProvider
+   */
   public void setProfileProvider(LCIMProfileProvider profileProvider) {
     this.profileProvider = profileProvider;
   }
 
+  /**
+   * 获取当前的用户体系
+   * @return
+   */
   public LCIMProfileProvider getProfileProvider() {
     return profileProvider;
   }
 
+  /**
+   * 设置签名工厂
+   * @param signatureFactory
+   */
   public void setSignatureFactory(SignatureFactory signatureFactory) {
     AVIMClient.setSignatureFactory(signatureFactory);
   }
 
+  /**
+   * 开启实时聊天
+   * @param clientId
+   * @param callback
+   */
   public void open(final String clientId, final AVIMClientCallback callback) {
     AVIMClient.getInstance(clientId).open(new AVIMClientCallback() {
       @Override
@@ -95,6 +117,10 @@ public final class LCIMKit {
     });
   }
 
+  /**
+   * 关闭实时聊天
+   * @param callback
+   */
   public void close(final AVIMClientCallback callback) {
     AVIMClient.getInstance(currentClientId).close(new AVIMClientCallback() {
       @Override
@@ -105,10 +131,18 @@ public final class LCIMKit {
     });
   }
 
+  /**
+   * 获取当前的实时聊天的用户
+   * @return
+   */
   public String getCurrentUserId() {
     return currentClientId;
   }
 
+  /**
+   * 获取当前的 AVIMClient 实例
+   * @return
+   */
   public AVIMClient getClient() {
     if (!TextUtils.isEmpty(currentClientId)) {
       return AVIMClient.getInstance(currentClientId);
