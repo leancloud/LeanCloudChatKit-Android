@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.cache.UnreadCountCache;
+import cn.leanclud.imkit.cache.ConversationItemCache;
 import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.utils.LCIMConversationUtils;
 
@@ -78,7 +78,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
   protected void updateConversation(AVIMConversation conversation) {
     if (null != conversation) {
       conversationFragment.setConversation(conversation);
-      UnreadCountCache.getInstance().clearUnread(conversation.getConversationId());
+      ConversationItemCache.getInstance().clearUnread(conversation.getConversationId());
       LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
         @Override
         protected void internalDone0(String s, AVException e) {

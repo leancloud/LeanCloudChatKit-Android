@@ -31,7 +31,7 @@ import rx.schedulers.Schedulers;
  *
  * 因为最终读与写的操作都是在 readDbThread 线程中进行，所以不需要考虑线程安全问题
  */
-public class LocalStorage extends SQLiteOpenHelper {
+class LocalStorage extends SQLiteOpenHelper {
 
   /**
    * db 的名字，加前缀避免与用户自己的逻辑冲突
@@ -48,15 +48,9 @@ public class LocalStorage extends SQLiteOpenHelper {
    */
   private static final String TABLE_KEY_CONTENT = "content";
 
-  /**
-   * 具体内容的更新时间，方便排序使用，使用的是本地时间，如果本地时间出错则此排序会出现问题
-   */
-  private static final String TABLE_KEY_UPDATE_TIME = "update_time";
-
   private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS %s(" +
     TABLE_KEY_ID + " TEXT PRIMARY KEY NOT NULL, " +
-    TABLE_KEY_CONTENT + " TEXT, " +
-    TABLE_KEY_UPDATE_TIME + " VARCHAR(32)" +
+    TABLE_KEY_CONTENT + " TEXT " +
     ")";
   private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS %s";
 
@@ -215,7 +209,6 @@ public class LocalStorage extends SQLiteOpenHelper {
       ContentValues values = new ContentValues();
       values.put(TABLE_KEY_ID, idList.get(i));
       values.put(TABLE_KEY_CONTENT, valueList.get(0));
-      values.put(TABLE_KEY_UPDATE_TIME, System.currentTimeMillis());
       db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
     db.setTransactionSuccessful();

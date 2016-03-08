@@ -13,11 +13,8 @@ import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 
-import java.util.Arrays;
-import java.util.List;
-
+import cn.leanclud.imkit.cache.ConversationItemCache;
 import cn.leanclud.imkit.cache.ProfileCache;
-import cn.leanclud.imkit.cache.UnreadCountCache;
 import cn.leanclud.imkit.handler.LCIMClientEventHandler;
 import cn.leanclud.imkit.handler.LCIMConversationHandler;
 import cn.leanclud.imkit.handler.LCIMMessageHandler;
@@ -81,13 +78,19 @@ public final class LCIMKit {
   public void open(final String clientId, final AVIMClientCallback callback) {
     AVIMClient.getInstance(clientId).open(new AVIMClientCallback() {
       @Override
-      public void done(AVIMClient avimClient, AVIMException e) {
+      public void done(final AVIMClient avimClient, AVIMException e) {
         if (null == e) {
           currentClientId = clientId;
           ProfileCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
-          UnreadCountCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
+          ConversationItemCache.getInstance().initDB(AVOSCloud.applicationContext, clientId, new AVCallback() {
+            @Override
+            protected void internalDone0(Object o, AVException e) {
+              callback.internalDone(avimClient, e);
+            }
+          });
+        } else {
+          callback.internalDone(avimClient, e);
         }
-        callback.internalDone(avimClient, e);
       }
     });
   }

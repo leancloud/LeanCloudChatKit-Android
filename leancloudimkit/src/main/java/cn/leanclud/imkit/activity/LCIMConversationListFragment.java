@@ -18,7 +18,7 @@ import java.util.List;
 import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.adapter.LCIMCommonListAdapter;
-import cn.leanclud.imkit.cache.UnreadCountCache;
+import cn.leanclud.imkit.cache.ConversationItemCache;
 import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
 import cn.leanclud.imkit.event.LCIMUnreadCountChangeEvent;
@@ -78,7 +78,7 @@ public class LCIMConversationListFragment extends Fragment {
   }
 
   private void updateConversationList() {
-    List<String> convIdList = UnreadCountCache.getInstance().getConversationList();
+    List<String> convIdList = ConversationItemCache.getInstance().getSortedConversationList();
     List<AVIMConversation> conversationList = new ArrayList<>();
     for (String convId : convIdList) {
       conversationList.add(LCIMKit.getInstance().getClient().getConversation(convId));
@@ -86,58 +86,7 @@ public class LCIMConversationListFragment extends Fragment {
 
     itemAdapter.setDataList(conversationList);
     itemAdapter.notifyDataSetChanged();
-
-//    ChatManager.getInstance().getConversationManager().findAndCacheRooms(new Room.MultiRoomsCallback() {
-//      @Override
-//      public void done(List<Room> roomList, AVException exception) {
-//        if (null == exception) {
-//          List<Room> sortedRooms = sortRooms(roomList);
-//          updateLastMessage(sortedRooms);
-//          itemAdapter.setDataList(sortedRooms);
-//          itemAdapter.notifyDataSetChanged();
-//        }
-//      }
-//    });
   }
-
-//  private void updateLastMessage(final List<String> convList) {
-//    for (final String conv : convList) {
-//      AVIMConversation conversation = ;
-//      if (null != conversation) {
-//        conversation.getLastMessage(new AVIMSingleMessageQueryCallback() {
-//          @Override
-//          public void done(AVIMMessage avimMessage, AVIMException e) {
-//            if (null != e && null != avimMessage) {
-//              room.setLastMessage(avimMessage);
-//              int index = roomList.indexOf(room);
-//              itemAdapter.notifyItemChanged(index);
-//            }
-//          }
-//        });
-//      }
-//    }
-//  }
-//
-//  private List<Room> sortRooms(final List<Room> roomList) {
-//    List<Room> sortedList = new ArrayList<Room>();
-//    if (null != roomList) {
-//      sortedList.addAll(roomList);
-//      Collections.sort(sortedList, new Comparator<Room>() {
-//        @Override
-//        public int compare(Room lhs, Room rhs) {
-//          long value = lhs.getLastModifyTime() - rhs.getLastModifyTime();
-//          if (value > 0) {
-//            return -1;
-//          } else if (value < 0) {
-//            return 1;
-//          } else {
-//            return 0;
-//          }
-//        }
-//      });
-//    }
-//    return sortedList;
-//  }
 
   public void onEvent(LCIMConversationItemClickEvent clickEvent) {
     Intent intent = new Intent(getContext(), LCIMConversationActivity.class);
@@ -148,22 +97,4 @@ public class LCIMConversationListFragment extends Fragment {
   public void onEvent(LCIMUnreadCountChangeEvent updateEvent) {
     updateConversationList();
   }
-//
-//  @Override
-//  public void onConnectionChanged(boolean connect) {
-//    imClientStateView.setVisibility(connect ? View.GONE : View.VISIBLE);
-//  }
-
-//  public long getLastModifyTime() {
-//    if (lastMessage != null) {
-//      return lastMessage.getTimestamp();
-//    }
-//
-//    AVIMConversation conversation = getConversation();
-//    if (null != conversation && null != conversation.getUpdatedAt()) {
-//      return conversation.getUpdatedAt().getTime();
-//    }
-//
-//    return 0;
-//  }
 }

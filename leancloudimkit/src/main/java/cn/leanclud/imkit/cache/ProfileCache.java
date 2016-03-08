@@ -176,6 +176,11 @@ public class ProfileCache {
     }
   }
 
+  /**
+   * 从 db 中的 String 解析出 LCIMUserProfile
+   * @param str
+   * @return
+   */
   private LCIMUserProfile getUserProfileFromJson(String str) {
     JSONObject jsonObject = JSONObject.parseObject(str);
     String userName = jsonObject.getString(USER_NAME);
@@ -184,11 +189,16 @@ public class ProfileCache {
     return new LCIMUserProfile(userId, userName, userAvatar);
   }
 
+  /**
+   * LCIMUserProfile 转换成 json String
+   * @param userProfile
+   * @return
+   */
   private String getStringFormUserProfile(LCIMUserProfile userProfile) {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put(USER_NAME, userProfile.getUserName());
     jsonObject.put(USER_AVATAR, userProfile.getAvatarUrl());
     jsonObject.put(USER_ID, userProfile.getUserId());
-    return jsonObject.toString();
+    return jsonObject.toJSONString();
   }
 }

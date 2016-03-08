@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.cache.UnreadCountCache;
+import cn.leanclud.imkit.cache.ConversationItemCache;
 import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
 import cn.leanclud.imkit.utils.LCIMConversationUtils;
 import de.greenrobot.event.EventBus;
@@ -105,7 +105,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
   }
 
   private void updateUnreadCount(AVIMConversation conversation) {
-    int num = UnreadCountCache.getInstance().getUnreadCount(conversation.getConversationId());
+    int num = ConversationItemCache.getInstance().getUnreadCount(conversation.getConversationId());
     unreadView.setText(num + "");
     unreadView.setVisibility(num > 0 ? View.VISIBLE : View.GONE);
   }
