@@ -82,6 +82,9 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
         }
       }
 
+      contentView.getLayoutParams().height = (int)viewHeight;
+      contentView.getLayoutParams().width = (int)viewWidth;
+
       if (!TextUtils.isEmpty(localFilePath)) {
         Picasso.with(getContext().getApplicationContext()).load(new File(localFilePath)).
           resize((int) viewWidth, (int) viewHeight).centerCrop().into(contentView);
