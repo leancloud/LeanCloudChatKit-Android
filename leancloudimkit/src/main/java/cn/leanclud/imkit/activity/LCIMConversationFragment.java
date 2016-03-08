@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.List;
 
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.adapter.LCIMMultipleItemAdapter;
+import cn.leanclud.imkit.adapter.LCIMChatAdapter;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageResendEvent;
 import cn.leanclud.imkit.event.LCIMInputBottomBarEvent;
@@ -57,7 +57,7 @@ public class LCIMConversationFragment extends Fragment {
   /**
    * recyclerView 对应的 Adapter
    */
-  protected LCIMMultipleItemAdapter itemAdapter;
+  protected LCIMChatAdapter itemAdapter;
 
   protected RecyclerView recyclerView;
   protected LinearLayoutManager layoutManager;
@@ -87,7 +87,7 @@ public class LCIMConversationFragment extends Fragment {
     layoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(layoutManager);
 
-    itemAdapter = new LCIMMultipleItemAdapter();
+    itemAdapter = new LCIMChatAdapter();
     itemAdapter.resetRecycledViewPoolSize(recyclerView);
     recyclerView.setAdapter(itemAdapter);
 

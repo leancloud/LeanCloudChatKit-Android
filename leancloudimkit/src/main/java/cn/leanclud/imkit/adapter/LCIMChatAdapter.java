@@ -23,7 +23,7 @@ import cn.leanclud.imkit.viewholder.LCIMCommonViewHolder;
  * Created by wli on 15/8/13.
  * 聊天的 Adapter，此处还有可优化的地方，稍后考虑一下提取出公共的 adapter
  */
-public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private final int ITEM_LEFT = 100;
   private final int ITEM_LEFT_TEXT = 101;
@@ -45,7 +45,7 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
 
   private List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
 
-  public LCIMMultipleItemAdapter() {
+  public LCIMChatAdapter() {
     super();
   }
 
@@ -56,14 +56,26 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
   }
 
+  /**
+   * 添加多条消息记录
+   * @param messages
+   */
   public void addMessageList(List<AVIMMessage> messages) {
     messageList.addAll(0, messages);
   }
 
+  /**
+   * 添加消息记录
+   * @param message
+   */
   public void addMessage(AVIMMessage message) {
     messageList.addAll(Arrays.asList(message));
   }
 
+  /**
+   * 获取第一条消息记录，方便下拉时刷新数据
+   * @return
+   */
   public AVIMMessage getFirstMessage() {
     if (null != messageList && messageList.size() > 0) {
       return messageList.get(0);
@@ -133,6 +145,11 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
     return messageList.size();
   }
 
+  /**
+   * item 是否应该展示时间
+   * @param position
+   * @return
+   */
   private boolean shouldShowTime(int position) {
     if (position == 0) {
       return true;
@@ -142,6 +159,11 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
     return curTime - lastTime > TIME_INTERVAL;
   }
 
+  /**
+   * item 是否展示用户名
+   * 因为
+   * @param isShow
+   */
   public void showUserName(boolean isShow) {
     isShowUserName = isShow;
   }
@@ -163,6 +185,11 @@ public class LCIMMultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.V
     recyclerView.getRecycledViewPool().setMaxRecycledViews(ITEM_RIGHT_LOCATION, 10);
   }
 
+  /**
+   * 是不是当前用户发送的数据
+   * @param msg
+   * @return
+   */
   private boolean fromMe(AVIMTypedMessage msg) {
     String selfId = LCIMKit.getInstance().getCurrentUserId();
     return msg.getFrom() != null && msg.getFrom().equals(selfId);

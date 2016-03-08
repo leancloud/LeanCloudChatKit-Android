@@ -11,7 +11,8 @@ import cn.leanclud.imkit.viewholder.LCIMCommonViewHolder;
 
 /**
  * Created by wli on 15/11/23.
- * 现在还仅仅支持单类型 item，多类型 item 稍后在重构
+ * 单类型 item 的 RecyclerView 对应的 Adapter
+ *
  */
 public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonViewHolder> {
 
@@ -29,10 +30,18 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
     this.vhClass = vhClass;
   }
 
+  /**
+   * 获取该 Adapter 中存的数据
+   * @return
+   */
   public List<T> getDataList() {
     return dataList;
   }
 
+  /**
+   * 设置数据，会清空以前数据
+   * @param datas
+   */
   public void setDataList(List<T> datas) {
     dataList.clear();
     if (null != datas) {
@@ -41,7 +50,7 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
   }
 
   /**
-   * 默认在最后插入
+   * 添加数据，默认在最后插入，以前数据保留
    * @param datas
    */
   public void addDataList(List<T> datas) {
