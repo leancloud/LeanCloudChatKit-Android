@@ -13,7 +13,14 @@
     <application android:allowBackup="true"
                  android:label="@string/app_name">
 
-        <activity android:name=".activity.LCIMConversationActivity"/>
+        <activity android:name=".activity.LCIMConversationActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="cn.leanclud.imkit.conversation_item_click_action"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <activity android:name=".activity.LCIMImageActivity"/>
 
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">

@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -48,15 +49,30 @@ import de.greenrobot.event.EventBus;
  */
 public class LCIMConversationFragment extends Fragment {
 
-  static final int REQUEST_IMAGE_CAPTURE = 1;
-  static final int REQUEST_IMAGE_PICK = 2;
+  private static final int REQUEST_IMAGE_CAPTURE = 1;
+  private static final int REQUEST_IMAGE_PICK = 2;
 
   protected AVIMConversation imConversation;
+
+  /**
+   * recyclerView 对应的 Adapter
+   */
   protected LCIMMultipleItemAdapter itemAdapter;
+
   protected RecyclerView recyclerView;
   protected LinearLayoutManager layoutManager;
+
+  /**
+   * 负责下拉刷新的 SwipeRefreshLayout
+   */
   protected SwipeRefreshLayout refreshLayout;
+
+  /**
+   * 底部的输入栏
+   */
   protected LCIMInputBottomBar inputBottomBar;
+
+  // 记录拍照等的文件路径
   protected String localCameraPath;
 
   @Nullable
@@ -212,31 +228,10 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
-//  public void onEvent(MessageEvent messageEvent) {
-//    final AVIMTypedMessage message = messageEvent.getMessage();
-//    if (message.getConversationId().equals(conversation
-//      .getConversationId())) {
-//      if (messageEvent.getType() == MessageEvent.Type.Come) {
-//        new CacheMessagesTask(this, Arrays.asList(message)) {
-//          @Override
-//          void onPostRun(List<AVIMTypedMessage> messages, Exception e) {
-//            if (filterException(e)) {
-//              addMessageAndScroll(message);
-//            }
-//          }
-//        }.execute();
-//      } else if (messageEvent.getType() == MessageEvent.Type.Receipt) {
-//        //Utils.i("receipt");
-//        AVIMTypedMessage originMessage = findMessage(message.getMessageId());
-//        if (originMessage != null) {
-//          originMessage.setMessageStatus(message.getMessageStatus());
-//          originMessage.setReceiptTimestamp(message.getReceiptTimestamp());
-//          adapter.notifyDataSetChanged();
-//        }
-//      }
-//    }
-//  }
-
+  /**
+   * 处理输入栏发送过来的事件
+   * @param event
+   */
   public void onEvent(LCIMInputBottomBarEvent event) {
     if (null != imConversation && null != event && imConversation.getConversationId().equals(event.tag)) {
       switch (event.eventAction) {
@@ -250,6 +245,10 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  /**
+   * 处理录音事件
+   * @param recordEvent
+   */
   public void onEvent(LCIMInputBottomBarRecordEvent recordEvent) {
     if (null != imConversation && null != recordEvent &&
       !TextUtils.isEmpty(recordEvent.audioPath) &&
@@ -258,6 +257,9 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  /**
+   * 发送 Intent 跳转到系统拍照页面
+   */
   private void dispatchTakePictureIntent() {
     localCameraPath = LCIMPathUtils.getPicturePathByCurrentTime(getContext());
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -269,6 +271,9 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  /**
+   * 发送 Intent 跳转到系统图库页面
+   */
   private void dispatchPickPictureIntent() {
     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, null);
     photoPickerIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
@@ -290,10 +295,19 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  /**
+   * 滚动 recyclerView 到底部
+   */
   private void scrollToBottom() {
     layoutManager.scrollToPositionWithOffset(itemAdapter.getItemCount() - 1, 0);
   }
 
+  /**
+   * 根据 Uri 获取文件所在的位置
+   * @param context
+   * @param contentUri
+   * @return
+   */
   private String getRealPathFromURI(Context context, Uri contentUri) {
     Cursor cursor = null;
     try {
@@ -309,6 +323,10 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  /**
+   * 发送文本消息
+   * @param content
+   */
   private void sendText(String content) {
     AVIMTextMessage message = new AVIMTextMessage();
     message.setText(content);
@@ -316,6 +334,7 @@ public class LCIMConversationFragment extends Fragment {
   }
 
   /**
+   * 发送图片消息
    * TODO 上传的图片最好要压缩一下
    * @param imagePath
    */
@@ -327,6 +346,10 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  /**
+   * 发送语音消息
+   * @param audioPath
+   */
   private void sendAudio(String audioPath) {
     try {
       AVIMAudioMessage audioMessage = new AVIMAudioMessage(audioPath);
@@ -336,6 +359,10 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  /**
+   * 发送消息
+   * @param message
+   */
   public void sendMessage(AVIMTypedMessage message) {
     itemAdapter.addMessage(message);
     itemAdapter.notifyDataSetChanged();
@@ -349,6 +376,10 @@ public class LCIMConversationFragment extends Fragment {
   }
 
   private boolean filterException(Exception e) {
-    return true;
+    if (null != e) {
+      e.printStackTrace();
+      Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    return (null == e);
   }
 }

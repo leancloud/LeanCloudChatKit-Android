@@ -25,6 +25,12 @@ public class LCIMConstants {
    */
   public static final String AVATAR_CLICK_ACTION = getPrefixConstant("avatar_click_action");
 
+  /**
+   * LCIMConversationListFragment item 点击事件
+   * 如果开发者不想跳转到 LCIMConversationActivity，可以在 Mainfest 里接管该事件
+   */
+  public static final String CONVERSATION_ITEM_CLICK_ACTION = getPrefixConstant("conversation_item_click_action");
+
 
   // LCIMImageActivity
   public static final String IMAGE_LOCAL_PATH = getPrefixConstant("image_local_path");

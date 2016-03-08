@@ -14,8 +14,8 @@ import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.LCIMUserProfile;
 import cn.leanclud.imkit.R;
+import cn.leanclud.imkit.cache.ConversationItemCache;
 import cn.leanclud.imkit.cache.ProfileCache;
-import cn.leanclud.imkit.cache.UnreadCountCache;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
 import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.utils.LCIMNotificationUtils;
@@ -53,10 +53,10 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
           if (LCIMNotificationUtils.isShowNotification(conversation.getConversationId())) {
             sendNotification(message, conversation);
           }
-          UnreadCountCache.getInstance().increaseUnreadCount(message.getConversationId());
+          ConversationItemCache.getInstance().increaseUnreadCount(message.getConversationId());
           sendEvent(message, conversation);
         } else {
-          UnreadCountCache.getInstance().insertConversation(message.getConversationId());
+          ConversationItemCache.getInstance().insertConversation(message.getConversationId());
         }
       }
     }

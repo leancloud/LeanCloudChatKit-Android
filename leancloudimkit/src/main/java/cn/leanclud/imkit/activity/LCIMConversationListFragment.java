@@ -88,8 +88,14 @@ public class LCIMConversationListFragment extends Fragment {
     itemAdapter.notifyDataSetChanged();
   }
 
+  /**
+   * 处理 item 点击事件，跳转到具体聊天页面
+   * @param clickEvent
+   */
   public void onEvent(LCIMConversationItemClickEvent clickEvent) {
-    Intent intent = new Intent(getContext(), LCIMConversationActivity.class);
+    Intent intent = new Intent();
+    intent.setAction(LCIMConstants.CONVERSATION_ITEM_CLICK_ACTION);
+    intent.addCategory(Intent.CATEGORY_DEFAULT);
     intent.putExtra(LCIMConstants.CONVERSATION_ID, clickEvent.conversationId);
     getContext().startActivity(intent);
   }

@@ -23,6 +23,7 @@ import cn.leanclud.imkit.utils.LCIMConversationUtils;
 /**
  * Created by wli on 16/2/29.
  * 会话详情页
+ * 包含会话的创建以及拉取，具体的 UI 细节在 LCIMConversationFragment 中
  */
 public class LCIMConversationActivity extends AppCompatActivity {
 
@@ -63,6 +64,10 @@ public class LCIMConversationActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * 设置 actionBar title 以及 up 按钮事件
+   * @param title
+   */
   protected void initActionBar(String title) {
     ActionBar actionBar = getActionBar();
     if (null != actionBar) {
@@ -75,6 +80,10 @@ public class LCIMConversationActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * 主动刷新 UI
+   * @param conversation
+   */
   protected void updateConversation(AVIMConversation conversation) {
     if (null != conversation) {
       conversationFragment.setConversation(conversation);
@@ -106,6 +115,10 @@ public class LCIMConversationActivity extends AppCompatActivity {
       });
   }
 
+  /**
+   * 弹出 toast
+   * @param str
+   */
   private void showToast(String str) {
     Toast.makeText(LCIMConversationActivity.this, str, Toast.LENGTH_SHORT).show();
   }
