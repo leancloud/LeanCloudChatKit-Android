@@ -24,6 +24,8 @@ import java.util.TreeSet;
  */
 public class ConversationItemCache {
 
+  private final String CONVERSATION_ITEM_TABLE_NAME = "ConversationItem";
+
   private Map<String, ConversationItem> conversationItemMap;
   private LocalStorage conversationItemDBHelper;
 
@@ -46,7 +48,7 @@ public class ConversationItemCache {
    * 因为需要同步数据，所以此处需要有回调
    */
   public synchronized void initDB(Context context, String clientId, AVCallback callback) {
-    conversationItemDBHelper = new LocalStorage(context, clientId, "unreadCount");
+    conversationItemDBHelper = new LocalStorage(context, clientId, CONVERSATION_ITEM_TABLE_NAME);
     syncData(callback);
   }
 

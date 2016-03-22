@@ -14,17 +14,19 @@
     <!-- activity -->
     <style name="LCIMActivity" parent="AppTheme"/>
 
-    <style name="LCIMActivity.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="LCIMActivity.NoActionBar">
         <item name="colorPrimary">@color/lcim_common_blue</item>
         <item name="colorPrimaryDark">@color/lcim_common_blue</item>
         <item name="colorAccent">@color/lcim_common_blue</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:editTextStyle">@style/LCIMEditText</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="LCIMActivity.FullScreen" >
-        <item name="android:windowFullscreen">true</item>
-    </style>
+    <!--<style name="LCIMActivity.FullScreen" >-->
+        <!--<item name="android:windowFullscreen">true</item>-->
+    <!--</style>-->
 
 
     <!-- divider -->
@@ -46,16 +48,6 @@
     <!-- editText -->
     <style name="LCIMEditText" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">@android:color/black</item>
-    </style>
-
-    <style name="LCIMEditText.UserName">
-        <item name="android:singleLine">true</item>
-        <item name="android:maxLength">30</item>
-    </style>
-
-    <style name="LCIMEditText.Password">
-        <item name="android:singleLine">true</item>
-        <item name="android:inputType">textPassword</item>
     </style>
 
     <!-- text appearance -->

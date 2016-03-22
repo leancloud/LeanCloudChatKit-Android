@@ -169,13 +169,13 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         case TextMessageType:
           return ((AVIMTextMessage) message).getText();
         case ImageMessageType:
-          return "[图片]";
+          return context.getString(R.string.lcim_message_shorthand_image);
         case LocationMessageType:
-          return "[位置]";
+          return context.getString(R.string.lcim_message_shorthand_location);
         case AudioMessageType:
-          return "[语音]";
+          return context.getString(R.string.lcim_message_shorthand_audio);
         default:
-          return "[未知]";
+          return context.getString(R.string.lcim_message_shorthand_unknown);
       }
     } else {
       return message.getContent();

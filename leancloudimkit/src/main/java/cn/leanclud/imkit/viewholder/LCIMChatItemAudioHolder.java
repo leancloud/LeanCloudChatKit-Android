@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
-import com.squareup.picasso.Picasso;
 
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.cache.LocalCacheUtils;

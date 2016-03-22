@@ -64,7 +64,7 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
       AVIMImageMessage imageMsg = (AVIMImageMessage) message;
       String localFilePath = imageMsg.getLocalFilePath();
 
-      // 图片的真是高度与宽度
+      // 图片的真实高度与宽度
       double actualHight = imageMsg.getHeight();
       double actualWidth = imageMsg.getWidth();
 

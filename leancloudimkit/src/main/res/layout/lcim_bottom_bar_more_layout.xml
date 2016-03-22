@@ -9,7 +9,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1px"
-        android:background="@color/lcim_bottom_bar_motion_divider"
+        android:background="@color/lcim_divider_line_color"
         android:focusable="false"/>
 
     <include layout="@layout/lcim_bottom_bar_action_layout"/>
