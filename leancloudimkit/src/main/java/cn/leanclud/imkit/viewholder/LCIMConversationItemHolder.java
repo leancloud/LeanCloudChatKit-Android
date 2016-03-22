@@ -91,7 +91,11 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
     LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
       @Override
       protected void internalDone0(String s, AVException e) {
-        nameView.setText(s);
+        if (null != e) {
+          e.printStackTrace();
+        } else {
+          nameView.setText(s);
+        }
       }
     });
 

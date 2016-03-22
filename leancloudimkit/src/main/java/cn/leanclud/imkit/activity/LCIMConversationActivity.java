@@ -91,7 +91,11 @@ public class LCIMConversationActivity extends AppCompatActivity {
       LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
         @Override
         protected void internalDone0(String s, AVException e) {
-          initActionBar(s);
+          if (null != e) {
+            e.printStackTrace();
+          } else {
+            initActionBar(s);
+          }
         }
       });
     }

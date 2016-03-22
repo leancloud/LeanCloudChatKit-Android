@@ -43,6 +43,7 @@ public class ConversationItemCache {
   /**
    * 因为只有在第一次的时候需要设置 Context 以及 clientId，所以单独拎出一个函数主动调用初始化
    * 避免 getInstance 传入过多参数
+   * 因为需要同步数据，所以此处需要有回调
    */
   public synchronized void initDB(Context context, String clientId, AVCallback callback) {
     conversationItemDBHelper = new LocalStorage(context, clientId, "unreadCount");

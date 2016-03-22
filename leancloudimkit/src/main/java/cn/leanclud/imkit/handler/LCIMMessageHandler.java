@@ -86,12 +86,16 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
       ProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
         @Override
         protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
-          String title = userProfile.getUserName();
-          Intent intent = new Intent();
-          intent.setAction("com.avoscloud.chat.intent.clinotification");
-          intent.putExtra(LCIMConstants.CONVERSATION_ID, conversation.getConversationId());
-          intent.putExtra(LCIMConstants.PEER_ID, message.getFrom());
-          LCIMNotificationUtils.showNotification(context, title, notificationContent, null, intent);
+          if (e != null) {
+            e.printStackTrace();
+          } else if (null != userProfile) {
+            String title = userProfile.getUserName();
+            Intent intent = new Intent();
+            intent.setAction("com.avoscloud.chat.intent.clinotification");
+            intent.putExtra(LCIMConstants.CONVERSATION_ID, conversation.getConversationId());
+            intent.putExtra(LCIMConstants.PEER_ID, message.getFrom());
+            LCIMNotificationUtils.showNotification(context, title, notificationContent, null, intent);
+          }
         }
       });
     }

@@ -88,7 +88,7 @@ public class ProfileCache {
                   callback.internalDone(userProfile, null);
                   cacheUser(userProfile);
                 } else {
-                  callback.internalDone(userProfile, new AVException(new Throwable("can not find this objectId")));
+                  callback.internalDone(userProfile, new AVException(new Throwable("can not find id " + id + "!")));
                 }
               }
             });
@@ -103,14 +103,14 @@ public class ProfileCache {
    * @param id
    * @param callback
    */
-  private void getUserProfile(String id, final AVCallback<LCIMUserProfile> callback) {
+  private void getUserProfile(final String id, final AVCallback<LCIMUserProfile> callback) {
     LCIMProfileProvider profileProvider = LCIMKit.getInstance().getProfileProvider();
     if (null != profileProvider) {
       profileProvider.getProfiles(Arrays.asList(id), new LCIMProfilesCallBack() {
         @Override
         public void done(List<LCIMUserProfile> userList, Exception e) {
           if (null == userList || userList.isEmpty()) {
-            callback.internalDone(null, new AVException(new Throwable("can not find current id!")));
+            callback.internalDone(null, new AVException(new Throwable("can not find id " + id + "!")));
           } else {
             callback.internalDone(userList.get(0), null);
           }
