@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -48,21 +49,20 @@ public class LocalCacheUtils {
     okHttpClient = new OkHttpClient();
   }
 
-  private static void addDownloadCallback(String path, DownLoadCallback callback) {
+  private static synchronized void addDownloadCallback(String path, DownLoadCallback callback) {
     if (null != callback) {
-      ArrayList<DownLoadCallback> callbacks;
       if (downloadCallBackMap.containsKey(path)) {
-        callbacks = downloadCallBackMap.get(path);
+        downloadCallBackMap.get(path).add(callback);
       } else {
-        callbacks = new ArrayList<DownLoadCallback>();
+        downloadCallBackMap.put(path, new ArrayList<DownLoadCallback>(Arrays.asList(callback)));
       }
-      callbacks.add(callback);
     }
   }
 
-  private static void executeDownloadCallBack(String path, Exception e) {
+  private static synchronized void executeDownloadCallBack(String path, Exception e) {
     if (downloadCallBackMap.containsKey(path)) {
       ArrayList<DownLoadCallback> callbacks = downloadCallBackMap.get(path);
+      downloadCallBackMap.remove(path);
       for (DownLoadCallback callback : callbacks) {
         callback.done(e);
       }

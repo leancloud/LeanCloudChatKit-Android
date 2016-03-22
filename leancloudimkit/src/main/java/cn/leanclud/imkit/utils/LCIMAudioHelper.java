@@ -19,7 +19,7 @@ public class LCIMAudioHelper {
     mediaPlayer = new MediaPlayer();
   }
 
-  public static LCIMAudioHelper getInstance() {
+  public static synchronized LCIMAudioHelper getInstance() {
     if (audioHelper == null) {
       audioHelper = new LCIMAudioHelper();
     }

@@ -241,6 +241,8 @@ public class LCIMConversationFragment extends Fragment {
         case LCIMInputBottomBarEvent.INPUTBOTTOMBAR_CAMERA_ACTION:
           dispatchTakePictureIntent();
           break;
+        default:
+          break;
       }
     }
   }
@@ -290,6 +292,8 @@ public class LCIMConversationFragment extends Fragment {
           break;
         case REQUEST_IMAGE_PICK:
           sendImage(getRealPathFromURI(getActivity(), data.getData()));
+          break;
+        default:
           break;
       }
     }

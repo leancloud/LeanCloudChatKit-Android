@@ -88,7 +88,7 @@ public class ProfileCache {
                   callback.internalDone(userProfile, null);
                   cacheUser(userProfile);
                 } else {
-                  callback.internalDone(userProfile, new AVException(new Throwable("can not find id " + id + "!")));
+                  callback.internalDone(null, new AVException(new Throwable("can not find id " + id + "!")));
                 }
               }
             });

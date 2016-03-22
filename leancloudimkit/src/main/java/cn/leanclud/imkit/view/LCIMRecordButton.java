@@ -109,6 +109,8 @@ public class LCIMRecordButton extends Button {
       case MotionEvent.ACTION_CANCEL:
         cancelRecord();
         break;
+      default:
+        break;
     }
     return true;
   }
