@@ -1,11 +1,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="cn.leanclud.imkit">
 
-    <application android:allowBackup="true"
-                 android:label="@string/app_name">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
-        <activity android:name="cn.leanclud.imkit.LCIMConversationActivity"/>
-        <activity android:name="cn.leanclud.imkit.LCIMImageActivity"/>
+    <application android:allowBackup="true"
+                 android:label="@string/lcim_imkit_name">
+
+        <activity android:name=".activity.LCIMConversationActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="cn.leanclud.imkit.conversation_item_click_action"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.LCIMImageActivity"/>
 
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
             <intent-filter>
