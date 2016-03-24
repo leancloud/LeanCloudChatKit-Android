@@ -5,9 +5,8 @@ import android.content.Context;
 import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +16,6 @@ import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.LCIMProfileProvider;
 import cn.leanclud.imkit.LCIMProfilesCallBack;
 import cn.leanclud.imkit.LCIMUserProfile;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 
 /**

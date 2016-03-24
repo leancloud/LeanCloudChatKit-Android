@@ -35,9 +35,6 @@ dependencies {
 
     compile 'com.android.support:recyclerview-v7:23.1.0'
 
-    compile 'com.squareup.sqlbrite:sqlbrite:0.6.2'
-    compile 'io.reactivex:rxjava:1.1.0'
-
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile 'de.greenrobot:eventbus:2.4.0'
