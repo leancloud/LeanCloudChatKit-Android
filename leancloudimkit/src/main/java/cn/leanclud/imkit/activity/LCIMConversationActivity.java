@@ -1,9 +1,10 @@
 package cn.leanclud.imkit.activity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVCallback;
@@ -69,7 +70,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
    * @param title
    */
   protected void initActionBar(String title) {
-    ActionBar actionBar = getActionBar();
+    ActionBar actionBar = getSupportActionBar();
     if (null != actionBar) {
       if (null != title) {
         actionBar.setTitle(title);
@@ -78,6 +79,15 @@ public class LCIMConversationActivity extends AppCompatActivity {
       actionBar.setDisplayHomeAsUpEnabled(true);
       finishActivity(RESULT_OK);
     }
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (android.R.id.home == item.getItemId()) {
+      onBackPressed();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   /**
