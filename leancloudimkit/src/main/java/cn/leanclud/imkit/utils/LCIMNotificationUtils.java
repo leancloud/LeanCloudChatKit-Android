@@ -30,6 +30,7 @@ public class LCIMNotificationUtils {
   /**
    * 添加 tag 到 tag list，在 MessageHandler 弹出 notification 前会判断是否与此 tag 相等
    * 若相等，则不弹，反之，则弹出
+   *
    * @param tag
    */
   public static void addTag(String tag) {
@@ -40,6 +41,7 @@ public class LCIMNotificationUtils {
 
   /**
    * 在 tag list 中 remove 该 tag
+   *
    * @param tag
    */
   public static void removeTag(String tag) {
@@ -49,6 +51,7 @@ public class LCIMNotificationUtils {
   /**
    * 判断是否应该弹出 notification
    * 判断标准是该 tag 是否包含在 tag list 中
+   *
    * @param tag
    * @return
    */

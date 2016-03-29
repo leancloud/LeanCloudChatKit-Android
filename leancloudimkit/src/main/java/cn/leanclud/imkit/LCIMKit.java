@@ -29,7 +29,8 @@ public final class LCIMKit {
   private LCIMProfileProvider profileProvider;
   private String currentClientId;
 
-  private LCIMKit() {}
+  private LCIMKit() {
+  }
 
   public static synchronized LCIMKit getInstance() {
     if (null == lcimKit) {
@@ -40,6 +41,7 @@ public final class LCIMKit {
 
   /**
    * 初始化 LeanCloudIMKit，此函数要在 Application 的 onCreate 中调用
+   *
    * @param context
    * @param appId
    * @param appKey
@@ -70,6 +72,7 @@ public final class LCIMKit {
 
   /**
    * 设置用户体系
+   *
    * @param profileProvider
    */
   public void setProfileProvider(LCIMProfileProvider profileProvider) {
@@ -78,6 +81,7 @@ public final class LCIMKit {
 
   /**
    * 获取当前的用户体系
+   *
    * @return
    */
   public LCIMProfileProvider getProfileProvider() {
@@ -86,6 +90,7 @@ public final class LCIMKit {
 
   /**
    * 设置签名工厂
+   *
    * @param signatureFactory
    */
   public void setSignatureFactory(SignatureFactory signatureFactory) {
@@ -94,6 +99,7 @@ public final class LCIMKit {
 
   /**
    * 开启实时聊天
+   *
    * @param clientId
    * @param callback
    */
@@ -119,6 +125,7 @@ public final class LCIMKit {
 
   /**
    * 关闭实时聊天
+   *
    * @param callback
    */
   public void close(final AVIMClientCallback callback) {
@@ -133,6 +140,7 @@ public final class LCIMKit {
 
   /**
    * 获取当前的实时聊天的用户
+   *
    * @return
    */
   public String getCurrentUserId() {
@@ -141,6 +149,7 @@ public final class LCIMKit {
 
   /**
    * 获取当前的 AVIMClient 实例
+   *
    * @return
    */
   public AVIMClient getClient() {

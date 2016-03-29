@@ -20,6 +20,7 @@ public class LCIMPathUtils {
    * 有 sdcard 的时候，小米是 /storage/sdcard0/Android/data/com.avoscloud.chat/cache/
    * 无 sdcard 的时候，小米是 /data/data/com.avoscloud.chat/cache
    * 依赖于包名。所以不同应用使用该库也没问题，要有点理想。
+   *
    * @return
    */
   private static File getAvailableCacheDir(Context context) {

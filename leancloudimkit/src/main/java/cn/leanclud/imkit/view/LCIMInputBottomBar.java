@@ -98,7 +98,7 @@ public class LCIMInputBottomBar extends LinearLayout {
   private void initView(Context context) {
     View.inflate(context, R.layout.lcim_chat_input_bottom_bar_layout, this);
     actionBtn = findViewById(R.id.input_bar_btn_action);
-    contentEditText = (EditText)findViewById(R.id.input_bar_et_content);
+    contentEditText = (EditText) findViewById(R.id.input_bar_et_content);
     sendTextBtn = findViewById(R.id.input_bar_btn_send_text);
     voiceBtn = findViewById(R.id.input_bar_btn_voice);
     keyboardBtn = findViewById(R.id.input_bar_btn_keyboard);

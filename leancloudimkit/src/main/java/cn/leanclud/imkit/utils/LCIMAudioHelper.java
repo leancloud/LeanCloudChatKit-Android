@@ -28,6 +28,7 @@ public class LCIMAudioHelper {
 
   /**
    * 获取当前语音的文件地址
+   *
    * @return
    */
   public String getAudioPath() {
@@ -56,6 +57,7 @@ public class LCIMAudioHelper {
 
   /**
    * 判断当前是否正在播放
+   *
    * @return
    */
   public boolean isPlaying() {
@@ -73,6 +75,7 @@ public class LCIMAudioHelper {
 
   /**
    * 播放语音文件
+   *
    * @param path
    * @param finishCallback
    */

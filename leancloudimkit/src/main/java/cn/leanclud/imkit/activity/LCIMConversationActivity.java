@@ -67,6 +67,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
 
   /**
    * 设置 actionBar title 以及 up 按钮事件
+   *
    * @param title
    */
   protected void initActionBar(String title) {
@@ -92,6 +93,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
 
   /**
    * 主动刷新 UI
+   *
    * @param conversation
    */
   protected void updateConversation(AVIMConversation conversation) {
@@ -131,6 +133,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
 
   /**
    * 弹出 toast
+   *
    * @param str
    */
   private void showToast(String str) {

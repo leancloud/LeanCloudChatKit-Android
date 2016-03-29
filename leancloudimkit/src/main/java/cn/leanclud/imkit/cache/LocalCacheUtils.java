@@ -71,7 +71,8 @@ public class LocalCacheUtils {
 
   /**
    * 异步下载文件到指定位置
-   * @param url 需要下载远程地址
+   *
+   * @param url       需要下载远程地址
    * @param localPath 下载到本地的文件存放的位置
    */
   public static void downloadFileAsync(final String url, final String localPath) {
@@ -80,9 +81,10 @@ public class LocalCacheUtils {
 
   /**
    * 异步下载文件到指定位置
-   * @param url 需要下载远程地址
+   *
+   * @param url       需要下载远程地址
    * @param localPath 下载到本地的文件存放的位置
-   * @param overlay 是否覆盖原文件
+   * @param overlay   是否覆盖原文件
    */
   public static void downloadFileAsync(final String url, final String localPath, boolean overlay) {
     downloadFile(url, localPath, overlay, null);
@@ -90,13 +92,14 @@ public class LocalCacheUtils {
 
   /**
    * 异步下载文件到指定位置
-   * @param url 需要下载远程地址
+   *
+   * @param url       需要下载远程地址
    * @param localPath 下载到本地的文件存放的位置
-   * @param overlay 是否覆盖原文件
-   * @param callback 下载完后的回调
+   * @param overlay   是否覆盖原文件
+   * @param callback  下载完后的回调
    */
   public static void downloadFile(final String url, final String localPath,
-    boolean overlay, final DownLoadCallback callback) {
+                                  boolean overlay, final DownLoadCallback callback) {
     if (TextUtils.isEmpty(url) || TextUtils.isEmpty(localPath)) {
       throw new IllegalArgumentException("url or localPath can not be null");
     } else if (!overlay && isFileExist(localPath)) {
@@ -133,11 +136,11 @@ public class LocalCacheUtils {
       if (response.code() == 200) {
         outputStream = new FileOutputStream(file);
         inputStream = response.body().byteStream();
-          byte[] buffer = new byte[4096];
-          int len;
-          while ((len = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, len);
-          }
+        byte[] buffer = new byte[4096];
+        int len;
+        while ((len = inputStream.read(buffer)) != -1) {
+          outputStream.write(buffer, 0, len);
+        }
       } else {
         result = new Exception("response code is " + response.code());
       }

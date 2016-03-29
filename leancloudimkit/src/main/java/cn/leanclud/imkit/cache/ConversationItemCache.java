@@ -116,6 +116,7 @@ public class ConversationItemCache {
 
   /**
    * 获得排序后的 Conversation Id list，根据本地更新时间降序排列
+   *
    * @return
    */
   public synchronized List<String> getSortedConversationList() {
@@ -151,6 +152,7 @@ public class ConversationItemCache {
 
   /**
    * 从 map 中获取 ConversationItem，如缓存中没有，则 new 一个新实力返回
+   *
    * @param convId
    * @return
    */

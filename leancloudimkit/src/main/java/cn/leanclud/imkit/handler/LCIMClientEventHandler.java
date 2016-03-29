@@ -22,7 +22,8 @@ public class LCIMClientEventHandler extends AVIMClientEventHandler {
     return eventHandler;
   }
 
-  private LCIMClientEventHandler() {}
+  private LCIMClientEventHandler() {
+  }
 
 
   private volatile boolean connect = false;

@@ -6,6 +6,7 @@ package cn.leanclud.imkit.event;
  */
 public class LCIMConnectionChangeEvent {
   public boolean isConnect;
+
   public LCIMConnectionChangeEvent(boolean isConnect) {
     this.isConnect = isConnect;
   }

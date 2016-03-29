@@ -39,8 +39,8 @@ public class LCIMConversationListFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.lcim_conversation_list_fragment, container, false);
 
-    refreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.fragment_conversation_srl_pullrefresh);
-    recyclerView = (RecyclerView)view.findViewById(R.id.fragment_conversation_srl_view);
+    refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_conversation_srl_pullrefresh);
+    recyclerView = (RecyclerView) view.findViewById(R.id.fragment_conversation_srl_view);
 
     refreshLayout.setEnabled(false);
     layoutManager = new LinearLayoutManager(getActivity());

@@ -183,7 +183,7 @@ public class LCIMRecordButton extends Button {
     setBackgroundResource(BACK_IDLE);
     recordIndicator.dismiss();
     Toast.makeText(getContext(), getContext().getString(R.string.lcim_chat_cancelRecord),
-        Toast.LENGTH_SHORT).show();
+      Toast.LENGTH_SHORT).show();
     removeFile();
   }
 

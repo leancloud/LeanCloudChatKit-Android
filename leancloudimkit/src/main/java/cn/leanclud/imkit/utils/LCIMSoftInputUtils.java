@@ -13,6 +13,7 @@ public class LCIMSoftInputUtils {
   /**
    * 如果当前键盘已经显示，则隐藏
    * 如果当前键盘未显示，则显示
+   *
    * @param context
    */
   public static void toggleSoftInput(Context context) {
@@ -22,6 +23,7 @@ public class LCIMSoftInputUtils {
 
   /**
    * 弹出键盘
+   *
    * @param context
    * @param view
    */
@@ -34,6 +36,7 @@ public class LCIMSoftInputUtils {
 
   /**
    * 隐藏键盘
+   *
    * @param context
    * @param view
    */

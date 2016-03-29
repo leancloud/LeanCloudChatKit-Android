@@ -6,6 +6,7 @@ package cn.leanclud.imkit.utils;
  */
 public class LCIMConstants {
   private static final String LEANMESSAGE_CONSTANTS_PREFIX = "cn.leanclud.imkit.";
+
   private static String getPrefixConstant(String str) {
     return LEANMESSAGE_CONSTANTS_PREFIX + str;
   }

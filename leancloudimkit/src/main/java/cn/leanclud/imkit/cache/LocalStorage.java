@@ -20,7 +20,7 @@ import java.util.List;
  * Created by wli on 16/2/25.
  * key value 形式的存储，只能存储 String，其他数据也要转化成 String 存储
  * 因为忽略了具体数据格式，所以更新具体属性的时候必须更新整条记录
- *
+ * <p/>
  * 因为最终读与写的操作都是在 readDbThread 线程中进行，所以不需要考虑线程安全问题
  */
 class LocalStorage extends SQLiteOpenHelper {
@@ -96,6 +96,7 @@ class LocalStorage extends SQLiteOpenHelper {
 
   /**
    * 获取所有的 Key 值
+   *
    * @param callback 获取后会执行此回调
    */
   public void getIds(final AVCallback<List<String>> callback) {
@@ -110,7 +111,8 @@ class LocalStorage extends SQLiteOpenHelper {
   /**
    * 根据 key 值获对应的 values
    * 注意：并不保证回调 data 与 id 顺序一致
-   * @param ids 需要的获取数据的 key
+   *
+   * @param ids      需要的获取数据的 key
    * @param callback 获取后会执行此回调
    */
   public void getDatas(final List<String> ids, final AVCallback<List<String>> callback) {
@@ -124,6 +126,7 @@ class LocalStorage extends SQLiteOpenHelper {
 
   /**
    * 插入数据,注意 idList 与 valueList 是一一对应的
+   *
    * @param idList
    * @param valueList
    */
@@ -138,6 +141,7 @@ class LocalStorage extends SQLiteOpenHelper {
 
   /**
    * 插入数据,注意 id 与 value 是对应的
+   *
    * @param id
    * @param value
    */
@@ -147,6 +151,7 @@ class LocalStorage extends SQLiteOpenHelper {
 
   /**
    * 删除数据
+   *
    * @param ids
    */
   public void deleteDatas(final List<String> ids) {

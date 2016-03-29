@@ -14,7 +14,8 @@ class ConversationItem implements Comparable {
   public int unreadCount = 0;
   public long updateTime = 0;
 
-  public ConversationItem() {}
+  public ConversationItem() {
+  }
 
   public ConversationItem(String conversationId) {
     this.conversationId = conversationId;

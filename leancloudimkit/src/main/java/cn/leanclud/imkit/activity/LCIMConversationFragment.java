@@ -27,6 +27,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -214,7 +215,7 @@ public class LCIMConversationFragment extends Fragment {
    */
   public void onEvent(LCIMMessageResendEvent event) {
     if (null != imConversation && null != event &&
-      null != event.message &&  imConversation.getConversationId().equals(event.message.getConversationId())) {
+      null != event.message && imConversation.getConversationId().equals(event.message.getConversationId())) {
       if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == event.message.getMessageStatus()
         && imConversation.getConversationId().equals(event.message.getConversationId())) {
         imConversation.sendMessage(event.message, new AVIMConversationCallback() {
@@ -230,6 +231,7 @@ public class LCIMConversationFragment extends Fragment {
 
   /**
    * 处理输入栏发送过来的事件
+   *
    * @param event
    */
   public void onEvent(LCIMInputBottomBarEvent event) {
@@ -249,6 +251,7 @@ public class LCIMConversationFragment extends Fragment {
 
   /**
    * 处理录音事件
+   *
    * @param recordEvent
    */
   public void onEvent(LCIMInputBottomBarRecordEvent recordEvent) {
@@ -308,6 +311,7 @@ public class LCIMConversationFragment extends Fragment {
 
   /**
    * 根据 Uri 获取文件所在的位置
+   *
    * @param context
    * @param contentUri
    * @return
@@ -315,8 +319,8 @@ public class LCIMConversationFragment extends Fragment {
   private String getRealPathFromURI(Context context, Uri contentUri) {
     Cursor cursor = null;
     try {
-      String[] proj = { MediaStore.Images.Media.DATA };
-      cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+      String[] proj = {MediaStore.Images.Media.DATA};
+      cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
       int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
       cursor.moveToFirst();
       return cursor.getString(column_index);
@@ -329,6 +333,7 @@ public class LCIMConversationFragment extends Fragment {
 
   /**
    * 发送文本消息
+   *
    * @param content
    */
   private void sendText(String content) {
@@ -340,6 +345,7 @@ public class LCIMConversationFragment extends Fragment {
   /**
    * 发送图片消息
    * TODO 上传的图片最好要压缩一下
+   *
    * @param imagePath
    */
   private void sendImage(String imagePath) {
@@ -352,6 +358,7 @@ public class LCIMConversationFragment extends Fragment {
 
   /**
    * 发送语音消息
+   *
    * @param audioPath
    */
   private void sendAudio(String audioPath) {
@@ -365,6 +372,7 @@ public class LCIMConversationFragment extends Fragment {
 
   /**
    * 发送消息
+   *
    * @param message
    */
   public void sendMessage(AVIMTypedMessage message) {

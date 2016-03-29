@@ -105,6 +105,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
 
   /**
    * 更新 name，单聊的话展示对方姓名，群聊展示所有用户的用户名
+   *
    * @param conversation
    */
   private void updateName(AVIMConversation conversation) {
@@ -124,6 +125,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    * 更新 item icon，目前的逻辑为：
    * 单聊：展示对方的头像
    * 群聊：展示一个静态的 icon
+   *
    * @param conversation
    */
   private void updateIcon(AVIMConversation conversation) {
@@ -145,6 +147,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
 
   /**
    * 更新未读消息数量
+   *
    * @param conversation
    */
   private void updateUnreadCount(AVIMConversation conversation) {
@@ -156,6 +159,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
   /**
    * 更新最后一条消息
    * queryMessages
+   *
    * @param conversation
    */
   private void updateLastMessageByConversation(final AVIMConversation conversation) {
@@ -182,6 +186,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
 
   /**
    * 更新 item 的展示内容，及最后一条消息的内容
+   *
    * @param message
    */
   private void updateLastMessage(AVIMMessage message) {

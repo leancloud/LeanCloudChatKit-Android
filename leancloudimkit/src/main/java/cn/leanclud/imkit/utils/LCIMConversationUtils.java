@@ -82,6 +82,7 @@ public class LCIMConversationUtils {
 
   /**
    * 获取 “对方” 的用户 id，只对单聊有效，群聊返回空字符串
+   *
    * @param conversation
    * @return
    */

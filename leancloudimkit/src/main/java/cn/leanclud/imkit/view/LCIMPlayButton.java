@@ -29,6 +29,7 @@ public class LCIMPlayButton extends TextView implements View.OnClickListener {
   /**
    * 设置语音按钮的方向
    * 因为聊天中左右 item 都可能有语音
+   *
    * @param leftSide
    */
   public void setLeftSide(boolean leftSide) {
@@ -50,6 +51,7 @@ public class LCIMPlayButton extends TextView implements View.OnClickListener {
 
   /**
    * 设置语音文件位置
+   *
    * @param path
    */
   public void setPath(String path) {

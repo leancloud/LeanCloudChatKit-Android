@@ -12,7 +12,6 @@ import cn.leanclud.imkit.viewholder.LCIMCommonViewHolder;
 /**
  * Created by wli on 15/11/23.
  * 单类型 item 的 RecyclerView 对应的 Adapter
- *
  */
 public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonViewHolder> {
 
@@ -32,6 +31,7 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
 
   /**
    * 获取该 Adapter 中存的数据
+   *
    * @return
    */
   public List<T> getDataList() {
@@ -40,6 +40,7 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
 
   /**
    * 设置数据，会清空以前数据
+   *
    * @param datas
    */
   public void setDataList(List<T> datas) {
@@ -51,6 +52,7 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
 
   /**
    * 添加数据，默认在最后插入，以前数据保留
+   *
    * @param datas
    */
   public void addDataList(List<T> datas) {
@@ -72,7 +74,7 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
       creator = creatorHashMap.get(vhClass.getName());
     } else {
       try {
-        creator = (LCIMCommonViewHolder.ViewHolderCreator)vhClass.getField("HOLDER_CREATOR").get(null);
+        creator = (LCIMCommonViewHolder.ViewHolderCreator) vhClass.getField("HOLDER_CREATOR").get(null);
         creatorHashMap.put(vhClass.getName(), creator);
       } catch (IllegalAccessException e) {
         e.printStackTrace();

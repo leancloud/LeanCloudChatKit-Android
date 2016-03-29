@@ -28,7 +28,8 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
     return eventHandler;
   }
 
-  private LCIMConversationHandler() {}
+  private LCIMConversationHandler() {
+  }
 
   @Override
   public void onOfflineMessagesUnread(AVIMClient client, AVIMConversation conversation, int unreadCount) {
