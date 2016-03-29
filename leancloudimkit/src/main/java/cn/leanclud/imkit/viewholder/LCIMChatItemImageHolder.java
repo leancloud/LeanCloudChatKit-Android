@@ -1,8 +1,10 @@
 package cn.leanclud.imkit.viewholder;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +49,14 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
     contentView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getContext(), LCIMImageActivity.class);
-        intent.putExtra(LCIMConstants.IMAGE_LOCAL_PATH, ((AVIMImageMessage) message).getLocalFilePath());
-        intent.putExtra(LCIMConstants.IMAGE_URL, ((AVIMImageMessage) message).getFileUrl());
-        getContext().startActivity(intent);
+        try {
+          Intent intent = new Intent(getContext(), LCIMImageActivity.class);
+          intent.putExtra(LCIMConstants.IMAGE_LOCAL_PATH, ((AVIMImageMessage) message).getLocalFilePath());
+          intent.putExtra(LCIMConstants.IMAGE_URL, ((AVIMImageMessage) message).getFileUrl());
+          getContext().startActivity(intent);
+        } catch (ActivityNotFoundException exception) {
+          Log.i(LCIMConstants.LCIM_LOG_TAG, exception.toString());
+        }
       }
     });
   }

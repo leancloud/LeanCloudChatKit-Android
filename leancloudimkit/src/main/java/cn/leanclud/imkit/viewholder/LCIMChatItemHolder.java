@@ -1,5 +1,7 @@
 package cn.leanclud.imkit.viewholder;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -134,10 +136,14 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     avatarView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent();
-        intent.setAction(LCIMConstants.AVATAR_CLICK_ACTION);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        getContext().startActivity(intent);
+        try {
+          Intent intent = new Intent();
+          intent.setAction(LCIMConstants.AVATAR_CLICK_ACTION);
+          intent.addCategory(Intent.CATEGORY_DEFAULT);
+          getContext().startActivity(intent);
+        } catch (ActivityNotFoundException exception) {
+          Log.i(LCIMConstants.LCIM_LOG_TAG, exception.toString());
+        }
       }
     });
   }

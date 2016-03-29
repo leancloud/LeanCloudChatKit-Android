@@ -1,7 +1,10 @@
 package cn.leanclud.imkit.viewholder;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,9 +31,8 @@ import java.util.List;
 
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.cache.ConversationItemCache;
-import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
+import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.utils.LCIMConversationUtils;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by wli on 15/10/8.
@@ -84,7 +86,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          EventBus.getDefault().post(new LCIMConversationItemClickEvent(conversation.getConversationId()));
+          onConversationItemClick(conversation);
         }
       });
     }
@@ -188,6 +190,18 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
       SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
       timeView.setText(format.format(date));
       messageView.setText(getMessageeShorthand(getContext(), message));
+    }
+  }
+
+  private void onConversationItemClick(AVIMConversation conversation) {
+    try {
+      Intent intent = new Intent();
+      intent.setAction(LCIMConstants.CONVERSATION_ITEM_CLICK_ACTION);
+      intent.addCategory(Intent.CATEGORY_DEFAULT);
+      intent.putExtra(LCIMConstants.CONVERSATION_ID, conversation.getConversationId());
+      getContext().startActivity(intent);
+    } catch (ActivityNotFoundException exception) {
+      Log.i(LCIMConstants.LCIM_LOG_TAG, exception.toString());
     }
   }
 

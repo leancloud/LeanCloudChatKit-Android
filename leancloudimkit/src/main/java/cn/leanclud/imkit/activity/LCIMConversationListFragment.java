@@ -1,6 +1,5 @@
 package cn.leanclud.imkit.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,10 +18,8 @@ import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.adapter.LCIMCommonListAdapter;
 import cn.leanclud.imkit.cache.ConversationItemCache;
-import cn.leanclud.imkit.event.LCIMConversationItemClickEvent;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
 import cn.leanclud.imkit.event.LCIMOfflineMessageCountChangeEvent;
-import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.view.LCIMDividerItemDecoration;
 import cn.leanclud.imkit.viewholder.LCIMConversationItemHolder;
 import de.greenrobot.event.EventBus;
@@ -86,18 +83,6 @@ public class LCIMConversationListFragment extends Fragment {
 
     itemAdapter.setDataList(conversationList);
     itemAdapter.notifyDataSetChanged();
-  }
-
-  /**
-   * 处理 item 点击事件，跳转到具体聊天页面
-   * @param clickEvent
-   */
-  public void onEvent(LCIMConversationItemClickEvent clickEvent) {
-    Intent intent = new Intent();
-    intent.setAction(LCIMConstants.CONVERSATION_ITEM_CLICK_ACTION);
-    intent.addCategory(Intent.CATEGORY_DEFAULT);
-    intent.putExtra(LCIMConstants.CONVERSATION_ID, clickEvent.conversationId);
-    getContext().startActivity(intent);
   }
 
   public void onEvent(LCIMOfflineMessageCountChangeEvent updateEvent) {

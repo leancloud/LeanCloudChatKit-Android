@@ -31,6 +31,8 @@ public class LCIMConstants {
    */
   public static final String CONVERSATION_ITEM_CLICK_ACTION = getPrefixConstant("conversation_item_click_action");
 
+  public static final String LCIM_LOG_TAG = getPrefixConstant("lcim_log_tag");
+
 
   // LCIMImageActivity
   public static final String IMAGE_LOCAL_PATH = getPrefixConstant("image_local_path");
