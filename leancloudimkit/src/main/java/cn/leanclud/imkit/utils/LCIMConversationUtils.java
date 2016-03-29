@@ -69,8 +69,11 @@ public class LCIMConversationUtils {
    * @param callback
    */
   public static void getConversationPeerIcon(final AVIMConversation conversation, AVCallback<String> callback) {
-    if (null != conversation && !conversation.isTransient() && 2 == conversation.getMembers().size()) {
+    if (null != conversation && !conversation.isTransient() && !conversation.getMembers().isEmpty()) {
       String peerId = getConversationPeerId(conversation);
+      if (1 == conversation.getMembers().size()) {
+        peerId = conversation.getMembers().get(0);
+      }
       ProfileCache.getInstance().getUserAvatar(peerId, callback);
     } else {
       callback.internalDone(null, new AVException(new Throwable("cannot find icon!")));
