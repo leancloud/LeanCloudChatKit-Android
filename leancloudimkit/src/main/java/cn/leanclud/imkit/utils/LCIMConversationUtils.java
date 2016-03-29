@@ -1,9 +1,16 @@
 package cn.leanclud.imkit.utils;
 
+import android.text.TextUtils;
+
 import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.leanclud.imkit.LCIMKit;
+import cn.leanclud.imkit.LCIMUserProfile;
 import cn.leanclud.imkit.cache.ProfileCache;
 
 /**
@@ -17,7 +24,8 @@ public class LCIMConversationUtils {
    * 优先级：
    * 1、AVIMConersation name 属性
    * 2、单聊：对方用户名
-   *    群聊：成员用户名合并
+   * 群聊：成员用户名合并
+   *
    * @param conversation
    * @param callback
    */
@@ -29,35 +37,51 @@ public class LCIMConversationUtils {
       callback.internalDone(null, new AVException(new Throwable("conversation can not be null!")));
       return;
     }
-    if (conversation.isTransient() && conversation.getMembers().size() > 2) {
+    if (conversation.isTransient()) {
       callback.internalDone(conversation.getName(), null);
-    } else {
+    } else if (2 == conversation.getMembers().size()) {
       String peerId = getConversationPeerId(conversation);
       ProfileCache.getInstance().getUserName(peerId, callback);
+    } else {
+      if (!TextUtils.isEmpty(conversation.getName())) {
+        callback.internalDone(conversation.getName(), null);
+      } else {
+        ProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new AVCallback<List<LCIMUserProfile>>() {
+          @Override
+          protected void internalDone0(List<LCIMUserProfile> lcimUserProfiles, AVException e) {
+            List<String> nameList = new ArrayList<String>();
+            for (LCIMUserProfile userProfile : lcimUserProfiles) {
+              nameList.add(userProfile.getUserName());
+            }
+            callback.internalDone(TextUtils.join(",", nameList), null);
+          }
+        });
+      }
     }
   }
 
   /**
-   * 获取回话的 icon
+   * 获取单聊会话的 icon
    * 单聊：对方用户的头像
-   * 群聊：成员头像合并
-   * TODO 群聊头像合并
+   * 群聊：返回 null
+   *
    * @param conversation
    * @param callback
    */
-  public static void getConversationIcon(final AVIMConversation conversation, AVCallback<String> callback) {
-    if (null != conversation) {
-      if (conversation.isTransient() && conversation.getMembers().size() > 2) {
-        ProfileCache.getInstance().getUserAvatar(conversation.getCreator(), callback);
-      } else {
-        String peerId = getConversationPeerId(conversation);
-        ProfileCache.getInstance().getUserAvatar(peerId, callback);
-      }
+  public static void getConversationPeerIcon(final AVIMConversation conversation, AVCallback<String> callback) {
+    if (null != conversation && !conversation.isTransient() && 2 == conversation.getMembers().size()) {
+      String peerId = getConversationPeerId(conversation);
+      ProfileCache.getInstance().getUserAvatar(peerId, callback);
     } else {
-      callback.internalDone(null, new AVException(new Throwable("conversation is null!")));
+      callback.internalDone(null, new AVException(new Throwable("cannot find icon!")));
     }
   }
 
+  /**
+   * 获取 “对方” 的用户 id，只对单聊有效，群聊返回空字符串
+   * @param conversation
+   * @return
+   */
   private static String getConversationPeerId(AVIMConversation conversation) {
     if (null != conversation && 2 == conversation.getMembers().size()) {
       String currentUserId = LCIMKit.getInstance().getCurrentUserId();

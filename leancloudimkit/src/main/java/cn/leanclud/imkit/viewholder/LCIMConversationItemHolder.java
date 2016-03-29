@@ -69,11 +69,13 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         conversation.fetchInfoInBackground(new AVIMConversationCallback() {
           @Override
           public void done(AVIMException e) {
-            updateNameAndIcon(conversation);
+            updateName(conversation);
+            updateIcon(conversation);
           }
         });
       } else {
-        updateNameAndIcon(conversation);
+        updateName(conversation);
+        updateIcon(conversation);
       }
 
       updateUnreadCount(conversation);
@@ -87,7 +89,11 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
     }
   }
 
-  private void updateNameAndIcon(AVIMConversation conversation) {
+  /**
+   * 更新 name，单聊的话展示对方姓名，群聊展示所有用户的用户名
+   * @param conversation
+   */
+  private void updateName(AVIMConversation conversation) {
     LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
       @Override
       protected void internalDone0(String s, AVException e) {
@@ -98,17 +104,39 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         }
       }
     });
-
-    LCIMConversationUtils.getConversationIcon(conversation, new AVCallback<String>() {
-      @Override
-      protected void internalDone0(String s, AVException e) {
-        if (!TextUtils.isEmpty(s)) {
-          Picasso.with(getContext()).load(s).into(avatarView);
-        }
-      }
-    });
   }
 
+  /**
+   * 更新 item icon，目前的逻辑为：
+   * 单聊：展示对方的头像
+   * 群聊：展示一个静态的 icon
+   * @param conversation
+   */
+  private void updateIcon(AVIMConversation conversation) {
+    if (null != conversation) {
+      if (conversation.isTransient() || conversation.getMembers().size() > 2) {
+        avatarView.setImageResource(R.drawable.lcim_group_icon);
+      } else {
+        LCIMConversationUtils.getConversationPeerIcon(conversation, new AVCallback<String>() {
+          @Override
+          protected void internalDone0(String s, AVException e) {
+            if (!TextUtils.isEmpty(s)) {
+              Picasso.with(getContext()).load(s).into(avatarView);
+            } else {
+              avatarView.setImageResource(0);
+            }
+          }
+        });
+      }
+    } else {
+      avatarView.setImageResource(0);
+    }
+  }
+
+  /**
+   * 更新未读消息数量
+   * @param conversation
+   */
   private void updateUnreadCount(AVIMConversation conversation) {
     int num = ConversationItemCache.getInstance().getUnreadCount(conversation.getConversationId());
     unreadView.setText(num + "");
@@ -142,6 +170,10 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
     });
   }
 
+  /**
+   * 更新 item 的展示内容，及最后一条消息的内容
+   * @param message
+   */
   private void updateLastMessage(AVIMMessage message) {
     if (null != message) {
       Date date = new Date(message.getTimestamp());
