@@ -3,7 +3,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/lcim_bottom_bar_height"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/lcim_bottom_bar_height"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -14,57 +15,34 @@
 
         <cn.leanclud.imkit.view.LCIMRecordButton
             android:id="@+id/input_bar_btn_record"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="@string/lcim_chat_bottom_record_layout_pressToRecord"
+            style="@style/lcim_input_bar_record_button_style"
             android:visibility="gone"/>
 
         <EditText
             android:id="@+id/input_bar_et_content"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/lcim_textview_bg"
-            android:singleLine="true"
-            android:textSize="18sp"/>
+            style="@style/lcim_input_bar_edittext_style"/>
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center">
 
-        <Button
+        <ImageButton
             android:id="@+id/input_bar_btn_keyboard"
-            android:layout_width="@dimen/lcim_bottom_bar_button_size"
-            android:layout_height="@dimen/lcim_bottom_bar_button_size"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="@dimen/lcim_bottom_bar_button_margin"
-            android:background="@drawable/lcim_bottom_bar_keyboard_button_bg"
+            style="@style/lcim_input_bar_button_style"
+            android:src="@drawable/lcim_bottom_bar_keyboard_button_bg"
             android:visibility="gone"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/input_bar_btn_send_text"
-            android:layout_width="@dimen/lcim_bottom_bar_button_size"
-            android:layout_height="@dimen/lcim_bottom_bar_button_size"
-            android:layout_margin="5dp"
-            android:background="@drawable/lcim_bottom_bar_send_button_bg"
-            android:gravity="center"
-            android:text=""
-            android:textColor="#000"
+            style="@style/lcim_input_bar_button_style"
+            android:src="@drawable/lcim_bottom_bar_send_button_bg"
             android:visibility="gone"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/input_bar_btn_voice"
-            android:layout_width="@dimen/lcim_bottom_bar_button_size"
-            android:layout_height="@dimen/lcim_bottom_bar_button_size"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/lcim_bottom_bar_button_margin"
-            android:background="@drawable/lcim_bottom_bar_voice_button_bg"
-            android:textColor="@color/lcim_bottom_bar_text_black"/>
+            style="@style/lcim_input_bar_button_style"
+            android:src="@drawable/lcim_bottom_bar_voice_button_bg"/>
     </FrameLayout>
 </LinearLayout>
