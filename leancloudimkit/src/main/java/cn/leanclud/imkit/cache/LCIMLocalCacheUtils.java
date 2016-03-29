@@ -25,7 +25,7 @@ import java.util.Set;
  * Created by wli on 15/9/29.
  * 用于下载文件，会主动合并重复的下载
  */
-public class LocalCacheUtils {
+public class LCIMLocalCacheUtils {
 
   /**
    * 用于记录 DownLoadCallback，如果对于同一个 url 有多个请求，则下载完后应该执行所有回调

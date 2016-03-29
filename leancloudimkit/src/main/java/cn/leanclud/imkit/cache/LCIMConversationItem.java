@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
  * Created by wli on 16/3/8.
  * 会话 item，包含三个属性，ConversatoinId，unreadCount，updateTime
  */
-class ConversationItem implements Comparable {
+class LCIMConversationItem implements Comparable {
   private static final String ITEM_KEY_CONVCERSATION_ID = "conversation_id";
   private static final String ITEM_KEY_UNREADCOUNT = "unreadcount";
   private static final String ITEM_KEY_UNDATE_TIME = "upadte_time";
@@ -14,10 +14,10 @@ class ConversationItem implements Comparable {
   public int unreadCount = 0;
   public long updateTime = 0;
 
-  public ConversationItem() {
+  public LCIMConversationItem() {
   }
 
-  public ConversationItem(String conversationId) {
+  public LCIMConversationItem(String conversationId) {
     this.conversationId = conversationId;
   }
 
@@ -29,8 +29,8 @@ class ConversationItem implements Comparable {
     return jsonObject.toJSONString();
   }
 
-  public static ConversationItem fromJsonString(String json) {
-    ConversationItem item = new ConversationItem();
+  public static LCIMConversationItem fromJsonString(String json) {
+    LCIMConversationItem item = new LCIMConversationItem();
     JSONObject jsonObject = null;
     try {
       jsonObject = JSONObject.parseObject(json);
@@ -45,6 +45,6 @@ class ConversationItem implements Comparable {
 
   @Override
   public int compareTo(Object another) {
-    return (int) (((ConversationItem) another).updateTime - updateTime);
+    return (int) (((LCIMConversationItem) another).updateTime - updateTime);
   }
 }

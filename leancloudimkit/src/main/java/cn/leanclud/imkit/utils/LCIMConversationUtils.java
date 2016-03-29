@@ -11,7 +11,7 @@ import java.util.List;
 
 import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.LCIMUserProfile;
-import cn.leanclud.imkit.cache.ProfileCache;
+import cn.leanclud.imkit.cache.LCIMProfileCache;
 
 /**
  * Created by wli on 16/3/2.
@@ -41,12 +41,12 @@ public class LCIMConversationUtils {
       callback.internalDone(conversation.getName(), null);
     } else if (2 == conversation.getMembers().size()) {
       String peerId = getConversationPeerId(conversation);
-      ProfileCache.getInstance().getUserName(peerId, callback);
+      LCIMProfileCache.getInstance().getUserName(peerId, callback);
     } else {
       if (!TextUtils.isEmpty(conversation.getName())) {
         callback.internalDone(conversation.getName(), null);
       } else {
-        ProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new AVCallback<List<LCIMUserProfile>>() {
+        LCIMProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new AVCallback<List<LCIMUserProfile>>() {
           @Override
           protected void internalDone0(List<LCIMUserProfile> lcimUserProfiles, AVException e) {
             List<String> nameList = new ArrayList<String>();
@@ -74,7 +74,7 @@ public class LCIMConversationUtils {
       if (1 == conversation.getMembers().size()) {
         peerId = conversation.getMembers().get(0);
       }
-      ProfileCache.getInstance().getUserAvatar(peerId, callback);
+      LCIMProfileCache.getInstance().getUserAvatar(peerId, callback);
     } else {
       callback.internalDone(null, new AVException(new Throwable("cannot find icon!")));
     }

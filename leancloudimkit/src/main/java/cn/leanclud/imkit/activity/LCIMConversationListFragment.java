@@ -17,7 +17,7 @@ import java.util.List;
 import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.R;
 import cn.leanclud.imkit.adapter.LCIMCommonListAdapter;
-import cn.leanclud.imkit.cache.ConversationItemCache;
+import cn.leanclud.imkit.cache.LCIMConversationItemCache;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
 import cn.leanclud.imkit.event.LCIMOfflineMessageCountChangeEvent;
 import cn.leanclud.imkit.view.LCIMDividerItemDecoration;
@@ -75,7 +75,7 @@ public class LCIMConversationListFragment extends Fragment {
   }
 
   private void updateConversationList() {
-    List<String> convIdList = ConversationItemCache.getInstance().getSortedConversationList();
+    List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
     List<AVIMConversation> conversationList = new ArrayList<>();
     for (String convId : convIdList) {
       conversationList.add(LCIMKit.getInstance().getClient().getConversation(convId));

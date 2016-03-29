@@ -23,7 +23,7 @@ import java.util.List;
  * <p/>
  * 因为最终读与写的操作都是在 readDbThread 线程中进行，所以不需要考虑线程安全问题
  */
-class LocalStorage extends SQLiteOpenHelper {
+class LCIMLocalStorage extends SQLiteOpenHelper {
 
   /**
    * db 的名字，加前缀避免与用户自己的逻辑冲突
@@ -53,7 +53,7 @@ class LocalStorage extends SQLiteOpenHelper {
   private HandlerThread readDbThread;
   private Handler readDbHandler;
 
-  public LocalStorage(Context context, String clientId, String tableName) {
+  public LCIMLocalStorage(Context context, String clientId, String tableName) {
     super(context, DB_NAME_PREFIX, null, DB_VERSION);
     this.tableName = tableName + "_" + clientId;
     this.tableName = this.tableName.toLowerCase();

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.cache.LocalCacheUtils;
+import cn.leanclud.imkit.cache.LCIMLocalCacheUtils;
 import cn.leanclud.imkit.utils.LCIMPathUtils;
 import cn.leanclud.imkit.view.LCIMPlayButton;
 
@@ -50,7 +50,7 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
       } else {
         String path = LCIMPathUtils.getAudioCachePath(getContext(), audioMessage.getMessageId());
         playButton.setPath(path);
-        LocalCacheUtils.downloadFileAsync(audioMessage.getFileUrl(), path);
+        LCIMLocalCacheUtils.downloadFileAsync(audioMessage.getFileUrl(), path);
       }
     }
   }

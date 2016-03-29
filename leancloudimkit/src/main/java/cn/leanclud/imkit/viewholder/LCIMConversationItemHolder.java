@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.cache.ConversationItemCache;
+import cn.leanclud.imkit.cache.LCIMConversationItemCache;
 import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.utils.LCIMConversationUtils;
 
@@ -151,7 +151,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    * @param conversation
    */
   private void updateUnreadCount(AVIMConversation conversation) {
-    int num = ConversationItemCache.getInstance().getUnreadCount(conversation.getConversationId());
+    int num = LCIMConversationItemCache.getInstance().getUnreadCount(conversation.getConversationId());
     unreadView.setText(num + "");
     unreadView.setVisibility(num > 0 ? View.VISIBLE : View.GONE);
   }

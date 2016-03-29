@@ -22,7 +22,7 @@ import java.util.Date;
 
 import cn.leanclud.imkit.LCIMUserProfile;
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.cache.ProfileCache;
+import cn.leanclud.imkit.cache.LCIMProfileCache;
 import cn.leanclud.imkit.event.LCIMMessageResendEvent;
 import cn.leanclud.imkit.utils.LCIMConstants;
 import de.greenrobot.event.EventBus;
@@ -81,7 +81,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     message = (AVIMMessage) o;
     timeView.setText(millisecsToDateString(message.getTimestamp()));
 
-    ProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
+    LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
       @Override
       protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
         if (null != e) {

@@ -14,10 +14,9 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 
 import java.util.Arrays;
-
-import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.cache.ConversationItemCache;
+import cn.leanclud.imkit.LCIMKit;
+import cn.leanclud.imkit.cache.LCIMConversationItemCache;
 import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.utils.LCIMConversationUtils;
 
@@ -99,7 +98,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
   protected void updateConversation(AVIMConversation conversation) {
     if (null != conversation) {
       conversationFragment.setConversation(conversation);
-      ConversationItemCache.getInstance().clearUnread(conversation.getConversationId());
+      LCIMConversationItemCache.getInstance().clearUnread(conversation.getConversationId());
       LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
         @Override
         protected void internalDone0(String s, AVException e) {

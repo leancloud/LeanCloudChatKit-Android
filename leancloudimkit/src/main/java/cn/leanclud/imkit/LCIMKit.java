@@ -13,8 +13,8 @@ import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 
-import cn.leanclud.imkit.cache.ConversationItemCache;
-import cn.leanclud.imkit.cache.ProfileCache;
+import cn.leanclud.imkit.cache.LCIMConversationItemCache;
+import cn.leanclud.imkit.cache.LCIMProfileCache;
 import cn.leanclud.imkit.handler.LCIMClientEventHandler;
 import cn.leanclud.imkit.handler.LCIMConversationHandler;
 import cn.leanclud.imkit.handler.LCIMMessageHandler;
@@ -109,8 +109,8 @@ public final class LCIMKit {
       public void done(final AVIMClient avimClient, AVIMException e) {
         if (null == e) {
           currentClientId = clientId;
-          ProfileCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
-          ConversationItemCache.getInstance().initDB(AVOSCloud.applicationContext, clientId, new AVCallback() {
+          LCIMProfileCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
+          LCIMConversationItemCache.getInstance().initDB(AVOSCloud.applicationContext, clientId, new AVCallback() {
             @Override
             protected void internalDone0(Object o, AVException e) {
               callback.internalDone(avimClient, e);

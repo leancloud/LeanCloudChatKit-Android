@@ -22,22 +22,22 @@ import java.util.TreeSet;
  * 2、插入数据时先更新缓存，在更新 db
  * 3、获取的话只从缓存里读取数据
  */
-public class ConversationItemCache {
+public class LCIMConversationItemCache {
 
   private final String CONVERSATION_ITEM_TABLE_NAME = "ConversationItem";
 
-  private Map<String, ConversationItem> conversationItemMap;
-  private LocalStorage conversationItemDBHelper;
+  private Map<String, LCIMConversationItem> conversationItemMap;
+  private LCIMLocalStorage conversationItemDBHelper;
 
-  private ConversationItemCache() {
-    conversationItemMap = new HashMap<String, ConversationItem>();
+  private LCIMConversationItemCache() {
+    conversationItemMap = new HashMap<String, LCIMConversationItem>();
   }
 
-  private static ConversationItemCache conversationItemCache;
+  private static LCIMConversationItemCache conversationItemCache;
 
-  public static synchronized ConversationItemCache getInstance() {
+  public static synchronized LCIMConversationItemCache getInstance() {
     if (null == conversationItemCache) {
-      conversationItemCache = new ConversationItemCache();
+      conversationItemCache = new LCIMConversationItemCache();
     }
     return conversationItemCache;
   }
@@ -48,7 +48,7 @@ public class ConversationItemCache {
    * 因为需要同步数据，所以此处需要有回调
    */
   public synchronized void initDB(Context context, String clientId, AVCallback callback) {
-    conversationItemDBHelper = new LocalStorage(context, clientId, CONVERSATION_ITEM_TABLE_NAME);
+    conversationItemDBHelper = new LCIMLocalStorage(context, clientId, CONVERSATION_ITEM_TABLE_NAME);
     syncData(callback);
   }
 
@@ -69,7 +69,7 @@ public class ConversationItemCache {
    * @param increment
    */
   public synchronized void increaseUnreadCount(String convId, int increment) {
-    ConversationItem conversationItem = getConversationItemFromMap(convId);
+    LCIMConversationItem conversationItem = getConversationItemFromMap(convId);
     conversationItem.unreadCount += increment;
     syncToCache(conversationItem);
   }
@@ -80,7 +80,7 @@ public class ConversationItemCache {
    * @param conviId
    */
   public synchronized void clearUnread(String conviId) {
-    ConversationItem unreadCountItem = getConversationItemFromMap(conviId);
+    LCIMConversationItem unreadCountItem = getConversationItemFromMap(conviId);
     unreadCountItem.unreadCount = 0;
     syncToCache(unreadCountItem);
   }
@@ -121,9 +121,9 @@ public class ConversationItemCache {
    */
   public synchronized List<String> getSortedConversationList() {
     List<String> idList = new ArrayList<>();
-    SortedSet<ConversationItem> sortedSet = new TreeSet<>();
+    SortedSet<LCIMConversationItem> sortedSet = new TreeSet<>();
     sortedSet.addAll(conversationItemMap.values());
-    for (ConversationItem item : sortedSet) {
+    for (LCIMConversationItem item : sortedSet) {
       idList.add(item.conversationId);
     }
     return idList;
@@ -140,7 +140,7 @@ public class ConversationItemCache {
           @Override
           protected void internalDone0(final List<String> dataList, AVException e) {
             for (int i = 0; i < dataList.size(); i++) {
-              ConversationItem conversationItem = ConversationItem.fromJsonString(dataList.get(i));
+              LCIMConversationItem conversationItem = LCIMConversationItem.fromJsonString(dataList.get(i));
               conversationItemMap.put(conversationItem.conversationId, conversationItem);
             }
             callback.internalDone(null);
@@ -156,17 +156,17 @@ public class ConversationItemCache {
    * @param convId
    * @return
    */
-  private ConversationItem getConversationItemFromMap(String convId) {
+  private LCIMConversationItem getConversationItemFromMap(String convId) {
     if (conversationItemMap.containsKey(convId)) {
       return conversationItemMap.get(convId);
     }
-    return new ConversationItem(convId);
+    return new LCIMConversationItem(convId);
   }
 
   /**
    * 存储未读消息数量到内存
    */
-  private void syncToCache(ConversationItem item) {
+  private void syncToCache(LCIMConversationItem item) {
     item.updateTime = System.currentTimeMillis();
     conversationItemMap.put(item.conversationId, item);
     conversationItemDBHelper.insertData(item.conversationId, item.toJsonString());

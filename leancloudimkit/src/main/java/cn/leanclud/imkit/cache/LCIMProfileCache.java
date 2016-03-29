@@ -27,24 +27,24 @@ import cn.leanclud.imkit.LCIMUserProfile;
  * 3、如果 db 中没有则通过调用开发者设置的回调 LCIMProfileProvider.getProfiles 来获取
  * 同时获取到的数据会缓存到内存与 db
  */
-public class ProfileCache {
+public class LCIMProfileCache {
 
   private static final String USER_NAME = "user_name";
   private static final String USER_AVATAR = "user_avatar";
   private static final String USER_ID = "user_id";
 
   private Map<String, LCIMUserProfile> userMap;
-  private LocalStorage profileDBHelper;
+  private LCIMLocalStorage profileDBHelper;
 
-  private ProfileCache() {
+  private LCIMProfileCache() {
     userMap = new HashMap<>();
   }
 
-  private static ProfileCache profileCache;
+  private static LCIMProfileCache profileCache;
 
-  public static synchronized ProfileCache getInstance() {
+  public static synchronized LCIMProfileCache getInstance() {
     if (null == profileCache) {
-      profileCache = new ProfileCache();
+      profileCache = new LCIMProfileCache();
     }
     return profileCache;
   }
@@ -57,7 +57,7 @@ public class ProfileCache {
    * @param clientId
    */
   public synchronized void initDB(Context context, String clientId) {
-    profileDBHelper = new LocalStorage(context, clientId, "ProfileCache");
+    profileDBHelper = new LCIMLocalStorage(context, clientId, "ProfileCache");
   }
 
   /**

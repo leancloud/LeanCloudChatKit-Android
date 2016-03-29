@@ -7,7 +7,7 @@ import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
 
 import java.util.List;
 
-import cn.leanclud.imkit.cache.ConversationItemCache;
+import cn.leanclud.imkit.cache.LCIMConversationItemCache;
 import cn.leanclud.imkit.event.LCIMConversationChangeEvent;
 import cn.leanclud.imkit.event.LCIMOfflineMessageCountChangeEvent;
 import de.greenrobot.event.EventBus;
@@ -34,7 +34,7 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
   @Override
   public void onOfflineMessagesUnread(AVIMClient client, AVIMConversation conversation, int unreadCount) {
     if (unreadCount > 0) {
-      ConversationItemCache.getInstance().increaseUnreadCount(conversation.getConversationId(), unreadCount);
+      LCIMConversationItemCache.getInstance().increaseUnreadCount(conversation.getConversationId(), unreadCount);
       EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent());
     }
   }

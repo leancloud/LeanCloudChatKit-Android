@@ -14,8 +14,8 @@ import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import cn.leanclud.imkit.LCIMKit;
 import cn.leanclud.imkit.LCIMUserProfile;
 import cn.leanclud.imkit.R;
-import cn.leanclud.imkit.cache.ConversationItemCache;
-import cn.leanclud.imkit.cache.ProfileCache;
+import cn.leanclud.imkit.cache.LCIMConversationItemCache;
+import cn.leanclud.imkit.cache.LCIMProfileCache;
 import cn.leanclud.imkit.event.LCIMIMTypeMessageEvent;
 import cn.leanclud.imkit.utils.LCIMConstants;
 import cn.leanclud.imkit.utils.LCIMNotificationUtils;
@@ -53,10 +53,10 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
           if (LCIMNotificationUtils.isShowNotification(conversation.getConversationId())) {
             sendNotification(message, conversation);
           }
-          ConversationItemCache.getInstance().increaseUnreadCount(message.getConversationId());
+          LCIMConversationItemCache.getInstance().increaseUnreadCount(message.getConversationId());
           sendEvent(message, conversation);
         } else {
-          ConversationItemCache.getInstance().insertConversation(message.getConversationId());
+          LCIMConversationItemCache.getInstance().insertConversation(message.getConversationId());
         }
       }
     }
@@ -84,7 +84,7 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
     if (null != conversation && null != message) {
       final String notificationContent = message instanceof AVIMTextMessage ?
         ((AVIMTextMessage) message).getText() : context.getString(R.string.lcim_unspport_message_type);
-      ProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
+      LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
         @Override
         protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
           if (e != null) {
