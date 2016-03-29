@@ -138,8 +138,9 @@ public class ConversationItemCache {
         conversationItemDBHelper.getDatas(idList, new AVCallback<List<String>>() {
           @Override
           protected void internalDone0(final List<String> dataList, AVException e) {
-            for (int i = 0; i < idList.size(); i++) {
-              conversationItemMap.put(idList.get(i), ConversationItem.fromJsonString(dataList.get(i)));
+            for (int i = 0; i < dataList.size(); i++) {
+              ConversationItem conversationItem = ConversationItem.fromJsonString(dataList.get(i));
+              conversationItemMap.put(conversationItem.conversationId, conversationItem);
             }
             callback.internalDone(null);
           }

@@ -63,6 +63,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
 
   @Override
   public void bindData(Object o) {
+    reset();
     final AVIMConversation conversation = (AVIMConversation) o;
     if (null != conversation) {
       if (TextUtils.isEmpty(conversation.getCreator())) {
@@ -79,7 +80,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
       }
 
       updateUnreadCount(conversation);
-      updateLastMessage(conversation);
+      updateLastMessageByConversation(conversation);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -87,6 +88,17 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         }
       });
     }
+  }
+
+  /**
+   * 一开始的时候全部置为空，避免因为异步请求造成的刷新不及时而导致的展示原有的缓存数据
+   */
+  private void reset() {
+    avatarView.setImageResource(0);
+    nameView.setText("");
+    timeView.setText("");
+    messageView.setText("");
+    unreadView.setVisibility(View.GONE);
   }
 
   /**
@@ -122,14 +134,10 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
           protected void internalDone0(String s, AVException e) {
             if (!TextUtils.isEmpty(s)) {
               Picasso.with(getContext()).load(s).into(avatarView);
-            } else {
-              avatarView.setImageResource(0);
             }
           }
         });
       }
-    } else {
-      avatarView.setImageResource(0);
     }
   }
 
@@ -148,7 +156,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    * queryMessages
    * @param conversation
    */
-  private void updateLastMessage(final AVIMConversation conversation) {
+  private void updateLastMessageByConversation(final AVIMConversation conversation) {
     // TODO 此处如果调用 AVIMConversation.getLastMessage 的话会造成一直读取缓存数据造成展示不对
     // 所以使用 queryMessages，但是这个接口还是很难有，需要 sdk 对这个进行支持
     conversation.getLastMessage(new AVIMSingleMessageQueryCallback() {
@@ -180,9 +188,6 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
       SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
       timeView.setText(format.format(date));
       messageView.setText(getMessageeShorthand(getContext(), message));
-    } else {
-      timeView.setText("");
-      messageView.setText("");
     }
   }
 

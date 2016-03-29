@@ -109,6 +109,7 @@ class LocalStorage extends SQLiteOpenHelper {
 
   /**
    * 根据 key 值获对应的 values
+   * 注意：并不保证回调 data 与 id 顺序一致
    * @param ids 需要的获取数据的 key
    * @param callback 获取后会执行此回调
    */
@@ -174,6 +175,7 @@ class LocalStorage extends SQLiteOpenHelper {
 
   /**
    * 获取数据，此为同步方法
+   * 注意：并不保证回调 data 与 id 顺序一致
    */
   private List<String> getDatasSync(List<String> ids) {
     String queryString = "SELECT * FROM " + tableName;
