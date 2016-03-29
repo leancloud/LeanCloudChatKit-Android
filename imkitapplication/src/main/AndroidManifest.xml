@@ -7,7 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/lcim_imkit_name"
         android:name=".App"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/LCIMKitTheme" >
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name" >
