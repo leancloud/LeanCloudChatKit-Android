@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="LCIMKitTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/lcim_common_blue</item>
         <item name="colorPrimaryDark">@color/lcim_common_blue</item>
         <item name="colorAccent">@color/lcim_common_blue</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:editTextStyle">@style/LCIMEditText</item>
+        <item name="actionBarTheme">@style/LCIMActionBarTheme</item>
     </style>
 
-
     <!-- activity -->
-    <style name="LCIMActivity" parent="AppTheme"/>
+    <style name="LCIMActivity" parent="LCIMKitTheme"/>
 
     <style name="LCIMActivity.NoActionBar">
         <item name="colorPrimary">@color/lcim_common_blue</item>
@@ -24,6 +22,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="LCIMActionBarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
     <!--<style name="LCIMActivity.FullScreen" >-->
         <!--<item name="android:windowFullscreen">true</item>-->
     <!--</style>-->
@@ -48,6 +50,7 @@
     <!-- editText -->
     <style name="LCIMEditText" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
     </style>
 
     <!-- text appearance -->
