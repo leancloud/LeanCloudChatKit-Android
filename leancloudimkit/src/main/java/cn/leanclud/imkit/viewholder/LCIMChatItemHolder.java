@@ -137,6 +137,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
       public void onClick(View v) {
         try {
           Intent intent = new Intent();
+          intent.setPackage(getContext().getPackageName());
           intent.setAction(LCIMConstants.AVATAR_CLICK_ACTION);
           intent.addCategory(Intent.CATEGORY_DEFAULT);
           getContext().startActivity(intent);

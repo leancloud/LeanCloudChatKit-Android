@@ -51,6 +51,7 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
       public void onClick(View v) {
         try {
           Intent intent = new Intent(getContext(), LCIMImageActivity.class);
+          intent.setPackage(getContext().getPackageName());
           intent.putExtra(LCIMConstants.IMAGE_LOCAL_PATH, ((AVIMImageMessage) message).getLocalFilePath());
           intent.putExtra(LCIMConstants.IMAGE_URL, ((AVIMImageMessage) message).getFileUrl());
           getContext().startActivity(intent);
