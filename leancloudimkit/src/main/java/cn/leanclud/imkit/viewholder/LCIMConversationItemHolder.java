@@ -136,9 +136,8 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         LCIMConversationUtils.getConversationPeerIcon(conversation, new AVCallback<String>() {
           @Override
           protected void internalDone0(String s, AVException e) {
-            if (!TextUtils.isEmpty(s)) {
-              Picasso.with(getContext()).load(s).into(avatarView);
-            }
+              Picasso.with(getContext()).load(s)
+                .placeholder(R.drawable.lcim_default_avatar_icon).into(avatarView);
           }
         });
       }

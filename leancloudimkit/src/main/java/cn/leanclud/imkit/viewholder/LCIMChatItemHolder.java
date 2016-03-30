@@ -80,7 +80,8 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
   public void bindData(Object o) {
     message = (AVIMMessage) o;
     timeView.setText(millisecsToDateString(message.getTimestamp()));
-
+    nameView.setText("");
+    avatarView.setImageResource(R.drawable.lcim_default_avatar_icon);
     LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
       @Override
       protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
@@ -88,7 +89,8 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
           e.printStackTrace();
         } else if (null != userProfile) {
           nameView.setText(userProfile.getUserName());
-          Picasso.with(getContext()).load(userProfile.getAvatarUrl()).into(avatarView);
+          Picasso.with(getContext()).load(userProfile.getAvatarUrl())
+            .placeholder(R.drawable.lcim_default_avatar_icon).into(avatarView);
         }
       }
     });

@@ -116,7 +116,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
    * 获取 conversation，为了避免重复的创建，此处先 query 是否已经存在只包含该 member 的 conversation
    * 如果存在，则直接赋值给 ChatFragment，否者创建后再赋值
    */
-  private void getConversation(final String memberId) {
+  protected void getConversation(final String memberId) {
     LCIMKit.getInstance().getClient().createConversation(
       Arrays.asList(memberId), "", null, false, true, new AVIMConversationCreatedCallback() {
         @Override
