@@ -35,7 +35,7 @@ public class CustomUserProvider implements LCIMProfileProvider {
   }
 
   @Override
-  public void getProfiles(List<String> list, LCIMProfilesCallBack callBack) {
+  public void fetchProfiles(List<String> list, LCIMProfilesCallBack callBack) {
     List<LCIMKitUser> userList = new ArrayList<LCIMKitUser>();
     for (String userId : list) {
       for (LCIMKitUser user : partUsers) {

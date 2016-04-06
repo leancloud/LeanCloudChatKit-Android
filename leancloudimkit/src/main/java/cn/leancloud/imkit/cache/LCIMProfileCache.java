@@ -24,7 +24,7 @@ import cn.leancloud.imkit.LCIMProfilesCallBack;
  * 流程：
  * 1、如果内存中有则从内存中获取
  * 2、如果内存中没有则从 db 中获取
- * 3、如果 db 中没有则通过调用开发者设置的回调 LCIMProfileProvider.getProfiles 来获取
+ * 3、如果 db 中没有则通过调用开发者设置的回调 LCIMProfileProvider.fetchProfiles 来获取
  * 同时获取到的数据会缓存到内存与 db
  */
 public class LCIMProfileCache {
@@ -139,7 +139,7 @@ public class LCIMProfileCache {
                                        final AVCallback<List<LCIMKitUser>> callback) {
     LCIMProfileProvider profileProvider = LCIMKit.getInstance().getProfileProvider();
     if (null != profileProvider) {
-      profileProvider.getProfiles(idList, new LCIMProfilesCallBack() {
+      profileProvider.fetchProfiles(idList, new LCIMProfilesCallBack() {
         @Override
         public void done(List<LCIMKitUser> userList, Exception e) {
           if (null != userList) {
