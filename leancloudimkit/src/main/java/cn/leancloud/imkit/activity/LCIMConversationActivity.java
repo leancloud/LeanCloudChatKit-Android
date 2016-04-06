@@ -133,9 +133,9 @@ public class LCIMConversationActivity extends AppCompatActivity {
   /**
    * 弹出 toast
    *
-   * @param str
+   * @param content
    */
-  private void showToast(String str) {
-    Toast.makeText(LCIMConversationActivity.this, str, Toast.LENGTH_SHORT).show();
+  private void showToast(String content) {
+    Toast.makeText(LCIMConversationActivity.this, content, Toast.LENGTH_SHORT).show();
   }
 }

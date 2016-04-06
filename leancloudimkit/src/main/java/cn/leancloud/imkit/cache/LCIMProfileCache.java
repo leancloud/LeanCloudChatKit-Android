@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 import cn.leancloud.imkit.LCIMKit;
+import cn.leancloud.imkit.LCIMKitUser;
 import cn.leancloud.imkit.LCIMProfileProvider;
 import cn.leancloud.imkit.LCIMProfilesCallBack;
-import cn.leancloud.imkit.LCIMUserProfile;
 
 
 /**
@@ -33,7 +33,7 @@ public class LCIMProfileCache {
   private static final String USER_AVATAR = "user_avatar";
   private static final String USER_ID = "user_id";
 
-  private Map<String, LCIMUserProfile> userMap;
+  private Map<String, LCIMKitUser> userMap;
   private LCIMLocalStorage profileDBHelper;
 
   private LCIMProfileCache() {
@@ -67,10 +67,10 @@ public class LCIMProfileCache {
    * @param id
    * @param callback
    */
-  public synchronized void getCachedUser(final String id, final AVCallback<LCIMUserProfile> callback) {
-    getCachedUsers(Arrays.asList(id), new AVCallback<List<LCIMUserProfile>>() {
+  public synchronized void getCachedUser(final String id, final AVCallback<LCIMKitUser> callback) {
+    getCachedUsers(Arrays.asList(id), new AVCallback<List<LCIMKitUser>>() {
       @Override
-      protected void internalDone0(List<LCIMUserProfile> lcimUserProfiles, AVException e) {
+      protected void internalDone0(List<LCIMKitUser> lcimUserProfiles, AVException e) {
         if (null != lcimUserProfiles && !lcimUserProfiles.isEmpty()) {
           callback.internalDone(lcimUserProfiles.get(0), e);
         } else {
@@ -87,12 +87,12 @@ public class LCIMProfileCache {
    * @param idList
    * @param callback
    */
-  public synchronized void getCachedUsers(List<String> idList, final AVCallback<List<LCIMUserProfile>> callback) {
+  public synchronized void getCachedUsers(List<String> idList, final AVCallback<List<LCIMKitUser>> callback) {
     if (null != callback) {
       if (null == idList || idList.isEmpty()) {
         callback.internalDone(null, new AVException(new Throwable("idList is empty!")));
       } else {
-        final List<LCIMUserProfile> profileList = new ArrayList<LCIMUserProfile>();
+        final List<LCIMKitUser> profileList = new ArrayList<LCIMKitUser>();
         final List<String> unCachedIdList = new ArrayList<String>();
 
         for (String id : idList) {
@@ -110,9 +110,9 @@ public class LCIMProfileCache {
             @Override
             protected void internalDone0(List<String> strings, AVException e) {
               if (null != strings && !strings.isEmpty() && strings.size() == unCachedIdList.size()) {
-                List<LCIMUserProfile> profileList = new ArrayList<LCIMUserProfile>();
+                List<LCIMKitUser> profileList = new ArrayList<LCIMKitUser>();
                 for (String data : strings) {
-                  LCIMUserProfile userProfile = getUserProfileFromJson(data);
+                  LCIMKitUser userProfile = getUserProfileFromJson(data);
                   userMap.put(userProfile.getUserId(), userProfile);
                   profileList.add(userProfile);
                 }
@@ -135,15 +135,15 @@ public class LCIMProfileCache {
    * @param idList
    * @param callback
    */
-  private void getProfilesFromProvider(List<String> idList, final List<LCIMUserProfile> profileList,
-                                       final AVCallback<List<LCIMUserProfile>> callback) {
+  private void getProfilesFromProvider(List<String> idList, final List<LCIMKitUser> profileList,
+                                       final AVCallback<List<LCIMKitUser>> callback) {
     LCIMProfileProvider profileProvider = LCIMKit.getInstance().getProfileProvider();
     if (null != profileProvider) {
       profileProvider.getProfiles(idList, new LCIMProfilesCallBack() {
         @Override
-        public void done(List<LCIMUserProfile> userList, Exception e) {
+        public void done(List<LCIMKitUser> userList, Exception e) {
           if (null != userList) {
-            for (LCIMUserProfile userProfile : userList) {
+            for (LCIMKitUser userProfile : userList) {
               cacheUser(userProfile);
             }
           }
@@ -163,9 +163,9 @@ public class LCIMProfileCache {
    * @param callback
    */
   public void getUserName(String id, final AVCallback<String> callback) {
-    getCachedUser(id, new AVCallback<LCIMUserProfile>() {
+    getCachedUser(id, new AVCallback<LCIMKitUser>() {
       @Override
-      protected void internalDone0(LCIMUserProfile lcimUserProfile, AVException e) {
+      protected void internalDone0(LCIMKitUser lcimUserProfile, AVException e) {
         if (null != e) {
           callback.internalDone(null, e);
         } else {
@@ -182,9 +182,9 @@ public class LCIMProfileCache {
    * @param callback
    */
   public void getUserAvatar(String id, final AVCallback<String> callback) {
-    getCachedUser(id, new AVCallback<LCIMUserProfile>() {
+    getCachedUser(id, new AVCallback<LCIMKitUser>() {
       @Override
-      protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
+      protected void internalDone0(LCIMKitUser userProfile, AVException e) {
         if (null != e) {
           callback.internalDone(null, e);
         } else {
@@ -195,7 +195,7 @@ public class LCIMProfileCache {
   }
 
   /**
-   * 内存中是否包相关 LCIMUserProfile 的信息
+   * 内存中是否包相关 LCIMKitUser 的信息
    *
    * @param id
    * @return
@@ -205,12 +205,12 @@ public class LCIMProfileCache {
   }
 
   /**
-   * 缓存 LCIMUserProfile 信息，更新缓存同时也更新 db
-   * 如果开发者 LCIMUserProfile 信息变化，可以通过调用此方法刷新缓存
+   * 缓存 LCIMKitUser 信息，更新缓存同时也更新 db
+   * 如果开发者 LCIMKitUser 信息变化，可以通过调用此方法刷新缓存
    *
    * @param userProfile
    */
-  public synchronized void cacheUser(LCIMUserProfile userProfile) {
+  public synchronized void cacheUser(LCIMKitUser userProfile) {
     if (null != userProfile && null != profileDBHelper) {
       userMap.put(userProfile.getUserId(), userProfile);
       profileDBHelper.insertData(userProfile.getUserId(), getStringFormUserProfile(userProfile));
@@ -218,26 +218,26 @@ public class LCIMProfileCache {
   }
 
   /**
-   * 从 db 中的 String 解析出 LCIMUserProfile
+   * 从 db 中的 String 解析出 LCIMKitUser
    *
    * @param str
    * @return
    */
-  private LCIMUserProfile getUserProfileFromJson(String str) {
+  private LCIMKitUser getUserProfileFromJson(String str) {
     JSONObject jsonObject = JSONObject.parseObject(str);
     String userName = jsonObject.getString(USER_NAME);
     String userId = jsonObject.getString(USER_ID);
     String userAvatar = jsonObject.getString(USER_AVATAR);
-    return new LCIMUserProfile(userId, userName, userAvatar);
+    return new LCIMKitUser(userId, userName, userAvatar);
   }
 
   /**
-   * LCIMUserProfile 转换成 json String
+   * LCIMKitUser 转换成 json String
    *
    * @param userProfile
    * @return
    */
-  private String getStringFormUserProfile(LCIMUserProfile userProfile) {
+  private String getStringFormUserProfile(LCIMKitUser userProfile) {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put(USER_NAME, userProfile.getUserName());
     jsonObject.put(USER_AVATAR, userProfile.getAvatarUrl());

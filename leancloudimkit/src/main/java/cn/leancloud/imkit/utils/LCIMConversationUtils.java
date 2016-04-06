@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.leancloud.imkit.LCIMKit;
-import cn.leancloud.imkit.LCIMUserProfile;
+import cn.leancloud.imkit.LCIMKitUser;
 import cn.leancloud.imkit.cache.LCIMProfileCache;
 
 /**
@@ -46,11 +46,11 @@ public class LCIMConversationUtils {
       if (!TextUtils.isEmpty(conversation.getName())) {
         callback.internalDone(conversation.getName(), null);
       } else {
-        LCIMProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new AVCallback<List<LCIMUserProfile>>() {
+        LCIMProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new AVCallback<List<LCIMKitUser>>() {
           @Override
-          protected void internalDone0(List<LCIMUserProfile> lcimUserProfiles, AVException e) {
+          protected void internalDone0(List<LCIMKitUser> lcimUserProfiles, AVException e) {
             List<String> nameList = new ArrayList<String>();
-            for (LCIMUserProfile userProfile : lcimUserProfiles) {
+            for (LCIMKitUser userProfile : lcimUserProfiles) {
               nameList.add(userProfile.getUserName());
             }
             callback.internalDone(TextUtils.join(",", nameList), null);

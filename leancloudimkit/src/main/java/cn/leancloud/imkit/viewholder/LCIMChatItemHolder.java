@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import cn.leancloud.imkit.LCIMUserProfile;
+import cn.leancloud.imkit.LCIMKitUser;
 import cn.leancloud.imkit.R;
 import cn.leancloud.imkit.cache.LCIMProfileCache;
 import cn.leancloud.imkit.event.LCIMMessageResendEvent;
@@ -82,9 +82,9 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     timeView.setText(millisecsToDateString(message.getTimestamp()));
     nameView.setText("");
     avatarView.setImageResource(R.drawable.lcim_default_avatar_icon);
-    LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
+    LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMKitUser>() {
       @Override
-      protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
+      protected void internalDone0(LCIMKitUser userProfile, AVException e) {
         if (null != e) {
           e.printStackTrace();
         } else if (null != userProfile) {

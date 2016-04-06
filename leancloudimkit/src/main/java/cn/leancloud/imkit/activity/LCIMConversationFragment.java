@@ -174,9 +174,9 @@ public class LCIMConversationFragment extends Fragment {
   private void fetchMessages() {
     imConversation.queryMessages(new AVIMMessagesQueryCallback() {
       @Override
-      public void done(List<AVIMMessage> list, AVIMException e) {
+      public void done(List<AVIMMessage> messageList, AVIMException e) {
         if (filterException(e)) {
-          itemAdapter.setMessageList(list);
+          itemAdapter.setMessageList(messageList);
           recyclerView.setAdapter(itemAdapter);
           itemAdapter.notifyDataSetChanged();
           scrollToBottom();
@@ -201,10 +201,10 @@ public class LCIMConversationFragment extends Fragment {
    * 处理推送过来的消息
    * 同理，避免无效消息，此处加了 conversation id 判断
    */
-  public void onEvent(LCIMIMTypeMessageEvent event) {
-    if (null != imConversation && null != event &&
-      imConversation.getConversationId().equals(event.conversation.getConversationId())) {
-      itemAdapter.addMessage(event.message);
+  public void onEvent(LCIMIMTypeMessageEvent messageEvent) {
+    if (null != imConversation && null != messageEvent &&
+      imConversation.getConversationId().equals(messageEvent.conversation.getConversationId())) {
+      itemAdapter.addMessage(messageEvent.message);
       itemAdapter.notifyDataSetChanged();
       scrollToBottom();
     }
@@ -213,12 +213,12 @@ public class LCIMConversationFragment extends Fragment {
   /**
    * 重新发送已经发送失败的消息
    */
-  public void onEvent(LCIMMessageResendEvent event) {
-    if (null != imConversation && null != event &&
-      null != event.message && imConversation.getConversationId().equals(event.message.getConversationId())) {
-      if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == event.message.getMessageStatus()
-        && imConversation.getConversationId().equals(event.message.getConversationId())) {
-        imConversation.sendMessage(event.message, new AVIMConversationCallback() {
+  public void onEvent(LCIMMessageResendEvent resendEvent) {
+    if (null != imConversation && null != resendEvent &&
+      null != resendEvent.message && imConversation.getConversationId().equals(resendEvent.message.getConversationId())) {
+      if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == resendEvent.message.getMessageStatus()
+        && imConversation.getConversationId().equals(resendEvent.message.getConversationId())) {
+        imConversation.sendMessage(resendEvent.message, new AVIMConversationCallback() {
           @Override
           public void done(AVIMException e) {
             itemAdapter.notifyDataSetChanged();

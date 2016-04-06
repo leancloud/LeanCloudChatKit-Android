@@ -12,7 +12,7 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
 import cn.leancloud.imkit.LCIMKit;
-import cn.leancloud.imkit.LCIMUserProfile;
+import cn.leancloud.imkit.LCIMKitUser;
 import cn.leancloud.imkit.R;
 import cn.leancloud.imkit.cache.LCIMConversationItemCache;
 import cn.leancloud.imkit.cache.LCIMProfileCache;
@@ -84,9 +84,9 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
     if (null != conversation && null != message) {
       final String notificationContent = message instanceof AVIMTextMessage ?
         ((AVIMTextMessage) message).getText() : context.getString(R.string.lcim_unspport_message_type);
-      LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMUserProfile>() {
+      LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMKitUser>() {
         @Override
-        protected void internalDone0(LCIMUserProfile userProfile, AVException e) {
+        protected void internalDone0(LCIMKitUser userProfile, AVException e) {
           if (e != null) {
             e.printStackTrace();
           } else if (null != userProfile) {

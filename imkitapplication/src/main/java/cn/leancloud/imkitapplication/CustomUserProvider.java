@@ -3,9 +3,9 @@ package cn.leancloud.imkitapplication;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.leancloud.imkit.LCIMKitUser;
 import cn.leancloud.imkit.LCIMProfileProvider;
 import cn.leancloud.imkit.LCIMProfilesCallBack;
-import cn.leancloud.imkit.LCIMUserProfile;
 
 /**
  * Created by wli on 15/12/4.
@@ -13,7 +13,7 @@ import cn.leancloud.imkit.LCIMUserProfile;
  */
 public class CustomUserProvider implements LCIMProfileProvider {
 
-  private static List<LCIMUserProfile> partUsers = new ArrayList<LCIMUserProfile>();
+  private static List<LCIMKitUser> partUsers = new ArrayList<LCIMKitUser>();
 
   // 此数据均为 fake，仅供参考
   private static String[] avatarList = new String[] {
@@ -30,15 +30,15 @@ public class CustomUserProvider implements LCIMProfileProvider {
   };
   static {
     for (int i = 0; i < 36; i++) {
-      partUsers.add(new LCIMUserProfile(i + 100 + "", "user_" + i, avatarList[i%10]));
+      partUsers.add(new LCIMKitUser(i + 100 + "", "user_" + i, avatarList[i%10]));
     }
   }
 
   @Override
   public void getProfiles(List<String> list, LCIMProfilesCallBack callBack) {
-    List<LCIMUserProfile> userList = new ArrayList<LCIMUserProfile>();
+    List<LCIMKitUser> userList = new ArrayList<LCIMKitUser>();
     for (String userId : list) {
-      for (LCIMUserProfile user : partUsers) {
+      for (LCIMKitUser user : partUsers) {
         if (user.getUserId().equals(userId)) {
           userList.add(user);
           break;
