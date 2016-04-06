@@ -4,7 +4,7 @@
               android:layout_height="wrap_content"
               android:orientation="horizontal">
 
-    <cn.leanclud.imkit.view.LCIMPlayButton
+    <cn.leancloud.imkit.view.LCIMPlayButton
         android:id="@+id/chat_item_audio_play_btn"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:custom="http://schemas.android.com/apk/res-auto"

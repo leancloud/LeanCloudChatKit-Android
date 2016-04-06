@@ -11,7 +11,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/lcim_chat_horizontal_margin"/>
 
-    <cn.leanclud.imkit.view.LCIMPlayButton
+    <cn.leancloud.imkit.view.LCIMPlayButton
         android:id="@+id/chat_item_audio_play_btn"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:custom="http://schemas.android.com/apk/res-auto"
