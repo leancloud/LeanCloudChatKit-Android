@@ -56,7 +56,7 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
 
   @Override
   public void onInvited(AVIMClient client, AVIMConversation conversation, String operator) {
-//    refreshCacheAndNotify(convwersation);
+    refreshCacheAndNotify(conversation);
   }
 
   private void refreshCacheAndNotify(AVIMConversation conversation) {

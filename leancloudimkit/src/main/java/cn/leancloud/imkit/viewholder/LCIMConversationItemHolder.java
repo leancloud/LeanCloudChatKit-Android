@@ -33,6 +33,7 @@ import cn.leancloud.imkit.R;
 import cn.leancloud.imkit.cache.LCIMConversationItemCache;
 import cn.leancloud.imkit.utils.LCIMConstants;
 import cn.leancloud.imkit.utils.LCIMConversationUtils;
+import cn.leancloud.imkit.utils.LCIMLogUtils;
 
 /**
  * Created by wli on 15/10/8.
@@ -113,7 +114,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
       @Override
       protected void internalDone0(String s, AVException e) {
         if (null != e) {
-          e.printStackTrace();
+          LCIMLogUtils.logException(e);
         } else {
           nameView.setText(s);
         }
@@ -136,8 +137,11 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         LCIMConversationUtils.getConversationPeerIcon(conversation, new AVCallback<String>() {
           @Override
           protected void internalDone0(String s, AVException e) {
-              Picasso.with(getContext()).load(s)
-                .placeholder(R.drawable.lcim_default_avatar_icon).into(avatarView);
+            if (null != e) {
+              LCIMLogUtils.logException(e);
+            }
+            Picasso.with(getContext()).load(s)
+              .placeholder(R.drawable.lcim_default_avatar_icon).into(avatarView);
           }
         });
       }
@@ -173,6 +177,9 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
           conversation.queryMessages(1, new AVIMMessagesQueryCallback() {
             @Override
             public void done(List<AVIMMessage> list, AVIMException e) {
+              if (null != e) {
+                LCIMLogUtils.logException(e);
+              }
               if (null != list && !list.isEmpty()) {
                 updateLastMessage(list.get(0));
               }

@@ -25,6 +25,7 @@ import cn.leancloud.imkit.R;
 import cn.leancloud.imkit.cache.LCIMProfileCache;
 import cn.leancloud.imkit.event.LCIMMessageResendEvent;
 import cn.leancloud.imkit.utils.LCIMConstants;
+import cn.leancloud.imkit.utils.LCIMLogUtils;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -86,7 +87,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
       @Override
       protected void internalDone0(LCIMKitUser userProfile, AVException e) {
         if (null != e) {
-          e.printStackTrace();
+          LCIMLogUtils.logException(e);
         } else if (null != userProfile) {
           nameView.setText(userProfile.getUserName());
           Picasso.with(getContext()).load(userProfile.getAvatarUrl())

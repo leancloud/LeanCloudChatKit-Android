@@ -65,7 +65,7 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
     }
     createTable();
 
-    readDbThread = new HandlerThread("");
+    readDbThread = new HandlerThread("LCIMLocalStorageReadThread");
     readDbThread.start();
     readDbHandler = new Handler(readDbThread.getLooper());
   }
@@ -100,12 +100,14 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    * @param callback 获取后会执行此回调
    */
   public void getIds(final AVCallback<List<String>> callback) {
-    readDbHandler.post(new Runnable() {
-      @Override
-      public void run() {
-        callback.internalDone(getIdsSync(), null);
-      }
-    });
+    if (null != callback) {
+      readDbHandler.post(new Runnable() {
+        @Override
+        public void run() {
+          callback.internalDone(getIdsSync(), null);
+        }
+      });
+    }
   }
 
   /**
@@ -115,13 +117,19 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    * @param ids      需要的获取数据的 key
    * @param callback 获取后会执行此回调
    */
-  public void getDatas(final List<String> ids, final AVCallback<List<String>> callback) {
-    readDbHandler.post(new Runnable() {
-      @Override
-      public void run() {
-        callback.internalDone(getDatasSync(ids), null);
+  public void getData(final List<String> ids, final AVCallback<List<String>> callback) {
+    if (null != callback) {
+      if (null != ids && ids.size() > 0) {
+        readDbHandler.post(new Runnable() {
+          @Override
+          public void run() {
+            callback.internalDone(getDataSync(ids), null);
+          }
+        });
+      } else {
+        callback.internalDone(null, null);
       }
-    });
+    }
   }
 
   /**
@@ -130,13 +138,15 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    * @param idList
    * @param valueList
    */
-  public void insertDatas(final List<String> idList, final List<String> valueList) {
-    readDbHandler.post(new Runnable() {
-      @Override
-      public void run() {
-        insertSync(idList, valueList);
-      }
-    });
+  public void insertData(final List<String> idList, final List<String> valueList) {
+    if (null != idList && null != valueList && idList.size() == valueList.size()) {
+      readDbHandler.post(new Runnable() {
+        @Override
+        public void run() {
+          insertSync(idList, valueList);
+        }
+      });
+    }
   }
 
   /**
@@ -146,7 +156,9 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    * @param value
    */
   public void insertData(String id, String value) {
-    insertDatas(Arrays.asList(id), Arrays.asList(value));
+    if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(value)) {
+      insertData(Arrays.asList(id), Arrays.asList(value));
+    }
   }
 
   /**
@@ -154,13 +166,15 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    *
    * @param ids
    */
-  public void deleteDatas(final List<String> ids) {
-    readDbHandler.post(new Runnable() {
-      @Override
-      public void run() {
-        deleteSync(ids);
-      }
-    });
+  public void deleteData(final List<String> ids) {
+    if (null != ids && !ids.isEmpty()) {
+      readDbHandler.post(new Runnable() {
+        @Override
+        public void run() {
+          deleteSync(ids);
+        }
+      });
+    }
   }
 
   /**
@@ -182,7 +196,7 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    * 获取数据，此为同步方法
    * 注意：并不保证回调 data 与 id 顺序一致
    */
-  private List<String> getDatasSync(List<String> ids) {
+  private List<String> getDataSync(List<String> ids) {
     String queryString = "SELECT * FROM " + tableName;
     if (null != ids && !ids.isEmpty()) {
       queryString += (" WHERE " + TABLE_KEY_ID + " in ('" + AVUtils.joinCollection(ids, "','") + "')");

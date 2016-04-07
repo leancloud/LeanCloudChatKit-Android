@@ -71,11 +71,9 @@ public class LCIMProfileCache {
     getCachedUsers(Arrays.asList(id), new AVCallback<List<LCIMKitUser>>() {
       @Override
       protected void internalDone0(List<LCIMKitUser> lcimUserProfiles, AVException e) {
-        if (null != lcimUserProfiles && !lcimUserProfiles.isEmpty()) {
-          callback.internalDone(lcimUserProfiles.get(0), e);
-        } else {
-          callback.internalDone(null, e);
-        }
+        LCIMKitUser lcimKitUser =
+          (null != lcimUserProfiles && !lcimUserProfiles.isEmpty() ? lcimUserProfiles.get(0) : null);
+        callback.internalDone(lcimKitUser, e);
       }
     });
   }
@@ -106,7 +104,7 @@ public class LCIMProfileCache {
         if (unCachedIdList.isEmpty()) {
           callback.internalDone(profileList, null);
         } else if (null != profileDBHelper) {
-          profileDBHelper.getDatas(idList, new AVCallback<List<String>>() {
+          profileDBHelper.getData(idList, new AVCallback<List<String>>() {
             @Override
             protected void internalDone0(List<String> strings, AVException e) {
               if (null != strings && !strings.isEmpty() && strings.size() == unCachedIdList.size()) {
@@ -148,7 +146,7 @@ public class LCIMProfileCache {
             }
           }
           profileList.addAll(userList);
-          callback.internalDone(profileList, new AVException(e));
+          callback.internalDone(profileList, null != e ? new AVException(e) : null);
         }
       });
     } else {
@@ -165,12 +163,9 @@ public class LCIMProfileCache {
   public void getUserName(String id, final AVCallback<String> callback) {
     getCachedUser(id, new AVCallback<LCIMKitUser>() {
       @Override
-      protected void internalDone0(LCIMKitUser lcimUserProfile, AVException e) {
-        if (null != e) {
-          callback.internalDone(null, e);
-        } else {
-          callback.internalDone(lcimUserProfile.getUserName(), null);
-        }
+      protected void internalDone0(LCIMKitUser userProfile, AVException e) {
+        String userName = (null != userProfile ? userProfile.getUserName() : null);
+        callback.internalDone(userName, e);
       }
     });
   }
@@ -185,11 +180,8 @@ public class LCIMProfileCache {
     getCachedUser(id, new AVCallback<LCIMKitUser>() {
       @Override
       protected void internalDone0(LCIMKitUser userProfile, AVException e) {
-        if (null != e) {
-          callback.internalDone(null, e);
-        } else {
-          callback.internalDone(userProfile.getAvatarUrl(), null);
-        }
+        String avatarUrl = (null != userProfile ? userProfile.getAvatarUrl() : null);
+        callback.internalDone(avatarUrl, e);
       }
     });
   }

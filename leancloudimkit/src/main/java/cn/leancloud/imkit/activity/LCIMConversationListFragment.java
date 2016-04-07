@@ -70,10 +70,17 @@ public class LCIMConversationListFragment extends Fragment {
     EventBus.getDefault().unregister(this);
   }
 
+  /**
+   * 收到对方消息时响应此事件
+   * @param event
+   */
   public void onEvent(LCIMIMTypeMessageEvent event) {
     updateConversationList();
   }
 
+  /**
+   * 刷新页面
+   */
   private void updateConversationList() {
     List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
     List<AVIMConversation> conversationList = new ArrayList<>();
@@ -85,6 +92,11 @@ public class LCIMConversationListFragment extends Fragment {
     itemAdapter.notifyDataSetChanged();
   }
 
+  /**
+   * 离线消息数量发生变化是响应此事件
+   * 避免登陆后先进入此页面，然后才收到离线消息数量的通知导致的页面不刷新的问题
+   * @param updateEvent
+   */
   public void onEvent(LCIMOfflineMessageCountChangeEvent updateEvent) {
     updateConversationList();
   }

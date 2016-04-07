@@ -50,10 +50,12 @@ public class LCIMConversationUtils {
           @Override
           protected void internalDone0(List<LCIMKitUser> lcimUserProfiles, AVException e) {
             List<String> nameList = new ArrayList<String>();
-            for (LCIMKitUser userProfile : lcimUserProfiles) {
-              nameList.add(userProfile.getUserName());
+            if (null != lcimUserProfiles) {
+              for (LCIMKitUser userProfile : lcimUserProfiles) {
+                nameList.add(userProfile.getUserName());
+              }
             }
-            callback.internalDone(TextUtils.join(",", nameList), null);
+            callback.internalDone(TextUtils.join(",", nameList), e);
           }
         });
       }

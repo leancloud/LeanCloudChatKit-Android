@@ -2,6 +2,8 @@ package cn.leancloud.imkit.cache;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.leancloud.imkit.utils.LCIMLogUtils;
+
 /**
  * Created by wli on 16/3/8.
  * 会话 item，包含三个属性，ConversatoinId，unreadCount，updateTime
@@ -38,7 +40,7 @@ class LCIMConversationItem implements Comparable {
       item.unreadCount = jsonObject.getInteger(ITEM_KEY_UNREADCOUNT);
       item.updateTime = jsonObject.getLong(ITEM_KEY_UNDATE_TIME);
     } catch (Exception e) {
-      e.printStackTrace();
+      LCIMLogUtils.logException(e);
     }
     return item;
   }

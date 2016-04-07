@@ -19,6 +19,7 @@ import cn.leancloud.imkit.LCIMKit;
 import cn.leancloud.imkit.cache.LCIMConversationItemCache;
 import cn.leancloud.imkit.utils.LCIMConstants;
 import cn.leancloud.imkit.utils.LCIMConversationUtils;
+import cn.leancloud.imkit.utils.LCIMLogUtils;
 
 /**
  * Created by wli on 16/2/29.
@@ -103,7 +104,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
         @Override
         protected void internalDone0(String s, AVException e) {
           if (null != e) {
-            e.printStackTrace();
+            LCIMLogUtils.logException(e);
           } else {
             initActionBar(s);
           }
@@ -113,8 +114,8 @@ public class LCIMConversationActivity extends AppCompatActivity {
   }
 
   /**
-   * 获取 conversation，为了避免重复的创建，此处先 query 是否已经存在只包含该 member 的 conversation
-   * 如果存在，则直接赋值给 ChatFragment，否者创建后再赋值
+   * 获取 conversation
+   * 为了避免重复的创建，createConversation 参数 isUnique 设为 true·
    */
   protected void getConversation(final String memberId) {
     LCIMKit.getInstance().getClient().createConversation(

@@ -1,6 +1,7 @@
 package cn.leancloud.imkit.cache;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
@@ -56,58 +57,68 @@ public class LCIMConversationItemCache {
    * 此处的消息未读数量仅仅指的是本机的未读消息数量，并没有存储到 server 端
    * 在收到消息时消息未读数量 + 1
    *
-   * @param convid
+   * @param convid 不能为空
    */
   public void increaseUnreadCount(String convid) {
-    increaseUnreadCount(convid, 1);
+    if (!TextUtils.isEmpty(convid)) {
+      increaseUnreadCount(convid, 1);
+    }
   }
 
   /**
    * 在原来的基础增加未读的消息数量
    *
-   * @param convId
-   * @param increment
+   * @param convId 不能为空
+   * @param increment 必须要大于 0
    */
   public synchronized void increaseUnreadCount(String convId, int increment) {
-    LCIMConversationItem conversationItem = getConversationItemFromMap(convId);
-    conversationItem.unreadCount += increment;
-    syncToCache(conversationItem);
+    if (!TextUtils.isEmpty(convId) && increment > 0) {
+      LCIMConversationItem conversationItem = getConversationItemFromMap(convId);
+      conversationItem.unreadCount += increment;
+      syncToCache(conversationItem);
+    }
   }
 
   /**
    * 清空未读的消息数量
    *
-   * @param conviId
+   * @param convid 不能为空
    */
-  public synchronized void clearUnread(String conviId) {
-    LCIMConversationItem unreadCountItem = getConversationItemFromMap(conviId);
-    unreadCountItem.unreadCount = 0;
-    syncToCache(unreadCountItem);
+  public synchronized void clearUnread(String convid) {
+    if (!TextUtils.isEmpty(convid)) {
+      LCIMConversationItem unreadCountItem = getConversationItemFromMap(convid);
+      unreadCountItem.unreadCount = 0;
+      syncToCache(unreadCountItem);
+    }
   }
 
   /**
    * 删除该 Conversation 未读数量的缓存
    *
-   * @param convid
+   * @param convid 不能为空
    */
   public synchronized void deleteConversation(String convid) {
-    conversationItemMap.remove(convid);
-    conversationItemDBHelper.deleteDatas(Arrays.asList(convid));
+    if (!TextUtils.isEmpty(convid)) {
+      conversationItemMap.remove(convid);
+      conversationItemDBHelper.deleteData(Arrays.asList(convid));
+    }
   }
 
   /**
    * 缓存该 Conversastoin，默认未读数量为 0
    *
-   * @param convId
+   * @param convId 不能为空
    */
   public synchronized void insertConversation(String convId) {
-    syncToCache(getConversationItemFromMap(convId));
+    if (!TextUtils.isEmpty(convId)) {
+      syncToCache(getConversationItemFromMap(convId));
+    }
   }
 
   /**
    * 获取该 Conversation 的未读数量
    *
-   * @param convId
+   * @param convId 不能为空
    * @return
    */
   public synchronized int getUnreadCount(String convId) {
@@ -136,14 +147,16 @@ public class LCIMConversationItemCache {
     conversationItemDBHelper.getIds(new AVCallback<List<String>>() {
       @Override
       protected void internalDone0(final List<String> idList, AVException e) {
-        conversationItemDBHelper.getDatas(idList, new AVCallback<List<String>>() {
+        conversationItemDBHelper.getData(idList, new AVCallback<List<String>>() {
           @Override
           protected void internalDone0(final List<String> dataList, AVException e) {
-            for (int i = 0; i < dataList.size(); i++) {
-              LCIMConversationItem conversationItem = LCIMConversationItem.fromJsonString(dataList.get(i));
-              conversationItemMap.put(conversationItem.conversationId, conversationItem);
+            if (null != dataList) {
+              for (int i = 0; i < dataList.size(); i++) {
+                LCIMConversationItem conversationItem = LCIMConversationItem.fromJsonString(dataList.get(i));
+                conversationItemMap.put(conversationItem.conversationId, conversationItem);
+              }
             }
-            callback.internalDone(null);
+            callback.internalDone(e);
           }
         });
       }
@@ -151,7 +164,7 @@ public class LCIMConversationItemCache {
   }
 
   /**
-   * 从 map 中获取 ConversationItem，如缓存中没有，则 new 一个新实力返回
+   * 从 map 中获取 ConversationItem，如缓存中没有，则 new 一个新实例返回
    *
    * @param convId
    * @return

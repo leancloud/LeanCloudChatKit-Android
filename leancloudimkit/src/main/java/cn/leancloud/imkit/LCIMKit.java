@@ -13,6 +13,8 @@ import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 
+import java.util.IllegalFormatCodePointException;
+
 import cn.leancloud.imkit.cache.LCIMConversationItemCache;
 import cn.leancloud.imkit.cache.LCIMProfileCache;
 import cn.leancloud.imkit.handler.LCIMClientEventHandler;
@@ -27,7 +29,7 @@ public final class LCIMKit {
 
   private static LCIMKit lcimKit;
   private LCIMProfileProvider profileProvider;
-  private String currentClientId;
+  private String currentUserId;
 
   private LCIMKit() {
   }
@@ -54,7 +56,6 @@ public final class LCIMKit {
       throw new IllegalArgumentException("appKey can not be empty!");
     }
 
-    AVOSCloud.setDebugLogEnabled(true);
     AVOSCloud.initialize(context.getApplicationContext(), appId, appKey);
 
     // 消息处理 handler
@@ -100,17 +101,24 @@ public final class LCIMKit {
   /**
    * 开启实时聊天
    *
-   * @param clientId
+   * @param userId
    * @param callback
    */
-  public void open(final String clientId, final AVIMClientCallback callback) {
-    AVIMClient.getInstance(clientId).open(new AVIMClientCallback() {
+  public void open(final String userId, final AVIMClientCallback callback) {
+    if (TextUtils.isEmpty(userId)) {
+      throw new IllegalArgumentException("userId can not be empty!");
+    }
+    if (null == callback) {
+      throw new IllegalArgumentException("callback can not be null!");
+    }
+
+    AVIMClient.getInstance(userId).open(new AVIMClientCallback() {
       @Override
       public void done(final AVIMClient avimClient, AVIMException e) {
         if (null == e) {
-          currentClientId = clientId;
-          LCIMProfileCache.getInstance().initDB(AVOSCloud.applicationContext, clientId);
-          LCIMConversationItemCache.getInstance().initDB(AVOSCloud.applicationContext, clientId, new AVCallback() {
+          currentUserId = userId;
+          LCIMProfileCache.getInstance().initDB(AVOSCloud.applicationContext, userId);
+          LCIMConversationItemCache.getInstance().initDB(AVOSCloud.applicationContext, userId, new AVCallback() {
             @Override
             protected void internalDone0(Object o, AVException e) {
               callback.internalDone(avimClient, e);
@@ -129,11 +137,13 @@ public final class LCIMKit {
    * @param callback
    */
   public void close(final AVIMClientCallback callback) {
-    AVIMClient.getInstance(currentClientId).close(new AVIMClientCallback() {
+    AVIMClient.getInstance(currentUserId).close(new AVIMClientCallback() {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
-        currentClientId = null;
-        callback.internalDone(avimClient, e);
+        currentUserId = null;
+        if (null != callback) {
+          callback.internalDone(avimClient, e);
+        }
       }
     });
   }
@@ -144,7 +154,7 @@ public final class LCIMKit {
    * @return
    */
   public String getCurrentUserId() {
-    return currentClientId;
+    return currentUserId;
   }
 
   /**
@@ -153,8 +163,8 @@ public final class LCIMKit {
    * @return
    */
   public AVIMClient getClient() {
-    if (!TextUtils.isEmpty(currentClientId)) {
-      return AVIMClient.getInstance(currentClientId);
+    if (!TextUtils.isEmpty(currentUserId)) {
+      return AVIMClient.getInstance(currentUserId);
     }
     return null;
   }

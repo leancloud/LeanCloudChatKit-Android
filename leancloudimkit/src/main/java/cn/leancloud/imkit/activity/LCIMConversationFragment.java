@@ -39,6 +39,7 @@ import cn.leancloud.imkit.event.LCIMInputBottomBarEvent;
 import cn.leancloud.imkit.event.LCIMInputBottomBarRecordEvent;
 import cn.leancloud.imkit.event.LCIMInputBottomBarTextEvent;
 import cn.leancloud.imkit.event.LCIMMessageResendEvent;
+import cn.leancloud.imkit.utils.LCIMLogUtils;
 import cn.leancloud.imkit.utils.LCIMNotificationUtils;
 import cn.leancloud.imkit.utils.LCIMPathUtils;
 import cn.leancloud.imkit.view.LCIMInputBottomBar;
@@ -156,6 +157,9 @@ public class LCIMConversationFragment extends Fragment {
         conversation.fetchInfoInBackground(new AVIMConversationCallback() {
           @Override
           public void done(AVIMException e) {
+            if (null != e) {
+              LCIMLogUtils.logException(e);
+            }
             itemAdapter.showUserName(conversation.getMembers().size() > 2);
           }
         });
@@ -218,13 +222,7 @@ public class LCIMConversationFragment extends Fragment {
       null != resendEvent.message && imConversation.getConversationId().equals(resendEvent.message.getConversationId())) {
       if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == resendEvent.message.getMessageStatus()
         && imConversation.getConversationId().equals(resendEvent.message.getConversationId())) {
-        imConversation.sendMessage(resendEvent.message, new AVIMConversationCallback() {
-          @Override
-          public void done(AVIMException e) {
-            itemAdapter.notifyDataSetChanged();
-          }
-        });
-        itemAdapter.notifyDataSetChanged();
+        sendMessage(resendEvent.message);
       }
     }
   }
@@ -352,7 +350,7 @@ public class LCIMConversationFragment extends Fragment {
     try {
       sendMessage(new AVIMImageMessage(imagePath));
     } catch (IOException e) {
-      e.printStackTrace();
+      LCIMLogUtils.logException(e);
     }
   }
 
@@ -366,7 +364,7 @@ public class LCIMConversationFragment extends Fragment {
       AVIMAudioMessage audioMessage = new AVIMAudioMessage(audioPath);
       sendMessage(audioMessage);
     } catch (IOException e) {
-      e.printStackTrace();
+      LCIMLogUtils.logException(e);
     }
   }
 
@@ -375,7 +373,7 @@ public class LCIMConversationFragment extends Fragment {
    *
    * @param message
    */
-  public void sendMessage(AVIMTypedMessage message) {
+  public void sendMessage(AVIMMessage message) {
     itemAdapter.addMessage(message);
     itemAdapter.notifyDataSetChanged();
     scrollToBottom();
@@ -383,13 +381,16 @@ public class LCIMConversationFragment extends Fragment {
       @Override
       public void done(AVIMException e) {
         itemAdapter.notifyDataSetChanged();
+        if (null != e) {
+          LCIMLogUtils.logException(e);
+        }
       }
     });
   }
 
   private boolean filterException(Exception e) {
     if (null != e) {
-      e.printStackTrace();
+      LCIMLogUtils.logException(e);
       Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
     }
     return (null == e);

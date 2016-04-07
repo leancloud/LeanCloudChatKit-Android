@@ -23,14 +23,18 @@ import java.io.File;
 import java.io.IOException;
 
 import cn.leancloud.imkit.R;
+import cn.leancloud.imkit.utils.LCIMLogUtils;
 
 
+/**
+ * 录音的按钮
+ */
 public class LCIMRecordButton extends Button {
   public static final int BACK_RECORDING = R.drawable.lcim_chat_voice_bg_pressed;
   public static final int BACK_IDLE = R.drawable.lcim_chat_voice_bg;
   public static final int SLIDE_UP_TO_CANCEL = 0;
   public static final int RELEASE_TO_CANCEL = 1;
-  private static final int MIN_INTERVAL_TIME = 1000;// 2s
+  private static final int MIN_INTERVAL_TIME = 1000;
   private static int[] recordImageIds = {R.drawable.lcim_record_icon_voice0,
     R.drawable.lcim_record_icon_voice1, R.drawable.lcim_record_icon_voice2,
     R.drawable.lcim_record_icon_voice3, R.drawable.lcim_record_icon_voice4,
@@ -205,7 +209,7 @@ public class LCIMRecordButton extends Button {
       thread.start();
       recordEventListener.onStartRecord();
     } catch (IOException e) {
-      e.printStackTrace();
+      LCIMLogUtils.logException(e);
     }
   }
 
@@ -244,7 +248,7 @@ public class LCIMRecordButton extends Button {
         try {
           Thread.sleep(200);
         } catch (InterruptedException e) {
-          e.printStackTrace();
+          LCIMLogUtils.logException(e);
         }
         if (recorder == null || !running) {
           break;
@@ -266,7 +270,6 @@ public class LCIMRecordButton extends Button {
     @Override
     public void handleMessage(Message msg) {
       imageView.setImageResource(recordImageIds[msg.what]);
-      //imageView.setImageResource(recordImageIds[5]);
     }
   }
 }

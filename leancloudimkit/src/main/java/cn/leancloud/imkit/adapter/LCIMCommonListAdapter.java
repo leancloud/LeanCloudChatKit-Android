@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.leancloud.imkit.utils.LCIMLogUtils;
 import cn.leancloud.imkit.viewholder.LCIMCommonViewHolder;
 
 /**
@@ -65,7 +66,7 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
       try {
         throw new IllegalArgumentException("please use CommonListAdapter(Class<VH> vhClass)");
       } catch (Exception e) {
-        e.printStackTrace();
+        LCIMLogUtils.logException(e);
       }
     }
 
@@ -77,9 +78,9 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
         creator = (LCIMCommonViewHolder.ViewHolderCreator) vhClass.getField("HOLDER_CREATOR").get(null);
         creatorHashMap.put(vhClass.getName(), creator);
       } catch (IllegalAccessException e) {
-        e.printStackTrace();
+        LCIMLogUtils.logException(e);
       } catch (NoSuchFieldException e) {
-        e.printStackTrace();
+        LCIMLogUtils.logException(e);
       }
     }
     if (null != creator) {

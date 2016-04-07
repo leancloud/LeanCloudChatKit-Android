@@ -18,6 +18,7 @@ import cn.leancloud.imkit.cache.LCIMConversationItemCache;
 import cn.leancloud.imkit.cache.LCIMProfileCache;
 import cn.leancloud.imkit.event.LCIMIMTypeMessageEvent;
 import cn.leancloud.imkit.utils.LCIMConstants;
+import cn.leancloud.imkit.utils.LCIMLogUtils;
 import cn.leancloud.imkit.utils.LCIMNotificationUtils;
 import de.greenrobot.event.EventBus;
 
@@ -38,12 +39,12 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
   @Override
   public void onMessage(AVIMTypedMessage message, AVIMConversation conversation, AVIMClient client) {
     if (message == null || message.getMessageId() == null) {
-//      LogUtils.d("may be SDK Bug, message or message id is null");
+      LCIMLogUtils.d("may be SDK Bug, message or message id is null");
       return;
     }
 
     if (LCIMKit.getInstance().getCurrentUserId() == null) {
-//      LogUtils.d("selfId is null, please call setupManagerWithUserId ");
+      LCIMLogUtils.d("selfId is null, please call LCIMKit.open!");
       client.close(null);
     } else {
       if (!client.getClientId().equals(LCIMKit.getInstance().getCurrentUserId())) {
@@ -80,6 +81,7 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
     EventBus.getDefault().post(event);
   }
 
+  //TODO
   private void sendNotification(final AVIMTypedMessage message, final AVIMConversation conversation) {
     if (null != conversation && null != message) {
       final String notificationContent = message instanceof AVIMTextMessage ?
@@ -88,7 +90,7 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
         @Override
         protected void internalDone0(LCIMKitUser userProfile, AVException e) {
           if (e != null) {
-            e.printStackTrace();
+            LCIMLogUtils.logException(e);
           } else if (null != userProfile) {
             String title = userProfile.getUserName();
             Intent intent = new Intent();
