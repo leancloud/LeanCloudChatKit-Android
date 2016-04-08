@@ -2,6 +2,8 @@ package cn.leancloud.imkitapplication;
 
 import android.app.Application;
 
+import com.avos.avoscloud.AVOSCloud;
+
 import cn.leancloud.imkit.LCIMKit;
 
 /**
@@ -10,13 +12,14 @@ import cn.leancloud.imkit.LCIMKit;
 public class App extends Application {
 
   // 此 id 与 key 仅供测试使用
-  private final String APP_ID = "683jigxkqb10jrirelvd9vcn9ywbq2o436lfz1kngsvigm27";
-  private final String APP_KEY = "ualzl8f8pxmryous77m3gf2z0dyhrhk6xdb7zkiu6flc0jxy";
+  private final String APP_ID = "dYRQ8YfHRiILshUnfFJu2eQM-gzGzoHsz";
+  private final String APP_KEY = "ye24iIK6ys8IvaISMC4Bs5WK";
 
   @Override
   public void onCreate() {
     super.onCreate();
-    LCIMKit.getInstance().setProfileProvider(new CustomUserProvider());
+    LCIMKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
+    AVOSCloud.setDebugLogEnabled(true);
     LCIMKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY);
   }
 }

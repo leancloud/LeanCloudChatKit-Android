@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="cn.leancloud.imkitapplication.MainActivity"/>
+        <activity android:name="cn.leancloud.imkitapplication.MainActivity"
+                  android:theme="@style/LCIMActivity.NoActionBar"/>
     </application>
 
 </manifest>

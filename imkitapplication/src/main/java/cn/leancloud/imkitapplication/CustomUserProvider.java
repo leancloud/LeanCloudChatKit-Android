@@ -13,6 +13,18 @@ import cn.leancloud.imkit.LCIMProfilesCallBack;
  */
 public class CustomUserProvider implements LCIMProfileProvider {
 
+  private static CustomUserProvider customUserProvider;
+
+  public synchronized static CustomUserProvider getInstance() {
+    if (null == customUserProvider) {
+      customUserProvider = new CustomUserProvider();
+    }
+    return customUserProvider;
+  }
+
+  private CustomUserProvider() {
+  }
+
   private static List<LCIMKitUser> partUsers = new ArrayList<LCIMKitUser>();
 
   // 此数据均为 fake，仅供参考
@@ -46,5 +58,9 @@ public class CustomUserProvider implements LCIMProfileProvider {
       }
     }
     callBack.done(userList, null);
+  }
+
+  public List<LCIMKitUser> getAllUsers() {
+    return partUsers;
   }
 }
