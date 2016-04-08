@@ -2,12 +2,18 @@ package cn.leancloud.imkit.utils;
 
 import android.util.Log;
 
+import com.avos.avoscloud.AVOSCloud;
+
 /**
  * Created by wli on 16/4/6.
  */
 public class LCIMLogUtils {
   public static final String LOGTAG = "LCIMKit";
   public static boolean debugEnabled = false;
+
+  static {
+    debugEnabled = AVOSCloud.isDebugLogEnabled();
+  }
 
   public LCIMLogUtils() {
   }

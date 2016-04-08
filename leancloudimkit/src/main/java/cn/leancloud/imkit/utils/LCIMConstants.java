@@ -39,7 +39,5 @@ public class LCIMConstants {
   public static final String IMAGE_LOCAL_PATH = getPrefixConstant("image_local_path");
   public static final String IMAGE_URL = getPrefixConstant("image_url");
 
-  //Notification
-  public static final String NOTOFICATION_TAG = getPrefixConstant("notification_tag");
-  public static final String NOTIFICATION_SYSTEM = getPrefixConstant("notification_system_chat");
+  public static final String CHAT_NOTIFICATION_ACTION = getPrefixConstant("chat_notification_action");
 }

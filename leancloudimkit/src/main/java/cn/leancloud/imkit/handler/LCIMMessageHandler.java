@@ -81,7 +81,6 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
     EventBus.getDefault().post(event);
   }
 
-  //TODO
   private void sendNotification(final AVIMTypedMessage message, final AVIMConversation conversation) {
     if (null != conversation && null != message) {
       final String notificationContent = message instanceof AVIMTextMessage ?
@@ -93,14 +92,28 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
             LCIMLogUtils.logException(e);
           } else if (null != userProfile) {
             String title = userProfile.getUserName();
-            Intent intent = new Intent();
-            intent.setAction("com.avoscloud.chat.intent.clinotification");
-            intent.putExtra(LCIMConstants.CONVERSATION_ID, conversation.getConversationId());
-            intent.putExtra(LCIMConstants.PEER_ID, message.getFrom());
+            Intent intent = getIMNotificationIntent(conversation.getConversationId(), message.getFrom());
             LCIMNotificationUtils.showNotification(context, title, notificationContent, null, intent);
           }
         }
       });
     }
+  }
+
+  /**
+   * 点击 notification 触发的 Intent
+   * 注意要设置 package 已经 Category，避免多 app 同时引用 lib 造成消息干扰
+   * @param conversationId
+   * @param peerId
+   * @return
+   */
+  private Intent getIMNotificationIntent(String conversationId, String peerId) {
+    Intent intent = new Intent();
+    intent.setAction(LCIMConstants.CHAT_NOTIFICATION_ACTION);
+    intent.putExtra(LCIMConstants.CONVERSATION_ID, conversationId);
+    intent.putExtra(LCIMConstants.PEER_ID, peerId);
+    intent.setPackage(context.getPackageName());
+    intent.addCategory(Intent.CATEGORY_DEFAULT);
+    return intent;
   }
 }
