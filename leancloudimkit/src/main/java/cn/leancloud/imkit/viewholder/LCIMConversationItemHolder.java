@@ -69,12 +69,16 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
     reset();
     final AVIMConversation conversation = (AVIMConversation) o;
     if (null != conversation) {
-      if (TextUtils.isEmpty(conversation.getCreator())) {
+      if (null == conversation.getCreatedAt()) {
         conversation.fetchInfoInBackground(new AVIMConversationCallback() {
           @Override
           public void done(AVIMException e) {
-            updateName(conversation);
-            updateIcon(conversation);
+            if (e != null) {
+              LCIMLogUtils.logException(e);
+            } else {
+              updateName(conversation);
+              updateIcon(conversation);
+            }
           }
         });
       } else {
