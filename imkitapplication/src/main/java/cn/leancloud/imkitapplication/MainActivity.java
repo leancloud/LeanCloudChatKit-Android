@@ -1,5 +1,6 @@
 package cn.leancloud.imkitapplication;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,12 +9,24 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.leancloud.imkit.LCIMKit;
+import cn.leancloud.imkit.LCIMKitUser;
+import cn.leancloud.imkit.activity.LCIMConversationActivity;
 import cn.leancloud.imkit.activity.LCIMConversationListFragment;
+import cn.leancloud.imkit.utils.LCIMConstants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +55,21 @@ public class MainActivity extends AppCompatActivity {
     setTitle(R.string.app_name);
     setSupportActionBar(toolbar);
     initTabLayout();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_square, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    int menuId = item.getItemId();
+    if (menuId == R.id.menu_square_members) {
+      gotoSquareConversation();
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   private void initTabLayout() {
@@ -115,22 +143,20 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-
-//  /**
-//   * 用来测试群组聊天，输入时把 id 用逗号隔开就可以
-//   * @param content
-//   */
-//  private void gotoGroupConversation(String content) {
-//    List<String> idList = new ArrayList<>();
-//    idList.addAll(Arrays.asList(TextUtils.split(content, ",")));
-//    LCIMKit.getInstance().getClient().createConversation(
-//      idList, "", null, false, true, new AVIMConversationCreatedCallback() {
-//        @Override
-//        public void done(AVIMConversation avimConversation, AVIMException e) {
-//          Intent intent = new Intent(MainActivity.this, LCIMConversationActivity.class);
-//          intent.putExtra(LCIMConstants.CONVERSATION_ID, avimConversation.getConversationId());
-//          startActivity(intent);
-//        }
-//      });
-//  }
+  private void gotoSquareConversation() {
+    List<LCIMKitUser> userList = CustomUserProvider.getInstance().getAllUsers();
+    List<String> idList = new ArrayList<>();
+    for (LCIMKitUser user : userList) {
+      idList.add(user.getUserId());
+    }
+    LCIMKit.getInstance().getClient().createConversation(
+      idList, "", null, false, true, new AVIMConversationCreatedCallback() {
+        @Override
+        public void done(AVIMConversation avimConversation, AVIMException e) {
+          Intent intent = new Intent(MainActivity.this, LCIMConversationActivity.class);
+          intent.putExtra(LCIMConstants.CONVERSATION_ID, avimConversation.getConversationId());
+          startActivity(intent);
+        }
+      });
+  }
 }
