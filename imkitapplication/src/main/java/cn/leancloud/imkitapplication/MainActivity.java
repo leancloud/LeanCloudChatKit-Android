@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -150,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
       idList.add(user.getUserId());
     }
     LCIMKit.getInstance().getClient().createConversation(
-      idList, "", null, false, true, new AVIMConversationCreatedCallback() {
+      idList, getString(R.string.square), null, false, true, new AVIMConversationCreatedCallback() {
         @Override
         public void done(AVIMConversation avimConversation, AVIMException e) {
           Intent intent = new Intent(MainActivity.this, LCIMConversationActivity.class);

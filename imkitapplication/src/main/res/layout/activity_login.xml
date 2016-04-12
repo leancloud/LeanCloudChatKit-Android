@@ -13,6 +13,7 @@
         android:textColor="@color/lcim_common_gray"
         android:maxLength="50"
         android:paddingLeft="30dp"
+        android:text="Tom"
         android:gravity="center_vertical"
         android:singleLine="true"/>
 
