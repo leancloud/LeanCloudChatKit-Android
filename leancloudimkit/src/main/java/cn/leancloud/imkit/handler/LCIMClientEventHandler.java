@@ -4,6 +4,7 @@ import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMClientEventHandler;
 
 import cn.leancloud.imkit.event.LCIMConnectionChangeEvent;
+import cn.leancloud.imkit.utils.LCIMLogUtils;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -54,5 +55,6 @@ public class LCIMClientEventHandler extends AVIMClientEventHandler {
 
   @Override
   public void onClientOffline(AVIMClient avimClient, int i) {
+    LCIMLogUtils.d("client " + avimClient.getClientId() + " is offline!");
   }
 }
