@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.leanclud.imkitapplication" >
+    package="cn.leancloud.imkitapplication" >
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/lcim_imkit_name"
-        android:name=".App"
-        android:theme="@style/AppTheme" >
+        android:name="cn.leancloud.imkitapplication.App"
+        android:theme="@style/LCIMKitTheme" >
         <activity
-            android:name=".LoginActivity"
+            android:name="cn.leancloud.imkitapplication.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"/>
+        <activity android:name="cn.leancloud.imkitapplication.MainActivity"
+                  android:theme="@style/LCIMActivity.NoActionBar"/>
     </application>
 
 </manifest>

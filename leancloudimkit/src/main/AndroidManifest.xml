@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cn.leanclud.imkit">
+          package="cn.leancloud.imkit">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -10,18 +10,17 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <application android:allowBackup="true"
-                 android:label="@string/lcim_imkit_name">
+    <application>
 
-        <activity android:name=".activity.LCIMConversationActivity"
+        <activity android:name="cn.leancloud.imkit.activity.LCIMConversationActivity"
             android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="cn.leanclud.imkit.conversation_item_click_action"/>
+                <action android:name="cn.leancloud.imkit.conversation_item_click_action"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.LCIMImageActivity"/>
+        <activity android:name="cn.leancloud.imkit.activity.LCIMImageActivity"/>
 
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
             <intent-filter>

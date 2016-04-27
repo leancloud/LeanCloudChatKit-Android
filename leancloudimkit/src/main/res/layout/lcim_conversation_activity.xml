@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragment_chat"
-        android:name="cn.leanclud.imkit.activity.LCIMConversationFragment"
+        android:name="cn.leancloud.imkit.activity.LCIMConversationFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

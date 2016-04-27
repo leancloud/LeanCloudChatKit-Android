@@ -11,11 +11,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lcim_bottom_bar_height"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/lcim_bottom_bar_height"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/chatBottomLeftLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical">
