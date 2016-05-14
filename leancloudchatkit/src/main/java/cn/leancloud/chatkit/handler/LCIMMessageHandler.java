@@ -11,8 +11,8 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
-import cn.leancloud.chatkit.LCIMKit;
-import cn.leancloud.chatkit.LCIMKitUser;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.LCChatKitUser;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
 import cn.leancloud.chatkit.cache.LCIMProfileCache;
@@ -43,11 +43,11 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
       return;
     }
 
-    if (LCIMKit.getInstance().getCurrentUserId() == null) {
-      LCIMLogUtils.d("selfId is null, please call LCIMKit.open!");
+    if (LCChatKit.getInstance().getCurrentUserId() == null) {
+      LCIMLogUtils.d("selfId is null, please call LCChatKit.open!");
       client.close(null);
     } else {
-      if (!client.getClientId().equals(LCIMKit.getInstance().getCurrentUserId())) {
+      if (!client.getClientId().equals(LCChatKit.getInstance().getCurrentUserId())) {
         client.close(null);
       } else {
         if (!message.getFrom().equals(client.getClientId())) {
@@ -85,9 +85,9 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
     if (null != conversation && null != message) {
       final String notificationContent = message instanceof AVIMTextMessage ?
         ((AVIMTextMessage) message).getText() : context.getString(R.string.lcim_unspport_message_type);
-      LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCIMKitUser>() {
+      LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCChatKitUser>() {
         @Override
-        protected void internalDone0(LCIMKitUser userProfile, AVException e) {
+        protected void internalDone0(LCChatKitUser userProfile, AVException e) {
           if (e != null) {
             LCIMLogUtils.logException(e);
           } else if (null != userProfile) {

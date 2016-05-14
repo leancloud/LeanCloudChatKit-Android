@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.avos.avoscloud.AVOSCloud;
 
-import cn.leancloud.chatkit.LCIMKit;
+import cn.leancloud.chatkit.LCChatKit;
 
 /**
  * Created by wli on 16/2/24.
@@ -18,8 +18,8 @@ public class App extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    LCIMKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
+    LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
     AVOSCloud.setDebugLogEnabled(true);
-    LCIMKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY);
+    LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY);
   }
 }

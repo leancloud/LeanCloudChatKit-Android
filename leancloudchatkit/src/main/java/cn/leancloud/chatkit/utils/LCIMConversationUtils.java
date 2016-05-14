@@ -9,8 +9,8 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.leancloud.chatkit.LCIMKit;
-import cn.leancloud.chatkit.LCIMKitUser;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.LCChatKitUser;
 import cn.leancloud.chatkit.cache.LCIMProfileCache;
 
 /**
@@ -46,12 +46,12 @@ public class LCIMConversationUtils {
       if (!TextUtils.isEmpty(conversation.getName())) {
         callback.internalDone(conversation.getName(), null);
       } else {
-        LCIMProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new AVCallback<List<LCIMKitUser>>() {
+        LCIMProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new AVCallback<List<LCChatKitUser>>() {
           @Override
-          protected void internalDone0(List<LCIMKitUser> lcimUserProfiles, AVException e) {
+          protected void internalDone0(List<LCChatKitUser> lcimUserProfiles, AVException e) {
             List<String> nameList = new ArrayList<String>();
             if (null != lcimUserProfiles) {
-              for (LCIMKitUser userProfile : lcimUserProfiles) {
+              for (LCChatKitUser userProfile : lcimUserProfiles) {
                 nameList.add(userProfile.getUserName());
               }
             }
@@ -90,7 +90,7 @@ public class LCIMConversationUtils {
    */
   private static String getConversationPeerId(AVIMConversation conversation) {
     if (null != conversation && 2 == conversation.getMembers().size()) {
-      String currentUserId = LCIMKit.getInstance().getCurrentUserId();
+      String currentUserId = LCChatKit.getInstance().getCurrentUserId();
       String firstMemeberId = conversation.getMembers().get(0);
       return conversation.getMembers().get(firstMemeberId.equals(currentUserId) ? 1 : 0);
     }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.leancloud.chatkit.LCIMKit;
+import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.viewholder.LCIMChatItemAudioHolder;
 import cn.leancloud.chatkit.viewholder.LCIMChatItemHolder;
 import cn.leancloud.chatkit.viewholder.LCIMChatItemImageHolder;
@@ -191,7 +191,7 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * @return
    */
   private boolean fromMe(AVIMTypedMessage msg) {
-    String selfId = LCIMKit.getInstance().getCurrentUserId();
+    String selfId = LCChatKit.getInstance().getCurrentUserId();
     return msg.getFrom() != null && msg.getFrom().equals(selfId);
   }
 }

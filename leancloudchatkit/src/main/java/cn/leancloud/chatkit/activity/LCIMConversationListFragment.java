@@ -14,7 +14,7 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.leancloud.chatkit.LCIMKit;
+import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.adapter.LCIMCommonListAdapter;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
@@ -85,7 +85,7 @@ public class LCIMConversationListFragment extends Fragment {
     List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
     List<AVIMConversation> conversationList = new ArrayList<>();
     for (String convId : convIdList) {
-      conversationList.add(LCIMKit.getInstance().getClient().getConversation(convId));
+      conversationList.add(LCChatKit.getInstance().getClient().getConversation(convId));
     }
 
     itemAdapter.setDataList(conversationList);

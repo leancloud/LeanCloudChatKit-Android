@@ -23,20 +23,20 @@ import cn.leancloud.chatkit.handler.LCIMMessageHandler;
  * Created by wli on 16/2/2.
  * LeanCloudIMKit 的管理类
  */
-public final class LCIMKit {
+public final class LCChatKit {
 
-  private static LCIMKit lcimKit;
-  private LCIMProfileProvider profileProvider;
+  private static LCChatKit lcChatKit;
+  private LCChatProfileProvider profileProvider;
   private String currentUserId;
 
-  private LCIMKit() {
+  private LCChatKit() {
   }
 
-  public static synchronized LCIMKit getInstance() {
-    if (null == lcimKit) {
-      lcimKit = new LCIMKit();
+  public static synchronized LCChatKit getInstance() {
+    if (null == lcChatKit) {
+      lcChatKit = new LCChatKit();
     }
-    return lcimKit;
+    return lcChatKit;
   }
 
   /**
@@ -74,7 +74,7 @@ public final class LCIMKit {
    *
    * @param profileProvider
    */
-  public void setProfileProvider(LCIMProfileProvider profileProvider) {
+  public void setProfileProvider(LCChatProfileProvider profileProvider) {
     this.profileProvider = profileProvider;
   }
 
@@ -83,7 +83,7 @@ public final class LCIMKit {
    *
    * @return
    */
-  public LCIMProfileProvider getProfileProvider() {
+  public LCChatProfileProvider getProfileProvider() {
     return profileProvider;
   }
 

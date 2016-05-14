@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import cn.leancloud.chatkit.LCIMKitUser;
+import cn.leancloud.chatkit.LCChatKitUser;
 
 /**
  * Created by wli on 15/8/14.
@@ -44,12 +44,12 @@ public class MembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
    * 设置成员列表，然后更新索引
    * 此处会对数据以 空格、数字、字母（汉字转化为拼音后的字母） 的顺序进行重新排列
    */
-  public void setMemberList(List<LCIMKitUser> userList) {
+  public void setMemberList(List<LCChatKitUser> userList) {
     memberList.clear();
     if (null != userList) {
-      for (LCIMKitUser user : userList) {
+      for (LCChatKitUser user : userList) {
         MemberItem item = new MemberItem();
-        item.lcimKitUser = user;
+        item.lcChatKitUser = user;
         item.sortContent = PinyinHelper.convertToPinyinString(user.getUserName(), "", PinyinFormat.WITHOUT_TONE);
         memberList.add(item);
       }
@@ -65,7 +65,7 @@ public class MembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
   @Override
   public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-      ((ContactItemHolder) holder).bindData(memberList.get(position).lcimKitUser);
+      ((ContactItemHolder) holder).bindData(memberList.get(position).lcChatKitUser);
   }
 
   @Override
@@ -120,7 +120,7 @@ public class MembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   }
 
   public static class MemberItem {
-    public LCIMKitUser lcimKitUser;
+    public LCChatKitUser lcChatKitUser;
     public String sortContent;
   }
 }

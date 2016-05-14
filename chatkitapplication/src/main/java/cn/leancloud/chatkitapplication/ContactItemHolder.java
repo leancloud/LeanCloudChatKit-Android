@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import cn.leancloud.chatkit.LCIMKitUser;
+import cn.leancloud.chatkit.LCChatKitUser;
 import cn.leancloud.chatkit.activity.LCIMConversationActivity;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.viewholder.LCIMCommonViewHolder;
@@ -17,12 +17,12 @@ import cn.leancloud.chatkit.viewholder.LCIMCommonViewHolder;
 /**
  * Created by wli on 15/11/24.
  */
-public class ContactItemHolder extends LCIMCommonViewHolder<LCIMKitUser> {
+public class ContactItemHolder extends LCIMCommonViewHolder<LCChatKitUser> {
 
   TextView nameView;
   ImageView avatarView;
 
-  public LCIMKitUser lcimKitUser;
+  public LCChatKitUser lcChatKitUser;
 
   public ContactItemHolder(Context context, ViewGroup root) {
     super(context, root, R.layout.common_user_item);
@@ -37,17 +37,17 @@ public class ContactItemHolder extends LCIMCommonViewHolder<LCIMKitUser> {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), LCIMConversationActivity.class);
-        intent.putExtra(LCIMConstants.PEER_ID, lcimKitUser.getUserId());
+        intent.putExtra(LCIMConstants.PEER_ID, lcChatKitUser.getUserId());
         getContext().startActivity(intent);
       }
     });
   }
 
   @Override
-  public void bindData(LCIMKitUser lcimKitUser) {
-    this.lcimKitUser = lcimKitUser;
-    Picasso.with(getContext()).load(lcimKitUser.getAvatarUrl()).into(avatarView);
-    nameView.setText(lcimKitUser.getUserName());
+  public void bindData(LCChatKitUser lcChatKitUser) {
+    this.lcChatKitUser = lcChatKitUser;
+    Picasso.with(getContext()).load(lcChatKitUser.getAvatarUrl()).into(avatarView);
+    nameView.setText(lcChatKitUser.getUserName());
   }
 
   public static ViewHolderCreator HOLDER_CREATOR = new ViewHolderCreator<ContactItemHolder>() {

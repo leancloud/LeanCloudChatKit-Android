@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.leancloud.chatkit.LCIMKit;
-import cn.leancloud.chatkit.LCIMKitUser;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.LCChatKitUser;
 import cn.leancloud.chatkit.activity.LCIMConversationActivity;
 import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
 import cn.leancloud.chatkit.utils.LCIMConstants;
@@ -143,12 +143,12 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void gotoSquareConversation() {
-    List<LCIMKitUser> userList = CustomUserProvider.getInstance().getAllUsers();
+    List<LCChatKitUser> userList = CustomUserProvider.getInstance().getAllUsers();
     List<String> idList = new ArrayList<>();
-    for (LCIMKitUser user : userList) {
+    for (LCChatKitUser user : userList) {
       idList.add(user.getUserId());
     }
-    LCIMKit.getInstance().getClient().createConversation(
+    LCChatKit.getInstance().getClient().createConversation(
       idList, getString(R.string.square), null, false, true, new AVIMConversationCreatedCallback() {
         @Override
         public void done(AVIMConversation avimConversation, AVIMException e) {

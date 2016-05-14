@@ -13,7 +13,7 @@ import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 
-import cn.leancloud.chatkit.LCIMKit;
+import cn.leancloud.chatkit.LCChatKit;
 
 /**
  * 登陆页面
@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
       return;
     }
 
-    LCIMKit.getInstance().open(clientId, new AVIMClientCallback() {
+    LCChatKit.getInstance().open(clientId, new AVIMClientCallback() {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
         if (null == e) {

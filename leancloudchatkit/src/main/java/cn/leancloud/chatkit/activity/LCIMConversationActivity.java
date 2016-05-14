@@ -14,8 +14,9 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 
 import java.util.Arrays;
+
+import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.R;
-import cn.leancloud.chatkit.LCIMKit;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.utils.LCIMConversationUtils;
@@ -45,7 +46,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
   }
 
   private void initByIntent(Intent intent) {
-    if (null == LCIMKit.getInstance().getClient()) {
+    if (null == LCChatKit.getInstance().getClient()) {
       showToast("please login first!");
       finish();
       return;
@@ -57,7 +58,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
         getConversation(extras.getString(LCIMConstants.PEER_ID));
       } else if (extras.containsKey(LCIMConstants.CONVERSATION_ID)) {
         String conversationId = extras.getString(LCIMConstants.CONVERSATION_ID);
-        updateConversation(LCIMKit.getInstance().getClient().getConversation(conversationId));
+        updateConversation(LCChatKit.getInstance().getClient().getConversation(conversationId));
       } else {
         showToast("memberId or conversationId is needed");
         finish();
@@ -118,7 +119,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
    * 为了避免重复的创建，createConversation 参数 isUnique 设为 true·
    */
   protected void getConversation(final String memberId) {
-    LCIMKit.getInstance().getClient().createConversation(
+    LCChatKit.getInstance().getClient().createConversation(
       Arrays.asList(memberId), "", null, false, true, new AVIMConversationCreatedCallback() {
         @Override
         public void done(AVIMConversation avimConversation, AVIMException e) {

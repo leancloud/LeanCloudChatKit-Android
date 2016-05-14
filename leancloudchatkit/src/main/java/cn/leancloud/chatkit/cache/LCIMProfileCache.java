@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.leancloud.chatkit.LCIMKit;
-import cn.leancloud.chatkit.LCIMKitUser;
-import cn.leancloud.chatkit.LCIMProfileProvider;
-import cn.leancloud.chatkit.LCIMProfilesCallBack;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.LCChatKitUser;
+import cn.leancloud.chatkit.LCChatProfileProvider;
+import cn.leancloud.chatkit.LCChatProfilesCallBack;
 
 
 /**
@@ -24,7 +24,7 @@ import cn.leancloud.chatkit.LCIMProfilesCallBack;
  * 流程：
  * 1、如果内存中有则从内存中获取
  * 2、如果内存中没有则从 db 中获取
- * 3、如果 db 中没有则通过调用开发者设置的回调 LCIMProfileProvider.fetchProfiles 来获取
+ * 3、如果 db 中没有则通过调用开发者设置的回调 LCChatProfileProvider.fetchProfiles 来获取
  * 同时获取到的数据会缓存到内存与 db
  */
 public class LCIMProfileCache {
@@ -33,7 +33,7 @@ public class LCIMProfileCache {
   private static final String USER_AVATAR = "user_avatar";
   private static final String USER_ID = "user_id";
 
-  private Map<String, LCIMKitUser> userMap;
+  private Map<String, LCChatKitUser> userMap;
   private LCIMLocalStorage profileDBHelper;
 
   private LCIMProfileCache() {
@@ -67,13 +67,13 @@ public class LCIMProfileCache {
    * @param id
    * @param callback
    */
-  public synchronized void getCachedUser(final String id, final AVCallback<LCIMKitUser> callback) {
-    getCachedUsers(Arrays.asList(id), new AVCallback<List<LCIMKitUser>>() {
+  public synchronized void getCachedUser(final String id, final AVCallback<LCChatKitUser> callback) {
+    getCachedUsers(Arrays.asList(id), new AVCallback<List<LCChatKitUser>>() {
       @Override
-      protected void internalDone0(List<LCIMKitUser> lcimUserProfiles, AVException e) {
-        LCIMKitUser lcimKitUser =
+      protected void internalDone0(List<LCChatKitUser> lcimUserProfiles, AVException e) {
+        LCChatKitUser LCChatKitUser =
           (null != lcimUserProfiles && !lcimUserProfiles.isEmpty() ? lcimUserProfiles.get(0) : null);
-        callback.internalDone(lcimKitUser, e);
+        callback.internalDone(LCChatKitUser, e);
       }
     });
   }
@@ -85,12 +85,12 @@ public class LCIMProfileCache {
    * @param idList
    * @param callback
    */
-  public synchronized void getCachedUsers(List<String> idList, final AVCallback<List<LCIMKitUser>> callback) {
+  public synchronized void getCachedUsers(List<String> idList, final AVCallback<List<LCChatKitUser>> callback) {
     if (null != callback) {
       if (null == idList || idList.isEmpty()) {
         callback.internalDone(null, new AVException(new Throwable("idList is empty!")));
       } else {
-        final List<LCIMKitUser> profileList = new ArrayList<LCIMKitUser>();
+        final List<LCChatKitUser> profileList = new ArrayList<LCChatKitUser>();
         final List<String> unCachedIdList = new ArrayList<String>();
 
         for (String id : idList) {
@@ -108,9 +108,9 @@ public class LCIMProfileCache {
             @Override
             protected void internalDone0(List<String> strings, AVException e) {
               if (null != strings && !strings.isEmpty() && strings.size() == unCachedIdList.size()) {
-                List<LCIMKitUser> profileList = new ArrayList<LCIMKitUser>();
+                List<LCChatKitUser> profileList = new ArrayList<LCChatKitUser>();
                 for (String data : strings) {
-                  LCIMKitUser userProfile = getUserProfileFromJson(data);
+                  LCChatKitUser userProfile = getUserProfileFromJson(data);
                   userMap.put(userProfile.getUserId(), userProfile);
                   profileList.add(userProfile);
                 }
@@ -133,15 +133,15 @@ public class LCIMProfileCache {
    * @param idList
    * @param callback
    */
-  private void getProfilesFromProvider(List<String> idList, final List<LCIMKitUser> profileList,
-                                       final AVCallback<List<LCIMKitUser>> callback) {
-    LCIMProfileProvider profileProvider = LCIMKit.getInstance().getProfileProvider();
+  private void getProfilesFromProvider(List<String> idList, final List<LCChatKitUser> profileList,
+                                       final AVCallback<List<LCChatKitUser>> callback) {
+    LCChatProfileProvider profileProvider = LCChatKit.getInstance().getProfileProvider();
     if (null != profileProvider) {
-      profileProvider.fetchProfiles(idList, new LCIMProfilesCallBack() {
+      profileProvider.fetchProfiles(idList, new LCChatProfilesCallBack() {
         @Override
-        public void done(List<LCIMKitUser> userList, Exception e) {
+        public void done(List<LCChatKitUser> userList, Exception e) {
           if (null != userList) {
-            for (LCIMKitUser userProfile : userList) {
+            for (LCChatKitUser userProfile : userList) {
               cacheUser(userProfile);
             }
           }
@@ -161,9 +161,9 @@ public class LCIMProfileCache {
    * @param callback
    */
   public void getUserName(String id, final AVCallback<String> callback) {
-    getCachedUser(id, new AVCallback<LCIMKitUser>() {
+    getCachedUser(id, new AVCallback<LCChatKitUser>() {
       @Override
-      protected void internalDone0(LCIMKitUser userProfile, AVException e) {
+      protected void internalDone0(LCChatKitUser userProfile, AVException e) {
         String userName = (null != userProfile ? userProfile.getUserName() : null);
         callback.internalDone(userName, e);
       }
@@ -177,9 +177,9 @@ public class LCIMProfileCache {
    * @param callback
    */
   public void getUserAvatar(String id, final AVCallback<String> callback) {
-    getCachedUser(id, new AVCallback<LCIMKitUser>() {
+    getCachedUser(id, new AVCallback<LCChatKitUser>() {
       @Override
-      protected void internalDone0(LCIMKitUser userProfile, AVException e) {
+      protected void internalDone0(LCChatKitUser userProfile, AVException e) {
         String avatarUrl = (null != userProfile ? userProfile.getAvatarUrl() : null);
         callback.internalDone(avatarUrl, e);
       }
@@ -187,7 +187,7 @@ public class LCIMProfileCache {
   }
 
   /**
-   * 内存中是否包相关 LCIMKitUser 的信息
+   * 内存中是否包相关 LCChatKitUser 的信息
    *
    * @param id
    * @return
@@ -197,12 +197,12 @@ public class LCIMProfileCache {
   }
 
   /**
-   * 缓存 LCIMKitUser 信息，更新缓存同时也更新 db
-   * 如果开发者 LCIMKitUser 信息变化，可以通过调用此方法刷新缓存
+   * 缓存 LCChatKitUser 信息，更新缓存同时也更新 db
+   * 如果开发者 LCChatKitUser 信息变化，可以通过调用此方法刷新缓存
    *
    * @param userProfile
    */
-  public synchronized void cacheUser(LCIMKitUser userProfile) {
+  public synchronized void cacheUser(LCChatKitUser userProfile) {
     if (null != userProfile && null != profileDBHelper) {
       userMap.put(userProfile.getUserId(), userProfile);
       profileDBHelper.insertData(userProfile.getUserId(), getStringFormUserProfile(userProfile));
@@ -210,26 +210,26 @@ public class LCIMProfileCache {
   }
 
   /**
-   * 从 db 中的 String 解析出 LCIMKitUser
+   * 从 db 中的 String 解析出 LCChatKitUser
    *
    * @param str
    * @return
    */
-  private LCIMKitUser getUserProfileFromJson(String str) {
+  private LCChatKitUser getUserProfileFromJson(String str) {
     JSONObject jsonObject = JSONObject.parseObject(str);
     String userName = jsonObject.getString(USER_NAME);
     String userId = jsonObject.getString(USER_ID);
     String userAvatar = jsonObject.getString(USER_AVATAR);
-    return new LCIMKitUser(userId, userName, userAvatar);
+    return new LCChatKitUser(userId, userName, userAvatar);
   }
 
   /**
-   * LCIMKitUser 转换成 json String
+   * LCChatKitUser 转换成 json String
    *
    * @param userProfile
    * @return
    */
-  private String getStringFormUserProfile(LCIMKitUser userProfile) {
+  private String getStringFormUserProfile(LCChatKitUser userProfile) {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put(USER_NAME, userProfile.getUserName());
     jsonObject.put(USER_AVATAR, userProfile.getAvatarUrl());
