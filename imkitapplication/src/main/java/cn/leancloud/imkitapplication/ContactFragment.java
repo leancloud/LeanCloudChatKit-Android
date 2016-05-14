@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cn.leancloud.imkit.view.LCIMDividerItemDecoration;
+import cn.leancloud.chatkit.view.LCIMDividerItemDecoration;
 import de.greenrobot.event.EventBus;
 
 /**

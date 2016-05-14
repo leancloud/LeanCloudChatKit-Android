@@ -9,10 +9,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import cn.leancloud.imkit.LCIMKitUser;
-import cn.leancloud.imkit.activity.LCIMConversationActivity;
-import cn.leancloud.imkit.utils.LCIMConstants;
-import cn.leancloud.imkit.viewholder.LCIMCommonViewHolder;
+import cn.leancloud.chatkit.LCIMKitUser;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.utils.LCIMConstants;
+import cn.leancloud.chatkit.viewholder.LCIMCommonViewHolder;
 
 /**
  * Created by wli on 15/11/24.

@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    compile project(':leancloudimkit')
+    compile project(':leancloudchatkit')
     compile 'com.android.support:design:23.+'
     compile 'com.github.stuxuhai:jpinyin:1.0'
 }

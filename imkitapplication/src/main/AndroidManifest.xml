@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/lcim_imkit_name"
+        android:label="@string/lcim_chatkit_name"
         android:name="cn.leancloud.imkitapplication.App"
         android:theme="@style/LCIMKitTheme" >
         <activity

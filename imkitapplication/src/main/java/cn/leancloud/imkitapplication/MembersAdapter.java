@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import cn.leancloud.imkit.LCIMKitUser;
+import cn.leancloud.chatkit.LCIMKitUser;
 
 /**
  * Created by wli on 15/8/14.

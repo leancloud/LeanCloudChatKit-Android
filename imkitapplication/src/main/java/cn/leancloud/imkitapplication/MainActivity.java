@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.leancloud.imkit.LCIMKit;
-import cn.leancloud.imkit.LCIMKitUser;
-import cn.leancloud.imkit.activity.LCIMConversationActivity;
-import cn.leancloud.imkit.activity.LCIMConversationListFragment;
-import cn.leancloud.imkit.utils.LCIMConstants;
+import cn.leancloud.chatkit.LCIMKit;
+import cn.leancloud.chatkit.LCIMKitUser;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
+import cn.leancloud.chatkit.utils.LCIMConstants;
 
 public class MainActivity extends AppCompatActivity {
 

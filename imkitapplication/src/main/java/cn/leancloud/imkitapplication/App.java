@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.avos.avoscloud.AVOSCloud;
 
-import cn.leancloud.imkit.LCIMKit;
+import cn.leancloud.chatkit.LCIMKit;
 
 /**
  * Created by wli on 16/2/24.

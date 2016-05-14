@@ -3,9 +3,9 @@ package cn.leancloud.imkitapplication;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.leancloud.imkit.LCIMKitUser;
-import cn.leancloud.imkit.LCIMProfileProvider;
-import cn.leancloud.imkit.LCIMProfilesCallBack;
+import cn.leancloud.chatkit.LCIMKitUser;
+import cn.leancloud.chatkit.LCIMProfileProvider;
+import cn.leancloud.chatkit.LCIMProfilesCallBack;
 
 /**
  * Created by wli on 15/12/4.

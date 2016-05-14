@@ -13,7 +13,7 @@ import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 
-import cn.leancloud.imkit.LCIMKit;
+import cn.leancloud.chatkit.LCIMKit;
 
 /**
  * 登陆页面
