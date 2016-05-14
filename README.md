@@ -1,1 +1,1 @@
-# LeanCloudIMKit
+# LeanCloudChatKit
