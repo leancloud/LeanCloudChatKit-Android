@@ -222,7 +222,7 @@ public class LCIMConversationFragment extends Fragment {
       null != resendEvent.message && imConversation.getConversationId().equals(resendEvent.message.getConversationId())) {
       if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == resendEvent.message.getMessageStatus()
         && imConversation.getConversationId().equals(resendEvent.message.getConversationId())) {
-        sendMessage(resendEvent.message);
+        sendMessage(resendEvent.message, false);
       }
     }
   }
@@ -368,13 +368,19 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  public void sendMessage(AVIMMessage message) {
+    sendMessage(message, true);
+  }
+
   /**
    * 发送消息
    *
    * @param message
    */
-  public void sendMessage(AVIMMessage message) {
-    itemAdapter.addMessage(message);
+  public void sendMessage(AVIMMessage message, boolean addToList) {
+    if (addToList) {
+      itemAdapter.addMessage(message);
+    }
     itemAdapter.notifyDataSetChanged();
     scrollToBottom();
     imConversation.sendMessage(message, new AVIMConversationCallback() {
