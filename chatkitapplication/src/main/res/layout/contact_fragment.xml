@@ -19,7 +19,7 @@
                 android:layout_height="match_parent"/>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <cn.leancloud.imkitapplication.LetterView
+        <cn.leancloud.chatkitapplication.LetterView
             android:id="@+id/activity_square_members_letterview"
             android:layout_width="20dp"
             android:layout_height="match_parent"

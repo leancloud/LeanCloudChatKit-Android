@@ -1,4 +1,4 @@
-package cn.leancloud.imkitapplication;
+package cn.leancloud.chatkitapplication;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;

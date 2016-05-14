@@ -1,4 +1,4 @@
-package cn.leancloud.imkitapplication;
+package cn.leancloud.chatkitapplication;
 
 /**
  * Created by wli on 15/8/24.

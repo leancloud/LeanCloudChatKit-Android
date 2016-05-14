@@ -1,4 +1,4 @@
-package cn.leancloud.imkitapplication;
+package cn.leancloud.chatkitapplication;
 
 import android.content.Context;
 import android.util.AttributeSet;

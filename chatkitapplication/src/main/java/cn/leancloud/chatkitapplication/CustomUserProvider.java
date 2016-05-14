@@ -1,4 +1,4 @@
-package cn.leancloud.imkitapplication;
+package cn.leancloud.chatkitapplication;
 
 import java.util.ArrayList;
 import java.util.List;

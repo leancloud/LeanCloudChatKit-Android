@@ -1,4 +1,4 @@
-package cn.leancloud.imkitapplication;
+package cn.leancloud.chatkitapplication;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;

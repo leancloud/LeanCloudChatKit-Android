@@ -1,4 +1,4 @@
-package cn.leancloud.imkitapplication;
+package cn.leancloud.chatkitapplication;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
