@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ChatKitApplication</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="square">广场</string>
+</resources>
