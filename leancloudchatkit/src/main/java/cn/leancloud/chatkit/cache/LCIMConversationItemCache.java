@@ -180,8 +180,10 @@ public class LCIMConversationItemCache {
    * 存储未读消息数量到内存
    */
   private void syncToCache(LCIMConversationItem item) {
-    item.updateTime = System.currentTimeMillis();
-    conversationItemMap.put(item.conversationId, item);
-    conversationItemDBHelper.insertData(item.conversationId, item.toJsonString());
+    if (null != item) {
+      item.updateTime = System.currentTimeMillis();
+      conversationItemMap.put(item.conversationId, item);
+      conversationItemDBHelper.insertData(item.conversationId, item.toJsonString());
+    }
   }
 }
