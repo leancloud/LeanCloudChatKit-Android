@@ -3,6 +3,7 @@ package cn.leancloud.chatkit.viewholder;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import cn.leancloud.chatkit.LCChatMessageInterface;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
 import cn.leancloud.chatkit.utils.LCIMConstants;
@@ -241,7 +243,15 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         case AudioMessageType:
           return context.getString(R.string.lcim_message_shorthand_audio);
         default:
-          return context.getString(R.string.lcim_message_shorthand_unknown);
+          CharSequence shortHand = "";
+          if (message instanceof LCChatMessageInterface) {
+            LCChatMessageInterface messageInterface = (LCChatMessageInterface) message;
+            shortHand = messageInterface.getShorthand();
+          }
+          if (TextUtils.isEmpty(shortHand)) {
+            shortHand = context.getString(R.string.lcim_message_shorthand_unknown);
+          }
+          return shortHand;
       }
     } else {
       return message.getContent();
