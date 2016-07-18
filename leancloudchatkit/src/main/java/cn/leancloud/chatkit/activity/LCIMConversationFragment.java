@@ -88,7 +88,7 @@ public class LCIMConversationFragment extends Fragment {
     layoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(layoutManager);
 
-    itemAdapter = new LCIMChatAdapter();
+    itemAdapter = getAdpter();
     itemAdapter.resetRecycledViewPoolSize(recyclerView);
     recyclerView.setAdapter(itemAdapter);
 
@@ -121,6 +121,10 @@ public class LCIMConversationFragment extends Fragment {
         }
       }
     });
+  }
+
+  protected LCIMChatAdapter getAdpter() {
+    return new LCIMChatAdapter();
   }
 
   @Override
@@ -333,7 +337,7 @@ public class LCIMConversationFragment extends Fragment {
    *
    * @param content
    */
-  private void sendText(String content) {
+  protected void sendText(String content) {
     AVIMTextMessage message = new AVIMTextMessage();
     message.setText(content);
     sendMessage(message);
@@ -345,7 +349,7 @@ public class LCIMConversationFragment extends Fragment {
    *
    * @param imagePath
    */
-  private void sendImage(String imagePath) {
+  protected void sendImage(String imagePath) {
     try {
       sendMessage(new AVIMImageMessage(imagePath));
     } catch (IOException e) {
@@ -358,7 +362,7 @@ public class LCIMConversationFragment extends Fragment {
    *
    * @param audioPath
    */
-  private void sendAudio(String audioPath) {
+  protected void sendAudio(String audioPath) {
     try {
       AVIMAudioMessage audioMessage = new AVIMAudioMessage(audioPath);
       sendMessage(audioMessage);
