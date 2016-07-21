@@ -39,3 +39,5 @@ dependencies {
 
     compile 'de.greenrobot:eventbus:2.4.0'
 }
+
+apply from: '../maven_push.gradle'
