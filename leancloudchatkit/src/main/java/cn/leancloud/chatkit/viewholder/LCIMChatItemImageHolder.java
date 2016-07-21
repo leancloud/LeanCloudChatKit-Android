@@ -94,9 +94,11 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
       if (!TextUtils.isEmpty(localFilePath)) {
         Picasso.with(getContext().getApplicationContext()).load(new File(localFilePath)).
           resize((int) viewWidth, (int) viewHeight).centerCrop().into(contentView);
-      } else {
+      } else if (!TextUtils.isEmpty(imageMsg.getFileUrl())) {
         Picasso.with(getContext().getApplicationContext()).load(imageMsg.getFileUrl()).
           resize((int) viewWidth, (int) viewHeight).centerCrop().into(contentView);
+      } else {
+        contentView.setImageResource(0);
       }
     }
   }

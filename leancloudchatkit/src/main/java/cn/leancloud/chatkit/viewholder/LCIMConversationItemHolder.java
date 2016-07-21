@@ -145,8 +145,12 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
             if (null != e) {
               LCIMLogUtils.logException(e);
             }
-            Picasso.with(getContext()).load(s)
-              .placeholder(R.drawable.lcim_default_avatar_icon).into(avatarView);
+            if (!TextUtils.isEmpty(s)) {
+              Picasso.with(getContext()).load(s)
+                .placeholder(R.drawable.lcim_default_avatar_icon).into(avatarView);
+            } else {
+              avatarView.setImageResource(R.drawable.lcim_default_avatar_icon);
+            }
           }
         });
       }
