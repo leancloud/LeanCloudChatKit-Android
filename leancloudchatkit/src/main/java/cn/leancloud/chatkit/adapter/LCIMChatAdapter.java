@@ -42,8 +42,7 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   // 时间间隔最小为十分钟
   private final static long TIME_INTERVAL = 1000 * 60 * 3;
   private boolean isShowUserName = true;
-
-  private List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
+  protected List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
 
   public LCIMChatAdapter() {
     super();
@@ -190,7 +189,7 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * @param msg
    * @return
    */
-  private boolean fromMe(AVIMTypedMessage msg) {
+  protected boolean fromMe(AVIMTypedMessage msg) {
     String selfId = LCChatKit.getInstance().getCurrentUserId();
     return msg.getFrom() != null && msg.getFrom().equals(selfId);
   }

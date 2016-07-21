@@ -66,9 +66,8 @@ public class LCIMInputBottomBar extends LinearLayout {
   /**
    * action layout
    */
-  private View actionLayout;
+  private LinearLayout actionLayout;
   private View cameraBtn;
-  private View locationBtn;
   private View pictureBtn;
 
   /**
@@ -105,9 +104,8 @@ public class LCIMInputBottomBar extends LinearLayout {
     moreLayout = findViewById(R.id.input_bar_layout_more);
     recordBtn = (LCIMRecordButton) findViewById(R.id.input_bar_btn_record);
 
-    actionLayout = findViewById(R.id.input_bar_layout_action);
+    actionLayout = (LinearLayout) findViewById(R.id.input_bar_layout_action);
     cameraBtn = findViewById(R.id.input_bar_btn_camera);
-    locationBtn = findViewById(R.id.input_bar_btn_location);
     pictureBtn = findViewById(R.id.input_bar_btn_picture);
 
     setEditTextChangeListener();
@@ -184,14 +182,10 @@ public class LCIMInputBottomBar extends LinearLayout {
           LCIMInputBottomBarEvent.INPUTBOTTOMBAR_CAMERA_ACTION, getTag()));
       }
     });
+  }
 
-    locationBtn.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        EventBus.getDefault().post(new LCIMInputBottomBarLocationClickEvent(
-          LCIMInputBottomBarEvent.INPUTBOTTOMBAR_LOCATION_ACTION, getTag()));
-      }
-    });
+  public void addActionView(View view) {
+    actionLayout.addView(view);
   }
 
   /**
