@@ -2,6 +2,7 @@ package cn.leancloud.chatkitapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -46,7 +47,12 @@ public class ContactItemHolder extends LCIMCommonViewHolder<LCChatKitUser> {
   @Override
   public void bindData(LCChatKitUser lcChatKitUser) {
     this.lcChatKitUser = lcChatKitUser;
-    Picasso.with(getContext()).load(lcChatKitUser.getAvatarUrl()).into(avatarView);
+    final String avatarUrl = lcChatKitUser.getAvatarUrl();
+    if (!TextUtils.isEmpty(avatarUrl)) {
+      Picasso.with(getContext()).load(avatarUrl).into(avatarView);
+    } else {
+      avatarView.setImageResource(R.drawable.lcim_default_avatar_icon);
+    }
     nameView.setText(lcChatKitUser.getUserName());
   }
 

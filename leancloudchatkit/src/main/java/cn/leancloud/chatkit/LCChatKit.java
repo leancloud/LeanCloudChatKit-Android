@@ -21,7 +21,7 @@ import cn.leancloud.chatkit.handler.LCIMMessageHandler;
 
 /**
  * Created by wli on 16/2/2.
- * LeanCloudIMKit 的管理类
+ * LeanCloudChatKit 的管理类
  */
 public final class LCChatKit {
 
@@ -40,7 +40,7 @@ public final class LCChatKit {
   }
 
   /**
-   * 初始化 LeanCloudIMKit，此函数要在 Application 的 onCreate 中调用
+   * 初始化 LeanCloudChatKit，此函数要在 Application 的 onCreate 中调用
    *
    * @param context
    * @param appId
