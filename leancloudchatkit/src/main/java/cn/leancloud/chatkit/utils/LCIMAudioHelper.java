@@ -11,7 +11,7 @@ import java.io.IOException;
 public class LCIMAudioHelper {
   private static LCIMAudioHelper audioHelper;
   private MediaPlayer mediaPlayer;
-  private Runnable finishCallback;
+  private AudioFinishCallback finishCallback;
   private String audioPath;
   private boolean onceStart = false;
 
@@ -41,8 +41,7 @@ public class LCIMAudioHelper {
   public void stopPlayer() {
     if (mediaPlayer != null) {
       mediaPlayer.stop();
-      mediaPlayer.release();
-      mediaPlayer = null;
+      mediaPlayer.reset();
     }
   }
 
@@ -73,19 +72,21 @@ public class LCIMAudioHelper {
     }
   }
 
+  public void addFinishCallback(AudioFinishCallback callback) {
+    finishCallback = callback;
+  }
+
   /**
    * 播放语音文件
    *
    * @param path
-   * @param finishCallback
    */
-  public synchronized void playAudio(String path, Runnable finishCallback) {
+  public synchronized void playAudio(String path) {
     if (onceStart) {
       mediaPlayer.reset();
     }
     tryRunFinishCallback();
     audioPath = path;
-    LCIMAudioHelper.this.finishCallback = finishCallback;
     try {
       mediaPlayer.setDataSource(path);
       mediaPlayer.prepare();
@@ -103,8 +104,11 @@ public class LCIMAudioHelper {
 
   private void tryRunFinishCallback() {
     if (finishCallback != null) {
-      finishCallback.run();
-      finishCallback = null;
+      finishCallback.onFinish();
     }
+  }
+
+  public interface AudioFinishCallback {
+    void onFinish();
   }
 }

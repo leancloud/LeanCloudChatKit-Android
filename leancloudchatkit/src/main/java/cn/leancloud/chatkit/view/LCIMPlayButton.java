@@ -56,6 +56,21 @@ public class LCIMPlayButton extends TextView implements View.OnClickListener {
    */
   public void setPath(String path) {
     this.path = path;
+    stopRecordAnimation();
+    if (isPlaying()) {
+      LCIMAudioHelper.getInstance().addFinishCallback(new LCIMAudioHelper.AudioFinishCallback() {
+        @Override
+        public void onFinish() {
+          stopRecordAnimation();
+        }
+      });
+      startRecordAnimation();
+    }
+  }
+
+  private boolean isPlaying() {
+    return LCIMAudioHelper.getInstance().isPlaying() == true &&
+      LCIMAudioHelper.getInstance().getAudioPath().equals(path);
   }
 
   @Override
@@ -65,13 +80,14 @@ public class LCIMPlayButton extends TextView implements View.OnClickListener {
       LCIMAudioHelper.getInstance().pausePlayer();
       stopRecordAnimation();
     } else {
-      startRecordAnimation();
-      LCIMAudioHelper.getInstance().playAudio(path, new Runnable() {
+      LCIMAudioHelper.getInstance().playAudio(path);
+      LCIMAudioHelper.getInstance().addFinishCallback(new LCIMAudioHelper.AudioFinishCallback() {
         @Override
-        public void run() {
+        public void onFinish() {
           stopRecordAnimation();
         }
       });
+      startRecordAnimation();
     }
   }
 

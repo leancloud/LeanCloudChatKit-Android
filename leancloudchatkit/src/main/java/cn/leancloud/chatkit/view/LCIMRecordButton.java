@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
+import cn.leancloud.chatkit.utils.LCIMPathUtils;
 
 
 /**
@@ -192,6 +193,7 @@ public class LCIMRecordButton extends Button {
   }
 
   private void startRecording() {
+    outputPath = LCIMPathUtils.getRecordPathByCurrentTime(getContext());
     try {
       if (recorder == null) {
         recorder = new MediaRecorder();
