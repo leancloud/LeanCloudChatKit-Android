@@ -22,6 +22,9 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
   protected LCIMPlayButton playButton;
   protected TextView durationView;
 
+  private static double itemMaxWidth = 0;
+  private static int itemMinWidth = 200;
+
   public LCIMChatItemAudioHolder(Context context, ViewGroup root, boolean isLeft) {
     super(context, root, isLeft);
   }
@@ -36,6 +39,10 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
     }
     playButton = (LCIMPlayButton) itemView.findViewById(R.id.chat_item_audio_play_btn);
     durationView = (TextView) itemView.findViewById(R.id.chat_item_audio_duration_view);
+
+    if (itemMaxWidth <= 0) {
+      itemMaxWidth = itemView.getResources().getDisplayMetrics().widthPixels * 0.6;
+    }
   }
 
   @Override
@@ -44,6 +51,12 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
     if (o instanceof AVIMAudioMessage) {
       AVIMAudioMessage audioMessage = (AVIMAudioMessage) o;
       durationView.setText(String.format("%.0f\"", audioMessage.getDuration()));
+      double duration = audioMessage.getDuration();
+      int width = getWidthInPixels(duration);
+      if (width > 0) {
+        playButton.setWidth(width);
+      }
+
       String localFilePath = audioMessage.getLocalFilePath();
       if (!TextUtils.isEmpty(localFilePath)) {
         playButton.setPath(localFilePath);
@@ -52,6 +65,20 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
         playButton.setPath(path);
         LCIMLocalCacheUtils.downloadFileAsync(audioMessage.getFileUrl(), path);
       }
+    }
+  }
+
+  private int getWidthInPixels(double duration) {
+    if (itemMaxWidth <= 0) {
+      return 0;
+    }
+    double unitWidth = itemMaxWidth / 100;
+    if (duration < 2) {
+      return itemMinWidth;
+    } else if (duration < 10) {
+      return itemMinWidth + (int) (unitWidth * 5 * duration);
+    } else {
+      return itemMinWidth + (int) (unitWidth * 50) + (int) (unitWidth * (duration - 10));
     }
   }
 }

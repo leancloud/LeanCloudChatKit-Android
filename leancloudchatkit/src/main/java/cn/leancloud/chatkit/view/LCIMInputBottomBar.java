@@ -199,6 +199,7 @@ public class LCIMInputBottomBar extends LinearLayout {
         EventBus.getDefault().post(
           new LCIMInputBottomBarRecordEvent(
             LCIMInputBottomBarEvent.INPUTBOTTOMBAR_SEND_AUDIO_ACTION, audioPath, secs, getTag()));
+        recordBtn.setSavePath(LCIMPathUtils.getRecordPathByCurrentTime(getContext()));
       }
 
       @Override

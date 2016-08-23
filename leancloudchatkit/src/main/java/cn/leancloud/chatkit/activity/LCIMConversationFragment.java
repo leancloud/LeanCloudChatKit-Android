@@ -38,6 +38,7 @@ import cn.leancloud.chatkit.event.LCIMInputBottomBarEvent;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarRecordEvent;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarTextEvent;
 import cn.leancloud.chatkit.event.LCIMMessageResendEvent;
+import cn.leancloud.chatkit.utils.LCIMAudioHelper;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import cn.leancloud.chatkit.utils.LCIMNotificationUtils;
 import cn.leancloud.chatkit.utils.LCIMPathUtils;
@@ -137,7 +138,8 @@ public class LCIMConversationFragment extends Fragment {
 
   @Override
   public void onPause() {
-    super.onResume();
+    super.onPause();
+    LCIMAudioHelper.getInstance().stopPlayer();
     if (null != imConversation) {
       LCIMNotificationUtils.removeTag(imConversation.getConversationId());
     }
