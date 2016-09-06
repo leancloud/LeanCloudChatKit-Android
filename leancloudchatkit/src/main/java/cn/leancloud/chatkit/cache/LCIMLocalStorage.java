@@ -235,12 +235,14 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    * 输出数据，此为同步方法
    */
   private void deleteSync(List<String> ids) {
-    String queryString = joinListWithApostrophe(ids);
-    getWritableDatabase().delete(tableName, TABLE_KEY_ID + " in (%s)", new String[]{queryString});
+    if (null != ids && !ids.isEmpty()) {
+      String queryString = joinListWithApostrophe(ids);
+      getWritableDatabase().delete(tableName, TABLE_KEY_ID + " in (" + queryString + ")", null);
+    }
   }
 
   private static String joinListWithApostrophe(List<String> strList) {
-    String queryString = TextUtils.join("',", strList);
+    String queryString = TextUtils.join("','", strList);
     if (!TextUtils.isEmpty(queryString)) {
       queryString = "'" + queryString + "'";
     }
