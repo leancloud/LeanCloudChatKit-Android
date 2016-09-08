@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import cn.leancloud.chatkit.R;
+import cn.leancloud.chatkit.utils.LCIMAudioHelper;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import cn.leancloud.chatkit.utils.LCIMPathUtils;
 
@@ -135,6 +136,7 @@ public class LCIMRecordButton extends Button {
   }
 
   private void startRecord() {
+    LCIMAudioHelper.getInstance().stopPlayer();
     initRecordDialog();
     startTime = System.currentTimeMillis();
     setBackgroundResource(BACK_RECORDING);
