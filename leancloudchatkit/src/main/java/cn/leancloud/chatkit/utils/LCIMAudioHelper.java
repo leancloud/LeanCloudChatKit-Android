@@ -40,6 +40,7 @@ public class LCIMAudioHelper {
    */
   public void stopPlayer() {
     if (mediaPlayer != null) {
+      tryRunFinishCallback();
       mediaPlayer.stop();
       mediaPlayer.reset();
     }
@@ -50,6 +51,7 @@ public class LCIMAudioHelper {
    */
   public void pausePlayer() {
     if (mediaPlayer != null) {
+      tryRunFinishCallback();
       mediaPlayer.pause();
     }
   }
