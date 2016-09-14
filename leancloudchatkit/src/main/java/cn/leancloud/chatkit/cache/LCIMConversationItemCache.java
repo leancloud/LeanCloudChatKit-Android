@@ -50,6 +50,7 @@ public class LCIMConversationItemCache {
    */
   public synchronized void initDB(Context context, String clientId, AVCallback callback) {
     conversationItemDBHelper = new LCIMLocalStorage(context, clientId, CONVERSATION_ITEM_TABLE_NAME);
+    conversationItemMap.clear();
     syncData(callback);
   }
 
