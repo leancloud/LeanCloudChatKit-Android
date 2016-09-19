@@ -2,7 +2,9 @@ package cn.leancloud.chatkit.viewholder;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
@@ -32,9 +35,11 @@ import java.util.List;
 import cn.leancloud.chatkit.LCChatMessageInterface;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
+import cn.leancloud.chatkit.event.LCIMConversationItemLongClickEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.utils.LCIMConversationUtils;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by wli on 15/10/8.
@@ -93,6 +98,21 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         @Override
         public void onClick(View v) {
           onConversationItemClick(conversation);
+        }
+      });
+
+      itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+          AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+          builder.setItems(new String[]{"删除该聊天"}, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+              EventBus.getDefault().post(new LCIMConversationItemLongClickEvent(conversation));
+            }
+          });
+          AlertDialog dialog = builder.create();
+          dialog.show();
+          return false;
         }
       });
     }

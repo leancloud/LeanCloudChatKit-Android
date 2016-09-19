@@ -18,6 +18,7 @@ import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.adapter.LCIMCommonListAdapter;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
+import cn.leancloud.chatkit.event.LCIMConversationItemLongClickEvent;
 import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
 import cn.leancloud.chatkit.event.LCIMOfflineMessageCountChangeEvent;
 import cn.leancloud.chatkit.view.LCIMDividerItemDecoration;
@@ -72,10 +73,23 @@ public class LCIMConversationListFragment extends Fragment {
 
   /**
    * 收到对方消息时响应此事件
+   *
    * @param event
    */
   public void onEvent(LCIMIMTypeMessageEvent event) {
     updateConversationList();
+  }
+
+  /**
+   * 删除会话列表中的某个 item
+   * @param event
+   */
+  public void onEvent(LCIMConversationItemLongClickEvent event) {
+    if (null != event.conversation) {
+      String conversationId = event.conversation.getConversationId();
+      LCIMConversationItemCache.getInstance().deleteConversation(conversationId);
+      updateConversationList();
+    }
   }
 
   /**
