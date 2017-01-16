@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVUtils;
 import com.avos.avoscloud.SignatureFactory;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -103,6 +104,16 @@ public final class LCChatKit {
    * @param callback
    */
   public void open(final String userId, final AVIMClientCallback callback) {
+    open(userId, null, callback);
+  }
+
+  /**
+   * 开启实时聊天
+   * @param userId 实时聊天的 clientId
+   * @param tag 单点登录标示
+   * @param callback
+   */
+  public void open(final String userId, String tag, final AVIMClientCallback callback) {
     if (TextUtils.isEmpty(userId)) {
       throw new IllegalArgumentException("userId can not be empty!");
     }
@@ -110,7 +121,7 @@ public final class LCChatKit {
       throw new IllegalArgumentException("callback can not be null!");
     }
 
-    AVIMClient.getInstance(userId).open(new AVIMClientCallback() {
+    AVIMClientCallback openCallback = new AVIMClientCallback() {
       @Override
       public void done(final AVIMClient avimClient, AVIMException e) {
         if (null == e) {
@@ -126,7 +137,13 @@ public final class LCChatKit {
           callback.internalDone(avimClient, e);
         }
       }
-    });
+    };
+
+    if (AVUtils.isBlankContent(tag)) {
+      AVIMClient.getInstance(userId).open(openCallback);
+    } else {
+      AVIMClient.getInstance(userId, tag).open(openCallback);
+    }
   }
 
   /**
