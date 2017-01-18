@@ -76,6 +76,7 @@ public class LCIMConversationItemCache {
     if (!TextUtils.isEmpty(convId) && increment > 0) {
       LCIMConversationItem conversationItem = getConversationItemFromMap(convId);
       conversationItem.unreadCount += increment;
+      conversationItem.updateTime = System.currentTimeMillis();
       syncToCache(conversationItem);
     }
   }
@@ -89,6 +90,7 @@ public class LCIMConversationItemCache {
     if (!TextUtils.isEmpty(convid)) {
       LCIMConversationItem unreadCountItem = getConversationItemFromMap(convid);
       unreadCountItem.unreadCount = 0;
+      unreadCountItem.updateTime = System.currentTimeMillis();
       syncToCache(unreadCountItem);
     }
   }
@@ -112,7 +114,22 @@ public class LCIMConversationItemCache {
    */
   public synchronized void insertConversation(String convId) {
     if (!TextUtils.isEmpty(convId)) {
-      syncToCache(getConversationItemFromMap(convId));
+      LCIMConversationItem item = getConversationItemFromMap(convId);
+      item.updateTime = System.currentTimeMillis();
+      syncToCache(item);
+    }
+  }
+
+  /**
+   * 缓存该 conversation
+   * @param convId conversationId
+   * @param milliSeconds 指定该 conversation 更新的时间，用于排序
+   */
+  public synchronized void insertConversation(String convId, long milliSeconds) {
+    if (!TextUtils.isEmpty(convId) && milliSeconds >= 0) {
+      LCIMConversationItem item = getConversationItemFromMap(convId);
+      item.updateTime = milliSeconds;
+      syncToCache(item);
     }
   }
 
@@ -182,7 +199,6 @@ public class LCIMConversationItemCache {
    */
   private void syncToCache(LCIMConversationItem item) {
     if (null != item) {
-      item.updateTime = System.currentTimeMillis();
       conversationItemMap.put(item.conversationId, item);
       conversationItemDBHelper.insertData(item.conversationId, item.toJsonString());
     }
