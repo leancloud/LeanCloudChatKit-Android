@@ -14,13 +14,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
 }
 
 dependencies {
@@ -40,4 +33,4 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
 }
 
-apply from: '../maven_push.gradle'
+//apply from: '../maven_push.gradle'
