@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class LCIMNotificationUtils {
 
-  private static final int REPLY_NOTIFY_ID = 1;
+  private static int lastNotificationId = 0;
 
   /**
    * tag list，用来标记是否应该展示 Notification
@@ -64,7 +64,7 @@ public class LCIMNotificationUtils {
   }
 
   public static void showNotification(Context context, String title, String content, String sound, Intent intent) {
-    PendingIntent contentIntent = PendingIntent.getActivity(context, REPLY_NOTIFY_ID, intent, 0);
+    PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
         .setSmallIcon(context.getApplicationInfo().icon)
         .setContentTitle(title).setAutoCancel(true).setContentIntent(contentIntent)
@@ -76,11 +76,7 @@ public class LCIMNotificationUtils {
     if (sound != null && sound.trim().length() > 0) {
       notification.sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + sound);
     }
-    manager.notify(REPLY_NOTIFY_ID, notification);
-  }
-
-  public static void cancelNotification(Context context) {
-    NotificationManager nMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-    nMgr.cancel(REPLY_NOTIFY_ID);
+    lastNotificationId = (lastNotificationId > 10000 ? 0 : lastNotificationId + 1);
+    manager.notify(lastNotificationId, notification);
   }
 }
