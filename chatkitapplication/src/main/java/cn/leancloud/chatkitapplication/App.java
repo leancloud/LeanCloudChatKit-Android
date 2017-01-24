@@ -3,6 +3,7 @@ package cn.leancloud.chatkitapplication;
 import android.app.Application;
 
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.im.v2.AVIMClient;
 
 import cn.leancloud.chatkit.LCChatKit;
 
@@ -21,5 +22,6 @@ public class App extends Application {
     LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
     AVOSCloud.setDebugLogEnabled(true);
     LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY);
+    AVIMClient.setAutoOpen(false);
   }
 }
