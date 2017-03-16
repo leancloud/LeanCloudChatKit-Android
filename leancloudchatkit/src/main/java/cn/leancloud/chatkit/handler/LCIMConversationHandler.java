@@ -1,6 +1,8 @@
 package cn.leancloud.chatkit.handler;
 
 
+import android.util.Log;
+
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
@@ -32,11 +34,10 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
   }
 
   @Override
-  public void onOfflineMessagesUnread(AVIMClient client, AVIMConversation conversation, int unreadCount) {
-    if (unreadCount > 0) {
-      LCIMConversationItemCache.getInstance().increaseUnreadCount(conversation.getConversationId(), unreadCount);
-      EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent());
-    }
+  public void onUnreadMessagesCountEvent(AVIMClient client, AVIMConversation conversation) {
+    super.onUnreadMessagesCountEvent(client, conversation);
+    LCIMConversationItemCache.getInstance().insertConversation(conversation.getConversationId());
+    EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent());
   }
 
   @Override

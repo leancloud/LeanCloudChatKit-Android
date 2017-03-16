@@ -189,6 +189,7 @@ public class LCIMConversationFragment extends Fragment {
           recyclerView.setAdapter(itemAdapter);
           itemAdapter.notifyDataSetChanged();
           scrollToBottom();
+          clearUnreadConut();
         }
       }
     });
@@ -216,6 +217,7 @@ public class LCIMConversationFragment extends Fragment {
       itemAdapter.addMessage(messageEvent.message);
       itemAdapter.notifyDataSetChanged();
       scrollToBottom();
+      clearUnreadConut();
     }
   }
 
@@ -413,5 +415,11 @@ public class LCIMConversationFragment extends Fragment {
       Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
     }
     return (null == e);
+  }
+
+  private void clearUnreadConut() {
+    if (imConversation.getUnreadMessagesCount() > 0) {
+      imConversation.read(null);
+    }
   }
 }

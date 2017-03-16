@@ -55,47 +55,6 @@ public class LCIMConversationItemCache {
   }
 
   /**
-   * 此处的消息未读数量仅仅指的是本机的未读消息数量，并没有存储到 server 端
-   * 在收到消息时消息未读数量 + 1
-   *
-   * @param convid 不能为空
-   */
-  public void increaseUnreadCount(String convid) {
-    if (!TextUtils.isEmpty(convid)) {
-      increaseUnreadCount(convid, 1);
-    }
-  }
-
-  /**
-   * 在原来的基础增加未读的消息数量
-   *
-   * @param convId 不能为空
-   * @param increment 必须要大于 0
-   */
-  public synchronized void increaseUnreadCount(String convId, int increment) {
-    if (!TextUtils.isEmpty(convId) && increment > 0) {
-      LCIMConversationItem conversationItem = getConversationItemFromMap(convId);
-      conversationItem.unreadCount += increment;
-      conversationItem.updateTime = System.currentTimeMillis();
-      syncToCache(conversationItem);
-    }
-  }
-
-  /**
-   * 清空未读的消息数量
-   *
-   * @param convid 不能为空
-   */
-  public synchronized void clearUnread(String convid) {
-    if (!TextUtils.isEmpty(convid)) {
-      LCIMConversationItem unreadCountItem = getConversationItemFromMap(convid);
-      unreadCountItem.unreadCount = 0;
-      unreadCountItem.updateTime = System.currentTimeMillis();
-      syncToCache(unreadCountItem);
-    }
-  }
-
-  /**
    * 删除该 Conversation 未读数量的缓存
    *
    * @param convid 不能为空
@@ -131,16 +90,6 @@ public class LCIMConversationItemCache {
       item.updateTime = milliSeconds;
       syncToCache(item);
     }
-  }
-
-  /**
-   * 获取该 Conversation 的未读数量
-   *
-   * @param convId 不能为空
-   * @return
-   */
-  public synchronized int getUnreadCount(String convId) {
-    return getConversationItemFromMap(convId).unreadCount;
   }
 
   /**

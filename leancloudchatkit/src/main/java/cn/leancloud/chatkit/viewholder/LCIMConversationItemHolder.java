@@ -183,7 +183,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    * @param conversation
    */
   private void updateUnreadCount(AVIMConversation conversation) {
-    int num = LCIMConversationItemCache.getInstance().getUnreadCount(conversation.getConversationId());
+    int num = conversation.getUnreadMessagesCount();
     unreadView.setText(num + "");
     unreadView.setVisibility(num > 0 ? View.VISIBLE : View.GONE);
   }

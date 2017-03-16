@@ -100,7 +100,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
   protected void updateConversation(AVIMConversation conversation) {
     if (null != conversation) {
       conversationFragment.setConversation(conversation);
-      LCIMConversationItemCache.getInstance().clearUnread(conversation.getConversationId());
+      LCIMConversationItemCache.getInstance().insertConversation(conversation.getConversationId());
       LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
         @Override
         protected void internalDone0(String s, AVException e) {
