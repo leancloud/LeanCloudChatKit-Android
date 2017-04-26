@@ -1,8 +1,5 @@
 package cn.leancloud.chatkit.handler;
 
-
-import android.util.Log;
-
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
@@ -10,6 +7,7 @@ import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
 import java.util.List;
 
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
+import cn.leancloud.chatkit.event.LCIMConversationReadStatusEvent;
 import cn.leancloud.chatkit.event.LCIMOfflineMessageCountChangeEvent;
 import de.greenrobot.event.EventBus;
 
@@ -38,6 +36,20 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
     super.onUnreadMessagesCountEvent(client, conversation);
     LCIMConversationItemCache.getInstance().insertConversation(conversation.getConversationId());
     EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent());
+  }
+
+  @Override
+  public void onLastDeliveredAtUpdated(AVIMClient client, AVIMConversation conversation) {
+    LCIMConversationReadStatusEvent event = new LCIMConversationReadStatusEvent();
+    event.conversationId = conversation.getConversationId();
+    EventBus.getDefault().post(event);
+  }
+
+  @Override
+  public void onLastReadAtUpdated(AVIMClient client, AVIMConversation conversation) {
+    LCIMConversationReadStatusEvent event = new LCIMConversationReadStatusEvent();
+    event.conversationId = conversation.getConversationId();
+    EventBus.getDefault().post(event);
   }
 
   @Override

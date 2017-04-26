@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.AVIMMessageOption;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
@@ -33,6 +34,7 @@ import java.util.List;
 
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.adapter.LCIMChatAdapter;
+import cn.leancloud.chatkit.event.LCIMConversationReadStatusEvent;
 import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarEvent;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarRecordEvent;
@@ -113,6 +115,8 @@ public class LCIMConversationFragment extends Fragment {
               if (filterException(e)) {
                 if (null != list && list.size() > 0) {
                   itemAdapter.addMessageList(list);
+                  itemAdapter.setDeliveredAndReadMark(imConversation.getLastDeliveredAt(),
+                    imConversation.getLastReadAt());
                   itemAdapter.notifyDataSetChanged();
                   layoutManager.scrollToPositionWithOffset(list.size() - 1, 0);
                 }
@@ -174,7 +178,6 @@ public class LCIMConversationFragment extends Fragment {
     } else {
       itemAdapter.showUserName(true);
     }
-
   }
 
   /**
@@ -187,6 +190,8 @@ public class LCIMConversationFragment extends Fragment {
         if (filterException(e)) {
           itemAdapter.setMessageList(messageList);
           recyclerView.setAdapter(itemAdapter);
+          itemAdapter.setDeliveredAndReadMark(imConversation.getLastDeliveredAt(),
+            imConversation.getLastReadAt());
           itemAdapter.notifyDataSetChanged();
           scrollToBottom();
           clearUnreadConut();
@@ -264,6 +269,19 @@ public class LCIMConversationFragment extends Fragment {
       !TextUtils.isEmpty(recordEvent.audioPath) &&
       imConversation.getConversationId().equals(recordEvent.tag)) {
       sendAudio(recordEvent.audioPath);
+    }
+  }
+
+  /**
+   * 更新对方已读的位置事件
+   * @param readEvent
+   */
+  public void onEvent(LCIMConversationReadStatusEvent readEvent) {
+    if (null != imConversation && null != readEvent &&
+      imConversation.getConversationId().equals(readEvent.conversationId)) {
+      itemAdapter.setDeliveredAndReadMark(imConversation.getLastDeliveredAt(),
+        imConversation.getLastReadAt());
+      itemAdapter.notifyDataSetChanged();
     }
   }
 
@@ -398,7 +416,10 @@ public class LCIMConversationFragment extends Fragment {
     }
     itemAdapter.notifyDataSetChanged();
     scrollToBottom();
-    imConversation.sendMessage(message, new AVIMConversationCallback() {
+
+    AVIMMessageOption option = new AVIMMessageOption();
+    option.setReceipt(true);
+    imConversation.sendMessage(message, option, new AVIMConversationCallback() {
       @Override
       public void done(AVIMException e) {
         itemAdapter.notifyDataSetChanged();

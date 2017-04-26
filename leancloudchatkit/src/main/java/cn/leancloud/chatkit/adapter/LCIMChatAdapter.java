@@ -1,6 +1,7 @@
 package cn.leancloud.chatkit.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.avos.avoscloud.im.v2.AVIMMessage;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.viewholder.LCIMChatHolderOption;
 import cn.leancloud.chatkit.viewholder.LCIMChatItemAudioHolder;
 import cn.leancloud.chatkit.viewholder.LCIMChatItemHolder;
 import cn.leancloud.chatkit.viewholder.LCIMChatItemImageHolder;
@@ -43,6 +45,9 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private final static long TIME_INTERVAL = 1000 * 60 * 3;
   private boolean isShowUserName = true;
   protected List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
+
+  private long lastDeliveredAt = 0;
+  private long lastReadAt = 0;
 
   public LCIMChatAdapter() {
     super();
@@ -113,8 +118,12 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
     ((LCIMCommonViewHolder)holder).bindData(messageList.get(position));
     if (holder instanceof LCIMChatItemHolder) {
-      ((LCIMChatItemHolder)holder).showTimeView(shouldShowTime(position));
-      ((LCIMChatItemHolder)holder).showUserName(isShowUserName);
+      LCIMChatHolderOption option = new LCIMChatHolderOption();
+      option.setShowName(isShowUserName);
+      option.setShowTime(shouldShowTime(position));
+      option.setShowDelivered(shouldShowDelivered(position));
+      option.setShowRead(shouldShowRead(position));
+      ((LCIMChatItemHolder)holder).setHolderOption(option);
     }
   }
 
@@ -159,6 +168,42 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   /**
+   * 是否应该展示已送达标记
+   * @param position
+   * @return
+   */
+  private boolean shouldShowDelivered(int position) {
+    if (null != messageList && messageList.size() > 0) {
+      int size = messageList.size();
+      if (position < size) {
+        long curTime = messageList.get(position).getTimestamp();
+        if (curTime < lastDeliveredAt) {
+          return position == size - 1 || lastDeliveredAt < messageList.get(position + 1).getTimestamp();
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * 是否应该展示已读标记
+   * @param position
+   * @return
+   */
+  private boolean shouldShowRead(int position) {
+    if (null != messageList && messageList.size() > 0) {
+      int size = messageList.size();
+      if (position < size) {
+        long curTime = messageList.get(position).getTimestamp();
+        if (curTime < lastReadAt) {
+          return position == size - 1 || lastReadAt < messageList.get(position + 1).getTimestamp();
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
    * item 是否展示用户名
    * 因为
    * @param isShow
@@ -167,6 +212,15 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     isShowUserName = isShow;
   }
 
+  /**
+   * 设置已读及送达回执的标志位置
+   * @param deliveredAt
+   * @param readAt
+   */
+  public void setDeliveredAndReadMark(long deliveredAt, long readAt) {
+    lastDeliveredAt = deliveredAt;
+    lastReadAt = readAt;
+  }
 
   /**
    * 因为 RecyclerView 中的 item 缓存默认最大为 5，造成会重复的 create item 而卡顿
