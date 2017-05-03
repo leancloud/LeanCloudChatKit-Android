@@ -127,12 +127,22 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     }
   }
 
-  public void showTimeView(boolean isShow) {
-    timeView.setVisibility(isShow ? View.VISIBLE : View.GONE);
-  }
-
-  public void showUserName(boolean isShow) {
-    nameView.setVisibility(isShow ? View.VISIBLE : View.GONE);
+  public void setHolderOption(LCIMChatHolderOption option) {
+    if (null != option && !isLeft &&
+      (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusSent == message.getMessageStatus() ||
+      AVIMMessage.AVIMMessageStatus.AVIMMessageStatusReceipt == message.getMessageStatus())) {
+      timeView.setVisibility(option.isShowTime() ? View.VISIBLE : View.GONE);
+      nameView.setVisibility(option.isShowName() ? View.VISIBLE : View.GONE);
+      statusView.setVisibility(option.isShowDelivered() || option.isShowRead() ? View.VISIBLE : View.GONE);
+      statusLayout.setVisibility(option.isShowDelivered() || option.isShowRead() ? View.VISIBLE : View.GONE);
+      progressBar.setVisibility(View.GONE);
+      errorView.setVisibility(View.GONE);
+      if (option.isShowRead()) {
+        statusView.setText("已读");
+      } else if (option.isShowDelivered()) {
+        statusView.setText("已收到");
+      }
+    }
   }
 
   /**
