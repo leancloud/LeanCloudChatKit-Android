@@ -440,7 +440,7 @@ public class LCIMConversationFragment extends Fragment {
 
   private void clearUnreadConut() {
     if (imConversation.getUnreadMessagesCount() > 0) {
-      imConversation.read(null);
+      imConversation.read();
     }
   }
 }
