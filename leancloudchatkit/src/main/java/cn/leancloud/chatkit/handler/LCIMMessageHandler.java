@@ -50,14 +50,12 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
       if (!client.getClientId().equals(LCChatKit.getInstance().getCurrentUserId())) {
         client.close(null);
       } else {
+        if (LCIMNotificationUtils.isShowNotification(conversation.getConversationId())) {
+          sendNotification(message, conversation);
+        }
+        LCIMConversationItemCache.getInstance().insertConversation(message.getConversationId());
         if (!message.getFrom().equals(client.getClientId())) {
-          if (LCIMNotificationUtils.isShowNotification(conversation.getConversationId())) {
-            sendNotification(message, conversation);
-          }
-          LCIMConversationItemCache.getInstance().increaseUnreadCount(message.getConversationId());
           sendEvent(message, conversation);
-        } else {
-          LCIMConversationItemCache.getInstance().insertConversation(message.getConversationId());
         }
       }
     }

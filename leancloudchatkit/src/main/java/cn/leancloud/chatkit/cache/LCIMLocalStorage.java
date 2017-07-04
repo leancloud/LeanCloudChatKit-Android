@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.leancloud.chatkit.utils.LCIMLogUtils;
+
 /**
  * Created by wli on 16/2/25.
  * key value 形式的存储，只能存储 String，其他数据也要转化成 String 存储
@@ -219,12 +221,15 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    * 插入数据，此为同步方法
    */
   private void insertSync(List<String> idList, List<String> valueList) {
+    if(idList.size() != valueList.size()) {
+        LCIMLogUtils.i("idList.size is not equal to valueList.size");
+    }
     SQLiteDatabase db = getWritableDatabase();
     db.beginTransaction();
     for (int i = 0; i < valueList.size(); i++) {
       ContentValues values = new ContentValues();
       values.put(TABLE_KEY_ID, idList.get(i));
-      values.put(TABLE_KEY_CONTENT, valueList.get(0));
+      values.put(TABLE_KEY_CONTENT, valueList.get(i));
       db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
     db.setTransactionSuccessful();

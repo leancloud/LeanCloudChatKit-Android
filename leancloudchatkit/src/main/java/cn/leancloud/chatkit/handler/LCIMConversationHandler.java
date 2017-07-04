@@ -1,6 +1,5 @@
 package cn.leancloud.chatkit.handler;
 
-
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
@@ -8,6 +7,7 @@ import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
 import java.util.List;
 
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
+import cn.leancloud.chatkit.event.LCIMConversationReadStatusEvent;
 import cn.leancloud.chatkit.event.LCIMOfflineMessageCountChangeEvent;
 import de.greenrobot.event.EventBus;
 
@@ -32,11 +32,23 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
   }
 
   @Override
-  public void onOfflineMessagesUnread(AVIMClient client, AVIMConversation conversation, int unreadCount) {
-    if (unreadCount > 0) {
-      LCIMConversationItemCache.getInstance().increaseUnreadCount(conversation.getConversationId(), unreadCount);
-      EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent());
-    }
+  public void onUnreadMessagesCountUpdated(AVIMClient client, AVIMConversation conversation) {
+    LCIMConversationItemCache.getInstance().insertConversation(conversation.getConversationId());
+    EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent());
+  }
+
+  @Override
+  public void onLastDeliveredAtUpdated(AVIMClient client, AVIMConversation conversation) {
+    LCIMConversationReadStatusEvent event = new LCIMConversationReadStatusEvent();
+    event.conversationId = conversation.getConversationId();
+    EventBus.getDefault().post(event);
+  }
+
+  @Override
+  public void onLastReadAtUpdated(AVIMClient client, AVIMConversation conversation) {
+    LCIMConversationReadStatusEvent event = new LCIMConversationReadStatusEvent();
+    event.conversationId = conversation.getConversationId();
+    EventBus.getDefault().post(event);
   }
 
   @Override

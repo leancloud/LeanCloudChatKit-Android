@@ -21,10 +21,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.+'
 
     //avoscloud-sdk 为 LeanCloud基础包
-    compile ('cn.leancloud.android:avoscloud-sdk:v3.+')
+    compile ('cn.leancloud.android:avoscloud-sdk:v4.0')
 
     //avoscloud-push 为推送与实时聊天需要的包
-    compile ('cn.leancloud.android:avoscloud-push:v3.+@aar'){transitive = true}
+    compile ('cn.leancloud.android:avoscloud-push:v4.0@aar'){transitive = true}
 
     compile 'com.android.support:recyclerview-v7:23.1.0'
 

@@ -111,8 +111,10 @@ public class LCIMProfileCache {
                 List<LCChatKitUser> profileList = new ArrayList<LCChatKitUser>();
                 for (String data : strings) {
                   LCChatKitUser userProfile = getUserProfileFromJson(data);
-                  userMap.put(userProfile.getUserId(), userProfile);
-                  profileList.add(userProfile);
+                  if (null != userProfile) {
+                    userMap.put(userProfile.getUserId(), userProfile);
+                    profileList.add(userProfile);
+                  }
                 }
                 callback.internalDone(profileList, null);
               } else {
@@ -216,11 +218,15 @@ public class LCIMProfileCache {
    * @return
    */
   private LCChatKitUser getUserProfileFromJson(String str) {
-    JSONObject jsonObject = JSONObject.parseObject(str);
-    String userName = jsonObject.getString(USER_NAME);
-    String userId = jsonObject.getString(USER_ID);
-    String userAvatar = jsonObject.getString(USER_AVATAR);
-    return new LCChatKitUser(userId, userName, userAvatar);
+    try {
+      JSONObject jsonObject = JSONObject.parseObject(str);
+      String userName = jsonObject.getString(USER_NAME);
+      String userId = jsonObject.getString(USER_ID);
+      String userAvatar = jsonObject.getString(USER_AVATAR);
+      return new LCChatKitUser(userId, userName, userAvatar);
+    } catch (Exception e) {
+    }
+    return null;
   }
 
   /**
