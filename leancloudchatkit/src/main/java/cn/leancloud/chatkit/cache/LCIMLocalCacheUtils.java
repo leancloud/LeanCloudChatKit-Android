@@ -4,11 +4,6 @@ package cn.leancloud.chatkit.cache;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.avos.avoscloud.okhttp.Call;
-import com.avos.avoscloud.okhttp.OkHttpClient;
-import com.avos.avoscloud.okhttp.Request;
-import com.avos.avoscloud.okhttp.Response;
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,6 +15,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by wli on 15/9/29.
