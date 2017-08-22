@@ -57,6 +57,14 @@
 
 -keepattributes *Annotation*
 
+-keepattributes Exceptions
+-dontwarn org.xmlpull.v1.**
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *; }
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+
 
 # ------------------------ ChatKit ------------------------
 -dontwarn cn.leancloud.chatkit.**

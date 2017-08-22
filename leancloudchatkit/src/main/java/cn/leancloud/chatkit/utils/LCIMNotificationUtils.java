@@ -7,8 +7,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
-import com.avos.avospush.notification.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 
 import java.util.LinkedList;
 import java.util.List;
