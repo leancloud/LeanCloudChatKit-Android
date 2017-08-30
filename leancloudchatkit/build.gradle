@@ -22,9 +22,9 @@ dependencies {
 
 //    compile fileTree(dir:"libs", include:["*.jar"])
     //avoscloud-sdk 为 LeanCloud基础包
-    compile ('cn.leancloud.android:avoscloud-sdk:v4.4.4')
+    compile ('cn.leancloud.android:avoscloud-sdk:v4.4.7')
     //avoscloud-push 为推送与实时聊天需要的包
-    compile ('cn.leancloud.android:avoscloud-push:v4.4.4@aar'){transitive = true}
+    compile ('cn.leancloud.android:avoscloud-push:v4.4.7@aar'){transitive = true}
 
     compile 'com.android.support:recyclerview-v7:23.1.0'
 
