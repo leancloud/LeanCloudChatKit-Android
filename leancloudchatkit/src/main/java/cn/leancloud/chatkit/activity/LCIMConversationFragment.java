@@ -268,7 +268,8 @@ public class LCIMConversationFragment extends Fragment {
     if (null != imConversation && null != recordEvent &&
       !TextUtils.isEmpty(recordEvent.audioPath) &&
       imConversation.getConversationId().equals(recordEvent.tag)) {
-      sendAudio(recordEvent.audioPath);
+      if (recordEvent.audioDuration > 0)
+        sendAudio(recordEvent.audioPath);
     }
   }
 
