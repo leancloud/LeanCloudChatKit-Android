@@ -36,6 +36,7 @@ public class ContactFragment extends Fragment {
     recyclerView.addItemDecoration(new LCIMDividerItemDecoration(getActivity()));
     itemAdapter = new MembersAdapter();
     recyclerView.setAdapter(itemAdapter);
+    itemAdapter.setMemberList(CustomUserProvider.getInstance().getAllUsers());
     refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
       public void onRefresh() {
@@ -60,7 +61,6 @@ public class ContactFragment extends Fragment {
   }
 
   private void refreshMembers() {
-    itemAdapter.setMemberList(CustomUserProvider.getInstance().getAllUsers());
     itemAdapter.notifyDataSetChanged();
     refreshLayout.setRefreshing(false);
   }
