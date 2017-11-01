@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+
 /**
  * Created by wli on 15/9/29.
  * 用于下载文件，会主动合并重复的下载

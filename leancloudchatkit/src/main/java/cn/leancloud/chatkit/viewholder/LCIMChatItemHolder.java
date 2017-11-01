@@ -25,6 +25,7 @@ import cn.leancloud.chatkit.LCChatKitUser;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMProfileCache;
 import cn.leancloud.chatkit.event.LCIMMessageResendEvent;
+import cn.leancloud.chatkit.event.LCIMMessageUpdateEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import de.greenrobot.event.EventBus;
@@ -76,6 +77,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
 
     setAvatarClickEvent();
     setResendClickEvent();
+    setUpdateMessageEvent();
   }
 
   @Override
@@ -175,6 +177,18 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
         LCIMMessageResendEvent event = new LCIMMessageResendEvent();
         event.message = message;
         EventBus.getDefault().post(event);
+      }
+    });
+  }
+
+  private void setUpdateMessageEvent() {
+    conventLayout.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        LCIMMessageUpdateEvent event = new LCIMMessageUpdateEvent();
+        event.message = message;
+        EventBus.getDefault().post(event);
+        return false;
       }
     });
   }

@@ -2,6 +2,7 @@ package cn.leancloud.chatkit.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,22 +11,28 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMMessageOption;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMMessageRecalledCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMMessageUpdatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMRecalledMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
 import java.io.File;
@@ -40,6 +47,8 @@ import cn.leancloud.chatkit.event.LCIMInputBottomBarEvent;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarRecordEvent;
 import cn.leancloud.chatkit.event.LCIMInputBottomBarTextEvent;
 import cn.leancloud.chatkit.event.LCIMMessageResendEvent;
+import cn.leancloud.chatkit.event.LCIMMessageUpdateEvent;
+import cn.leancloud.chatkit.event.LCIMMessageUpdatedEvent;
 import cn.leancloud.chatkit.utils.LCIMAudioHelper;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import cn.leancloud.chatkit.utils.LCIMNotificationUtils;
@@ -239,6 +248,81 @@ public class LCIMConversationFragment extends Fragment {
     }
   }
 
+  public void onEvent(final LCIMMessageUpdateEvent event) {
+    if (null != imConversation && null != event &&
+      null != event.message && imConversation.getConversationId().equals(event.message.getConversationId())) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+      builder.setTitle("操作").setItems(new String[]{"撤回", "修改消息内容"}, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          if (0 == which) {
+            recallMessage(event.message);
+          } else if (1 == which) {
+            showUpdateMessageDialog(event.message);
+          }
+        }
+      });
+      builder.create().show();
+    }
+  }
+
+  public void onEvent(final LCIMMessageUpdatedEvent event) {
+    if (null != imConversation && null != event &&
+      null != event.message && imConversation.getConversationId().equals(event.message.getConversationId())) {
+      itemAdapter.updateMessage(event.message);
+    }
+  }
+
+  private void showUpdateMessageDialog(final AVIMMessage message) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    final EditText editText = new EditText(getActivity());
+    builder.setView(editText);
+    builder.setTitle("修改消息内容");
+    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+      }
+    });
+    builder.setPositiveButton("提交", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        String content = editText.getText().toString();
+        updateMessage(message, content);
+      }
+    });
+    builder.show();
+  }
+
+  private void recallMessage(AVIMMessage message) {
+    imConversation.recallMessage(message, new AVIMMessageRecalledCallback() {
+      @Override
+      public void done(AVIMRecalledMessage recalledMessage, AVException e) {
+        if (null == e) {
+          itemAdapter.updateMessage(recalledMessage);
+        } else {
+          Toast.makeText(getActivity(), "撤回失败", Toast.LENGTH_SHORT).show();
+        }
+      }
+    });
+  }
+
+  private void updateMessage(AVIMMessage message, String newContent) {
+    AVIMTextMessage textMessage = new AVIMTextMessage();
+    textMessage.setText(newContent);
+    imConversation.updateMessage(message, textMessage, new AVIMMessageUpdatedCallback() {
+        @Override
+        public void done(AVIMMessage message, AVException e) {
+          if (null == e) {
+            itemAdapter.updateMessage(message);
+          } else {
+            Toast.makeText(getActivity(), "更新失败", Toast.LENGTH_SHORT).show();
+          }
+        }
+      });
+  }
+
   /**
    * 处理输入栏发送过来的事件
    *
@@ -429,6 +513,7 @@ public class LCIMConversationFragment extends Fragment {
         }
       }
     });
+    imConversation.read();
   }
 
   private boolean filterException(Exception e) {
