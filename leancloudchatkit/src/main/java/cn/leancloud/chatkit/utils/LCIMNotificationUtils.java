@@ -8,10 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.avos.avospush.notification.NotificationCompat;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import android.support.v4.app.NotificationCompat;
 
 /**
  * Created by wli on 15/8/26.
