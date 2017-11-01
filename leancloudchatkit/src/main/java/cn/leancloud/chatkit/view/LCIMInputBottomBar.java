@@ -196,6 +196,7 @@ public class LCIMInputBottomBar extends LinearLayout {
     recordBtn.setRecordEventListener(new LCIMRecordButton.RecordEventListener() {
       @Override
       public void onFinishedRecord(final String audioPath, int secs) {
+        if (secs > 0)
         EventBus.getDefault().post(
           new LCIMInputBottomBarRecordEvent(
             LCIMInputBottomBarEvent.INPUTBOTTOMBAR_SEND_AUDIO_ACTION, audioPath, secs, getTag()));

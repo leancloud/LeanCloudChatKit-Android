@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Color;
-import android.media.MediaRecorder;
+//import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -26,7 +26,7 @@ import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.utils.LCIMAudioHelper;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import cn.leancloud.chatkit.utils.LCIMPathUtils;
-
+import com.avos.avoscloud.im.v2.audio.*;
 
 /**
  * 录音的按钮
@@ -47,7 +47,7 @@ public class LCIMRecordButton extends Button {
   private long startTime;
   private Dialog recordIndicator;
   private View view;
-  private MediaRecorder recorder;
+  private AVIMAudioRecorder audioRecorder;
   private ObtainDecibelThread thread;
   private Handler volumeHandler;
   private ImageView imageView;
@@ -171,18 +171,6 @@ public class LCIMRecordButton extends Button {
     stopRecording();
     recordIndicator.dismiss();
     setBackgroundResource(BACK_IDLE);
-
-    long intervalTime = System.currentTimeMillis() - startTime;
-    if (intervalTime < MIN_INTERVAL_TIME) {
-      Toast.makeText(getContext(), getContext().getString(R.string.lcim_chat_record_button_pleaseSayMore), Toast.LENGTH_SHORT).show();
-      removeFile();
-      return;
-    }
-
-    int sec = Math.round(intervalTime * 1.0f / 1000);
-    if (recordEventListener != null) {
-      recordEventListener.onFinishedRecord(outputPath, sec);
-    }
   }
 
   private void cancelRecord() {
@@ -197,23 +185,36 @@ public class LCIMRecordButton extends Button {
   private void startRecording() {
     outputPath = LCIMPathUtils.getRecordPathByCurrentTime(getContext());
     try {
-      if (recorder == null) {
-        recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        recorder.setOutputFile(outputPath);
-        recorder.prepare();
-      } else {
-        recorder.reset();
-        recorder.setOutputFile(outputPath);
+      if (null == audioRecorder) {
+        final String localFilePath = outputPath;
+        audioRecorder = new AVIMAudioRecorder(localFilePath, new AVIMAudioRecorder.RecordEventListener(){
+        @Override
+        public void onFinishedRecord(long milliSeconds, String reason){
+          if (status == RELEASE_TO_CANCEL) {
+            removeFile();
+          } else if (null != recordEventListener) {
+            if (milliSeconds < MIN_INTERVAL_TIME) {
+              Toast.makeText(getContext(), getContext().getString(R.string.lcim_chat_record_button_pleaseSayMore), Toast.LENGTH_SHORT).show();
+              removeFile();
+            } else {
+              recordEventListener.onFinishedRecord(localFilePath, Math.round(milliSeconds/1000));
+            }
+          }
+        }
+        @Override
+        public void onStartRecord() {
+          if (null != recordEventListener) {
+            recordEventListener.onStartRecord();
+          }
+        }
+        });
       }
-      recorder.start();
+      audioRecorder.start();
       thread = new ObtainDecibelThread();
       thread.start();
       recordEventListener.onStartRecord();
-    } catch (IOException e) {
-      LCIMLogUtils.logException(e);
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
   }
 
@@ -222,14 +223,9 @@ public class LCIMRecordButton extends Button {
       thread.exit();
       thread = null;
     }
-    if (recorder != null) {
-      try {
-        recorder.stop();
-      } catch (Exception e) {
-      } finally {
-        recorder.release();
-        recorder = null;
-      }
+    if (audioRecorder != null) {
+      audioRecorder.stop();
+      audioRecorder = null;
     }
   }
 
@@ -254,10 +250,10 @@ public class LCIMRecordButton extends Button {
         } catch (InterruptedException e) {
           LCIMLogUtils.logException(e);
         }
-        if (recorder == null || !running) {
+        if (audioRecorder == null || !running) {
           break;
         }
-        int x = recorder.getMaxAmplitude();
+        int x = audioRecorder.getMaxAmplitude();
         if (x != 0) {
           int f = (int) (10 * Math.log(x) / Math.log(10));
           int index = (f - 18) / 5;
