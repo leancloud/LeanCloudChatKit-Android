@@ -76,6 +76,17 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     messageList.addAll(Arrays.asList(message));
   }
 
+  public void updateMessage(AVIMMessage message) {
+    for (int i = 0; i < messageList.size(); i++) {
+      if (messageList.get(i).getMessageId().equals(message.getMessageId())) {
+        messageList.remove(i);
+        messageList.add(i, message);
+        notifyItemChanged(i);
+        return;
+      }
+    }
+  }
+
   /**
    * 获取第一条消息记录，方便下拉时刷新数据
    * @return
