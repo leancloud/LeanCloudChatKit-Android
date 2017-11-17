@@ -13,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 
 import java.util.ArrayList;
@@ -67,6 +69,17 @@ public class MainActivity extends AppCompatActivity {
     int menuId = item.getItemId();
     if (menuId == R.id.menu_square_members) {
       gotoSquareConversation();
+    } else if (menuId == R.id.menu_quit) {
+      LCChatKit.getInstance().close(new AVIMClientCallback() {
+        @Override
+        public void done(AVIMClient avimClient, AVIMException e) {
+          if (null!= e) {
+            e.printStackTrace();
+          } else {
+            MainActivity.this.finish();
+          }
+        }
+      });
     }
     return super.onOptionsItemSelected(item);
   }

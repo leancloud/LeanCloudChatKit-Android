@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.PushService;
 
 import cn.leancloud.chatkit.LCChatKit;
 
@@ -23,5 +24,6 @@ public class App extends Application {
     AVOSCloud.setDebugLogEnabled(true);
     LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY);
     AVIMClient.setAutoOpen(false);
+    PushService.setDefaultPushCallback(this, MainActivity.class);
   }
 }

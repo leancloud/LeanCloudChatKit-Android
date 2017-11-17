@@ -27,6 +27,6 @@
         android:textColor="@android:color/white"
         android:background="@color/lcim_common_blue"
         android:textAppearance="@style/LCIMTextAppearance.Normal.Bold"
-        android:text="登陆"/>
+        android:text="登录"/>
 
 </LinearLayout>

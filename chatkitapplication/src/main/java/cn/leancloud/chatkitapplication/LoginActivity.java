@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
         if (null == e) {
-          finish();
           Intent intent = new Intent(LoginActivity.this, MainActivity.class);
           startActivity(intent);
         } else {
