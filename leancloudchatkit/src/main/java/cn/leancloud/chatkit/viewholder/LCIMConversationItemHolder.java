@@ -17,10 +17,13 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.im.v2.AVIMChatRoom;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMReservedMessageType;
+import com.avos.avoscloud.im.v2.AVIMServiceConversation;
+import com.avos.avoscloud.im.v2.AVIMTemporaryConversation;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
@@ -49,6 +52,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
 
   ImageView avatarView;
   TextView unreadView;
+  TextView typeView;
   TextView messageView;
   TextView timeView;
   TextView nameView;
@@ -65,6 +69,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
     nameView = (TextView) itemView.findViewById(R.id.conversation_item_tv_name);
     timeView = (TextView) itemView.findViewById(R.id.conversation_item_tv_time);
     unreadView = (TextView) itemView.findViewById(R.id.conversation_item_tv_unread);
+    typeView = (TextView) itemView.findViewById(R.id.conversation_item_tv_type);
     messageView = (TextView) itemView.findViewById(R.id.conversation_item_tv_message);
     avatarLayout = (RelativeLayout) itemView.findViewById(R.id.conversation_item_layout_avatar);
     contentLayout = (LinearLayout) itemView.findViewById(R.id.conversation_item_layout_content);
@@ -92,6 +97,15 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         updateIcon(conversation);
       }
 
+      if (conversation instanceof AVIMServiceConversation) {
+        typeView.setText("S");
+      } else if (conversation instanceof AVIMTemporaryConversation) {
+        typeView.setText("T");
+      } else if (conversation instanceof AVIMChatRoom) {
+        typeView.setText("R");
+      } else {
+        typeView.setText("C");
+      }
       updateUnreadCount(conversation);
       updateLastMessage(conversation.getLastMessage());
       itemView.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +140,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
     nameView.setText("");
     timeView.setText("");
     messageView.setText("");
+    typeView.setText("");
     unreadView.setVisibility(View.GONE);
   }
 
@@ -134,13 +149,14 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    *
    * @param conversation
    */
-  private void updateName(AVIMConversation conversation) {
+  private void updateName(final AVIMConversation conversation) {
     LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
       @Override
       protected void internalDone0(String s, AVException e) {
         if (null != e) {
           LCIMLogUtils.logException(e);
         } else {
+
           nameView.setText(s);
         }
       }

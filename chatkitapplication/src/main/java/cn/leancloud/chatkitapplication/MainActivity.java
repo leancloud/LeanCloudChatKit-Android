@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMChatRoom;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -22,6 +23,8 @@ import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;
@@ -30,6 +33,7 @@ import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 
 public class MainActivity extends AppCompatActivity {
+  private static Logger logger = Logger.getLogger(MainActivity.class.getSimpleName());
 
   private Toolbar toolbar;
   private ViewPager viewPager;
@@ -161,13 +165,17 @@ public class MainActivity extends AppCompatActivity {
     for (LCChatKitUser user : userList) {
       idList.add(user.getUserId());
     }
-    LCChatKit.getInstance().getClient().createConversation(
-      idList, getString(R.string.square), null, false, true, new AVIMConversationCreatedCallback() {
+    LCChatKit.getInstance().getClient().createChatRoom(
+      idList, getString(R.string.square), null, true, new AVIMConversationCreatedCallback() {
         @Override
         public void done(AVIMConversation avimConversation, AVIMException e) {
-          Intent intent = new Intent(MainActivity.this, LCIMConversationActivity.class);
-          intent.putExtra(LCIMConstants.CONVERSATION_ID, avimConversation.getConversationId());
-          startActivity(intent);
+          if (avimConversation instanceof AVIMChatRoom) {
+            Intent intent = new Intent(MainActivity.this, LCIMConversationActivity.class);
+            intent.putExtra(LCIMConstants.CONVERSATION_ID, avimConversation.getConversationId());
+            startActivity(intent);
+          } else {
+            logger.log(Level.WARNING, "createChatRoom is wrong!");
+          }
         }
       });
   }

@@ -11,6 +11,7 @@ import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMTemporaryConversation;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 
 import java.util.Arrays;
@@ -119,17 +120,33 @@ public class LCIMConversationActivity extends AppCompatActivity {
    * 为了避免重复的创建，createConversation 参数 isUnique 设为 true·
    */
   protected void getConversation(final String memberId) {
-    LCChatKit.getInstance().getClient().createConversation(
-      Arrays.asList(memberId), "", null, false, true, new AVIMConversationCreatedCallback() {
-        @Override
-        public void done(AVIMConversation avimConversation, AVIMException e) {
-          if (null != e) {
-            showToast(e.getMessage());
-          } else {
-            updateConversation(avimConversation);
-          }
-        }
-      });
+    if ("Harry".equalsIgnoreCase(memberId)) {
+      LCChatKit.getInstance().getClient().createTemporaryConversation(
+          Arrays.asList(memberId), "", new AVIMConversationCreatedCallback() {
+            @Override
+            public void done(AVIMConversation avimConversation, AVIMException e) {
+              if (null != e) {
+                showToast(e.getMessage());
+              } else if (avimConversation instanceof AVIMTemporaryConversation) {
+                updateConversation(avimConversation);
+              } else {
+                showToast("failed to createTemporyConversation");
+              }
+            }
+          });
+    } else {
+      LCChatKit.getInstance().getClient().createConversation(
+          Arrays.asList(memberId), "", null, false, true, new AVIMConversationCreatedCallback() {
+            @Override
+            public void done(AVIMConversation avimConversation, AVIMException e) {
+              if (null != e) {
+                showToast(e.getMessage());
+              } else {
+                updateConversation(avimConversation);
+              }
+            }
+          });
+    }
   }
 
   /**
