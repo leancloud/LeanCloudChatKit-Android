@@ -11,9 +11,15 @@ import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMChatRoom;
+import com.avos.avoscloud.im.v2.AVIMTemporaryConversation;
+import com.avos.avoscloud.im.v2.AVIMConversationsQuery;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 
 import java.util.Arrays;
+import java.util.List;
 
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.R;
@@ -99,6 +105,9 @@ public class LCIMConversationActivity extends AppCompatActivity {
    */
   protected void updateConversation(AVIMConversation conversation) {
     if (null != conversation) {
+      if (conversation instanceof AVIMTemporaryConversation) {
+        System.out.println("Conversation expired flag: " + ((AVIMTemporaryConversation)conversation).isExpired());
+      }
       conversationFragment.setConversation(conversation);
       LCIMConversationItemCache.getInstance().insertConversation(conversation.getConversationId());
       LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
@@ -120,16 +129,16 @@ public class LCIMConversationActivity extends AppCompatActivity {
    */
   protected void getConversation(final String memberId) {
     LCChatKit.getInstance().getClient().createConversation(
-      Arrays.asList(memberId), "", null, false, true, new AVIMConversationCreatedCallback() {
-        @Override
-        public void done(AVIMConversation avimConversation, AVIMException e) {
-          if (null != e) {
-            showToast(e.getMessage());
-          } else {
-            updateConversation(avimConversation);
+        Arrays.asList(memberId), "", null, false, true, new AVIMConversationCreatedCallback() {
+          @Override
+          public void done(AVIMConversation avimConversation, AVIMException e) {
+            if (null != e) {
+              showToast(e.getMessage());
+            } else {
+              updateConversation(avimConversation);
+            }
           }
-        }
-      });
+        });
   }
 
   /**

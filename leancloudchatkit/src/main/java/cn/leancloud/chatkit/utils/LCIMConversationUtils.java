@@ -37,7 +37,9 @@ public class LCIMConversationUtils {
       callback.internalDone(null, new AVException(new Throwable("conversation can not be null!")));
       return;
     }
-    if (conversation.isTransient()) {
+    if (conversation.isTemporary()) {
+      callback.internalDone(conversation.getName(), null);
+    } else if (conversation.isTransient()) {
       callback.internalDone(conversation.getName(), null);
     } else if (2 == conversation.getMembers().size()) {
       String peerId = getConversationPeerId(conversation);
