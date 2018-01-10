@@ -1,6 +1,8 @@
 package cn.leancloud.chatkitapplication;
 
 import android.app.Application;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -9,6 +11,7 @@ import com.avos.avoscloud.im.v2.*;
 import com.avos.avoscloud.im.v2.callback.*;
 import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.im.v2.AVIMOptions;
+import com.avos.avoscloud.AVOSCloud.*;
 
 import cn.leancloud.chatkit.LCChatKit;
 
@@ -18,21 +21,20 @@ import cn.leancloud.chatkit.LCChatKit;
 public class App extends Application {
 
   // 此 id 与 key 仅供测试使用
-//  private final String APP_ID = "dYRQ8YfHRiILshUnfFJu2eQM-gzGzoHsz";
-//  private final String APP_KEY = "ye24iIK6ys8IvaISMC4Bs5WK";
-  private final String APP_ID = "NlQwJxKuRDsRoTvTChS9MjHs-gzGzoHsz";
-  private final String APP_KEY = "c2qUx8tQHqFvh0nVVB8Xku8H";
+  private final String APP_ID = "dYRQ8YfHRiILshUnfFJu2eQM-gzGzoHsz";
+  private final String APP_KEY = "ye24iIK6ys8IvaISMC4Bs5WK";
 
   @Override
   public void onCreate() {
     super.onCreate();
     LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
     AVOSCloud.setDebugLogEnabled(true);
-//    AVOSCloud.setServer(AVOSCloud.SERVER_TYPE.PUSH, "nlqwjxku.push.lncld.net");
-    AVIMOptions.getGlobalOptions().setRTMServer("wss://rtm51.leancloud.cn");
     LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY);
-    AVIMClient.setAutoOpen(false);
+    AVIMClient.setAutoOpen(true);
     PushService.setDefaultPushCallback(this, MainActivity.class);
+    PushService.setAutoWakeUp(true);
+    PushService.setDefaultChannelId(this, "default");
+
     AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
       public void done(AVException e) {
         if (e == null) {
