@@ -6,14 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AlertDialog;
+import android.system.Os;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -376,9 +379,20 @@ public class LCIMConversationFragment extends Fragment {
   private void dispatchTakePictureIntent() {
     localCameraPath = LCIMPathUtils.getPicturePathByCurrentTime(getContext());
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    Uri imageUri = Uri.fromFile(new File(localCameraPath));
-    takePictureIntent.putExtra("return-data", false);
-    takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+
+    System.out.println("localCameraPath: " + localCameraPath);
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+      Uri imageUri = Uri.fromFile(new File(localCameraPath));
+      takePictureIntent.putExtra("return-data", false);
+      takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+    } else {
+      File photoFile = new File(localCameraPath);
+      Uri photoURI = FileProvider.getUriForFile(this.getContext(),
+          "cn.leancloud.chatkitapplication.provider", photoFile);
+      takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+          photoURI);
+    }
     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
       startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }

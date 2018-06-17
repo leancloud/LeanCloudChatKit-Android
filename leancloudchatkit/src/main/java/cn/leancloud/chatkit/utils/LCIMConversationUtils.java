@@ -79,6 +79,8 @@ public class LCIMConversationUtils {
         peerId = conversation.getMembers().get(0);
       }
       LCIMProfileCache.getInstance().getUserAvatar(peerId, callback);
+    } else if (null != conversation) {
+      callback.internalDone("", null);
     } else {
       callback.internalDone(null, new AVException(new Throwable("cannot find icon!")));
     }
