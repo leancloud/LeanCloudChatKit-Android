@@ -388,8 +388,9 @@ public class LCIMConversationFragment extends Fragment {
       takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
     } else {
       File photoFile = new File(localCameraPath);
+
       Uri photoURI = FileProvider.getUriForFile(this.getContext(),
-          "cn.leancloud.chatkitapplication.provider", photoFile);
+          this.getContext().getPackageName() + ".provider", photoFile);
       takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
           photoURI);
     }
