@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AlertDialog;
-import android.system.Os;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -377,20 +377,20 @@ public class LCIMConversationFragment extends Fragment {
    * 发送 Intent 跳转到系统拍照页面
    */
   private void dispatchTakePictureIntent() {
-    localCameraPath = LCIMPathUtils.getPicturePathByCurrentTime(getContext());
+
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-    System.out.println("localCameraPath: " + localCameraPath);
-
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+      localCameraPath = LCIMPathUtils.getPicturePathByCurrentTime(getContext());
       Uri imageUri = Uri.fromFile(new File(localCameraPath));
       takePictureIntent.putExtra("return-data", false);
       takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
     } else {
+      localCameraPath = Environment.getExternalStorageDirectory() + "/images/" + System.currentTimeMillis()+".jpg";
       File photoFile = new File(localCameraPath);
 
       Uri photoURI = FileProvider.getUriForFile(this.getContext(),
-          this.getContext().getPackageName() + ".provider", photoFile);
+          this.getContext().getPackageName()+ ".provider", photoFile);
       takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
           photoURI);
     }
@@ -410,7 +410,7 @@ public class LCIMConversationFragment extends Fragment {
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
+    System.out.println("requestCode=" + requestCode + ", resultCode=" + resultCode);
     if (Activity.RESULT_OK == resultCode) {
       switch (requestCode) {
         case REQUEST_IMAGE_CAPTURE:
@@ -423,6 +423,7 @@ public class LCIMConversationFragment extends Fragment {
           break;
       }
     }
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   /**

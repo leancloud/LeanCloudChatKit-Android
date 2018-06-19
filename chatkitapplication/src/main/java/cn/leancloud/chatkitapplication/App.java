@@ -21,10 +21,10 @@ import cn.leancloud.chatkit.LCChatKit;
 public class App extends Application {
 
   // 此 id 与 key 仅供测试使用
-//  private final String APP_ID = "dYRQ8YfHRiILshUnfFJu2eQM-gzGzoHsz";
-//  private final String APP_KEY = "ye24iIK6ys8IvaISMC4Bs5WK";
-  private final String APP_ID = "l8j5lm8c9f9d2l90213i00wsdhhljbrwrn6g0apptblu7l90";
-  private final String APP_KEY = "b3uyj9cmk84s5t9n6z1rqs9pvf2azofgacy9bfigmiehhheg";
+  private final String APP_ID = "dYRQ8YfHRiILshUnfFJu2eQM-gzGzoHsz";
+  private final String APP_KEY = "ye24iIK6ys8IvaISMC4Bs5WK";
+//  private final String APP_ID = "l8j5lm8c9f9d2l90213i00wsdhhljbrwrn6g0apptblu7l90";
+//  private final String APP_KEY = "b3uyj9cmk84s5t9n6z1rqs9pvf2azofgacy9bfigmiehhheg";
 
 
   @Override
@@ -32,7 +32,7 @@ public class App extends Application {
     super.onCreate();
     LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
     AVOSCloud.setDebugLogEnabled(true);
-    AVOSCloud.useAVCloudUS();
+//    AVOSCloud.useAVCloudUS();
     LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY);
     AVIMClient.setAutoOpen(true);
     PushService.setDefaultPushCallback(this, MainActivity.class);
