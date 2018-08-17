@@ -3,13 +3,13 @@ package cn.leancloud.chatkit.handler;
 import android.content.Context;
 import android.content.Intent;
 
-import com.avos.avoscloud.AVCallback;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
-import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import cn.leancloud.callback.AVCallback;
+import cn.leancloud.AVException;
+import cn.leancloud.im.v2.AVIMClient;
+import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.AVIMTypedMessage;
+import cn.leancloud.im.v2.AVIMTypedMessageHandler;
+import cn.leancloud.im.v2.messages.AVIMTextMessage;
 
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;

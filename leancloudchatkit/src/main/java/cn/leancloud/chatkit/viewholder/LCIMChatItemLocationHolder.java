@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
+import cn.leancloud.im.v2.AVIMMessage;
+import cn.leancloud.im.v2.messages.AVIMLocationMessage;
 
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.event.LCIMLocationItemClickEvent;

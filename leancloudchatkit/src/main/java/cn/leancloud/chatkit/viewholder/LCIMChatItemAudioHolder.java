@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
+import cn.leancloud.im.v2.messages.AVIMAudioMessage;
 
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMLocalCacheUtils;

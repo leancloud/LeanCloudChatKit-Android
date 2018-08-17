@@ -26,7 +26,7 @@ import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.utils.LCIMAudioHelper;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import cn.leancloud.chatkit.utils.LCIMPathUtils;
-import com.avos.avoscloud.im.v2.audio.*;
+import cn.leancloud.im.v2.audio.*;
 
 /**
  * 录音的按钮

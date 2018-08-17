@@ -7,16 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVCallback;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.AVIMChatRoom;
-import com.avos.avoscloud.im.v2.AVIMTemporaryConversation;
-import com.avos.avoscloud.im.v2.AVIMConversationsQuery;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import cn.leancloud.callback.AVCallback;
+import cn.leancloud.AVException;
+import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.AVIMException;
+import cn.leancloud.im.v2.AVIMChatRoom;
+import cn.leancloud.im.v2.AVIMTemporaryConversation;
+import cn.leancloud.im.v2.AVIMConversationsQuery;
+import cn.leancloud.im.v2.callback.AVIMConversationCreatedCallback;
+import cn.leancloud.im.v2.callback.AVIMConversationQueryCallback;
+import cn.leancloud.im.v2.callback.AVIMConversationCallback;
 
 import java.util.Arrays;
 import java.util.List;

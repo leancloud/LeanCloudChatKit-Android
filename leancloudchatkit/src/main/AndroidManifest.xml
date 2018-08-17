@@ -25,7 +25,7 @@
 
         <activity android:name="cn.leancloud.chatkit.activity.LCIMImageActivity"/>
 
-        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+        <receiver android:name="cn.leancloud.push.AVBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -44,7 +44,7 @@
             </meta-data>
         </provider>
 
-        <service android:name="com.avos.avoscloud.PushService" />
+        <service android:name="cn.leancloud.push.PushService" />
     </application>
 
 </manifest>

@@ -1,9 +1,9 @@
 package cn.leancloud.chatkit.handler;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
+import cn.leancloud.im.v2.AVIMClient;
+import cn.leancloud.im.v2.AVIMMessage;
+import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.AVIMConversationEventHandler;
 
 import java.util.List;
 

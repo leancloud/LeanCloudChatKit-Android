@@ -2,18 +2,14 @@ package cn.leancloud.chatkit.utils;
 
 import android.util.Log;
 
-import com.avos.avoscloud.AVOSCloud;
+import cn.leancloud.AVOSCloud;
 
 /**
  * Created by wli on 16/4/6.
  */
 public class LCIMLogUtils {
   public static final String LOGTAG = "LCChatKit";
-  public static boolean debugEnabled = false;
-
-  static {
-    debugEnabled = AVOSCloud.isDebugLogEnabled();
-  }
+  public static boolean debugEnabled = true;
 
   public LCIMLogUtils() {
   }
