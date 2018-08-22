@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -90,9 +91,20 @@ public class LCIMConversationActivity extends AppCompatActivity {
   }
 
   @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_setting, menu);
+    return true;
+  }
+
+  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     if (android.R.id.home == item.getItemId()) {
       onBackPressed();
+      return true;
+    }
+    if (item.getItemId() == R.id.menu_conv_setting) {
+      Intent intent = new Intent(this, LCIMConversationSettingActivity.class);
+      startActivity(intent);
       return true;
     }
     return super.onOptionsItemSelected(item);
