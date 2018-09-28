@@ -18,6 +18,12 @@
     <string name="lcim_chat_setting">设置</string>
     <string name="lcim_chat_save">保存</string>
 
+    <string name="lcim_conv_setting_admin">管理员</string>
+    <string name="lcim_conv_setting_member">成员</string>
+    <string name="lcim_conv_setting_blacklist">黑名单</string>
+    <string name="lcim_conv_setting_other">其他</string>
+    <string name="lcim_conv_setting_mute">屏蔽该对话的消息</string>
+
     <string name="lcim_message_shorthand_image">[图片]</string>
     <string name="lcim_message_shorthand_location">[位置]</string>
     <string name="lcim_message_shorthand_audio">[语音]</string>
