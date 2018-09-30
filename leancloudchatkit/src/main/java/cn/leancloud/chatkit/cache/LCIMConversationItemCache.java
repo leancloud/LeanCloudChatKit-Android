@@ -107,6 +107,10 @@ public class LCIMConversationItemCache {
     return idList;
   }
 
+  public synchronized void cleanup() {
+    conversationItemDBHelper.deleteAllData();
+  }
+
   /**
    * 同步 db 数据到内存中
    */

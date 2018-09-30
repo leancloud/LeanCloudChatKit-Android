@@ -172,6 +172,7 @@ public class LCIMConversationFragment extends Fragment {
     refreshLayout.setEnabled(true);
     inputBottomBar.setTag(imConversation.getConversationId());
     fetchMessages();
+    imConversation.read();
     LCIMNotificationUtils.addTag(conversation.getConversationId());
     if (!conversation.isTransient()) {
       if (conversation.getMembers().size() == 0) {
@@ -180,6 +181,7 @@ public class LCIMConversationFragment extends Fragment {
           public void done(AVIMException e) {
             if (null != e) {
               LCIMLogUtils.logException(e);
+              Toast.makeText(getContext(), "encounter network error, please try later.", Toast.LENGTH_SHORT);
             }
             itemAdapter.showUserName(conversation.getMembers().size() > 2);
           }

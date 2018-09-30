@@ -66,6 +66,8 @@ public final class LCChatKit {
     // 和 Conversation 相关的事件的 handler
     AVIMMessageManager.setConversationEventHandler(LCIMConversationHandler.getInstance());
 
+    AVIMClient.setUnreadNotificationEnabled(true);
+
     // 默认设置为离线消息仅推送数量
     AVIMClient.setOfflineMessagePush(true);
   }
@@ -156,6 +158,7 @@ public final class LCChatKit {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
         currentUserId = null;
+        LCIMConversationItemCache.getInstance().cleanup();
         if (null != callback) {
           callback.internalDone(avimClient, e);
         }

@@ -182,6 +182,16 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
     }
   }
 
+  public void deleteAllData() {
+    readDbHandler.post(new Runnable() {
+      @Override
+      public void run() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(tableName, null, null);
+      }
+    });
+  }
+
   /**
    * 获取 key 值，此为同步方法
    */
