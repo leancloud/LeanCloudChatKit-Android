@@ -9,6 +9,7 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVUtils;
 import com.avos.avoscloud.SignatureFactory;
 import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMOptions;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
@@ -62,6 +63,7 @@ public final class LCChatKit {
 
     // 与网络相关的 handler
     AVIMClient.setClientEventHandler(LCIMClientEventHandler.getInstance());
+//    AVIMOptions.getGlobalOptions().setResetConnectionWhileBroken(true);
 
     // 和 Conversation 相关的事件的 handler
     AVIMMessageManager.setConversationEventHandler(LCIMConversationHandler.getInstance());
