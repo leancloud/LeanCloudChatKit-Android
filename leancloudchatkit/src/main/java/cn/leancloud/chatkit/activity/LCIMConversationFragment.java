@@ -233,10 +233,27 @@ public class LCIMConversationFragment extends Fragment {
   public void onEvent(LCIMIMTypeMessageEvent messageEvent) {
     if (null != imConversation && null != messageEvent &&
       imConversation.getConversationId().equals(messageEvent.conversation.getConversationId())) {
-      itemAdapter.addMessage(messageEvent.message);
-      itemAdapter.notifyDataSetChanged();
-      scrollToBottom();
-      clearUnreadConut();
+      System.out.println("currentConv unreadCount=" + imConversation.getUnreadMessagesCount());
+      if (imConversation.getUnreadMessagesCount() > 0) {
+        int queryLimit = imConversation.getUnreadMessagesCount() > 100 ? 100 : imConversation.getUnreadMessagesCount();
+        imConversation.queryMessages(queryLimit, new AVIMMessagesQueryCallback() {
+          @Override
+          public void done(List<AVIMMessage> list, AVIMException e) {
+            if (null != e) {
+              return;
+            }
+            for (AVIMMessage m: list) {
+              itemAdapter.addMessage(m);
+            }
+            itemAdapter.notifyDataSetChanged();
+            clearUnreadConut();
+          }
+        });
+      } else {
+        itemAdapter.addMessage(messageEvent.message);
+        itemAdapter.notifyDataSetChanged();
+        scrollToBottom();
+      }
     }
   }
 
