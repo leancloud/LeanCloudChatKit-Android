@@ -52,6 +52,7 @@ import cn.leancloud.chatkit.event.LCIMInputBottomBarTextEvent;
 import cn.leancloud.chatkit.event.LCIMMessageResendEvent;
 import cn.leancloud.chatkit.event.LCIMMessageUpdateEvent;
 import cn.leancloud.chatkit.event.LCIMMessageUpdatedEvent;
+import cn.leancloud.chatkit.event.LCIMOfflineMessageCountChangeEvent;
 import cn.leancloud.chatkit.utils.LCIMAudioHelper;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import cn.leancloud.chatkit.utils.LCIMNotificationUtils;
@@ -235,20 +236,7 @@ public class LCIMConversationFragment extends Fragment {
       imConversation.getConversationId().equals(messageEvent.conversation.getConversationId())) {
       System.out.println("currentConv unreadCount=" + imConversation.getUnreadMessagesCount());
       if (imConversation.getUnreadMessagesCount() > 0) {
-        int queryLimit = imConversation.getUnreadMessagesCount() > 100 ? 100 : imConversation.getUnreadMessagesCount();
-        imConversation.queryMessages(queryLimit, new AVIMMessagesQueryCallback() {
-          @Override
-          public void done(List<AVIMMessage> list, AVIMException e) {
-            if (null != e) {
-              return;
-            }
-            for (AVIMMessage m: list) {
-              itemAdapter.addMessage(m);
-            }
-            itemAdapter.notifyDataSetChanged();
-            clearUnreadConut();
-          }
-        });
+        paddingNewMessage(imConversation);
       } else {
         itemAdapter.addMessage(messageEvent.message);
         itemAdapter.notifyDataSetChanged();
@@ -340,6 +328,39 @@ public class LCIMConversationFragment extends Fragment {
       null != event.message && imConversation.getConversationId().equals(event.message.getConversationId())) {
       itemAdapter.updateMessage(event.message);
     }
+  }
+
+  public void onEvent(final LCIMOfflineMessageCountChangeEvent event) {
+    if (null == event || null == event.conversation || null == event.conversation) {
+      return;
+    }
+    if (!imConversation.getConversationId().equals(event.conversation.getConversationId())) {
+      return;
+    }
+    if (event.conversation.getUnreadMessagesCount() < 1) {
+      return;
+    }
+    paddingNewMessage(event.conversation);
+  }
+
+  private void paddingNewMessage(AVIMConversation currentConversation) {
+    if (null == currentConversation || currentConversation.getUnreadMessagesCount() < 1) {
+      return;
+    }
+    final int queryLimit = currentConversation.getUnreadMessagesCount() > 100 ? 100 : currentConversation.getUnreadMessagesCount();
+    currentConversation.queryMessages(queryLimit, new AVIMMessagesQueryCallback() {
+      @Override
+      public void done(List<AVIMMessage> list, AVIMException e) {
+        if (null != e) {
+          return;
+        }
+        for (AVIMMessage m: list) {
+          itemAdapter.addMessage(m);
+        }
+        itemAdapter.notifyDataSetChanged();
+        clearUnreadConut();
+      }
+    });
   }
 
   private void showUpdateMessageDialog(final AVIMMessage message) {

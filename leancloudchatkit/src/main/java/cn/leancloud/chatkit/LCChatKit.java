@@ -63,7 +63,7 @@ public final class LCChatKit {
 
     // 与网络相关的 handler
     AVIMClient.setClientEventHandler(LCIMClientEventHandler.getInstance());
-//    AVIMOptions.getGlobalOptions().setResetConnectionWhileBroken(true);
+    AVIMOptions.getGlobalOptions().setResetConnectionWhileBroken(true);
 
     // 和 Conversation 相关的事件的 handler
     AVIMMessageManager.setConversationEventHandler(LCIMConversationHandler.getInstance());

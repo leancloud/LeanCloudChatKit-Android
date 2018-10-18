@@ -38,7 +38,7 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
     LCIMConversationItemCache.getInstance().insertConversation(conversation.getConversationId());
     AVIMMessage lastMessage = conversation.getLastMessage();
     System.out.println("LCIMConversationHandler#onUnreadMessagesCountUpdated conv=" + conversation.getConversationId() + ", lastMsg: " + lastMessage.getContent());
-    EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent());
+    EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent(conversation, lastMessage));
   }
 
   @Override

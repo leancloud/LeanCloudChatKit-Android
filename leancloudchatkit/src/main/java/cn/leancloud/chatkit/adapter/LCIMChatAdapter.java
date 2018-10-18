@@ -10,7 +10,9 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.viewholder.LCIMChatHolderOption;
@@ -45,6 +47,7 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private final static long TIME_INTERVAL = 1000 * 60 * 3;
   private boolean isShowUserName = true;
   protected List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
+  private Set<String> messageIdSet = new HashSet<>();
 
   private long lastDeliveredAt = 0;
   private long lastReadAt = 0;
@@ -55,8 +58,13 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   public void setMessageList(List<AVIMMessage> messages) {
     messageList.clear();
+    messageIdSet.clear();
     if (null != messages) {
-      messageList.addAll(messages);
+      for (AVIMMessage msg : messages) {
+        if (messageIdSet.add(msg.getMessageId())) {
+          messageList.add(msg);
+        }
+      }
     }
   }
 
@@ -65,7 +73,12 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * @param messages
    */
   public void addMessageList(List<AVIMMessage> messages) {
-    messageList.addAll(0, messages);
+    for (int i = messages.size(); i> 0; i--) {
+      AVIMMessage msg = messages.get(i - 1);
+      if (messageIdSet.add(msg.getMessageId())) {
+        messageList.add(0, msg);
+      }
+    }
   }
 
   /**
@@ -73,7 +86,9 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * @param message
    */
   public void addMessage(AVIMMessage message) {
-    messageList.addAll(Arrays.asList(message));
+    if (messageIdSet.add(message.getMessageId())) {
+      messageList.add(message);
+    }
   }
 
   public void updateMessage(AVIMMessage message) {
