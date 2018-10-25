@@ -19,6 +19,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -166,6 +169,21 @@ public class LCIMConversationFragment extends Fragment {
   public void onDestroyView() {
     super.onDestroyView();
     EventBus.getDefault().unregister(this);
+  }
+
+  @Override
+  public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.conv_menu, menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected (MenuItem item) {
+    if (item.getItemId() == R.id.menu_conv_setting) {
+      Intent intent = new Intent(getActivity(), ConversationDetailActivity.class);
+      getActivity().startActivity(intent);
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   public void setConversation(final AVIMConversation conversation) {

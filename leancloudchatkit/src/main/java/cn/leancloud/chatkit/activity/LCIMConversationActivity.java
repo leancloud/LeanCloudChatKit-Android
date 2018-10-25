@@ -42,6 +42,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.lcim_conversation_activity);
     conversationFragment = (LCIMConversationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_chat);
+    conversationFragment.setHasOptionsMenu(true);
     initByIntent(getIntent());
   }
 
