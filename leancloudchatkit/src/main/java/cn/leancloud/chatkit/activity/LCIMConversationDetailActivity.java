@@ -24,16 +24,21 @@ import com.avos.avoscloud.im.v2.conversation.AVIMConversationMemberInfo;
 import com.avos.avoscloud.im.v2.conversation.ConversationMemberRole;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;
 import cn.leancloud.chatkit.LCChatProfilesCallBack;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.adapter.LCIMCommonListAdapter;
+import cn.leancloud.chatkit.event.LCIMMemberSelectedChangeEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.view.LCIMDividerItemDecoration;
 import cn.leancloud.chatkit.viewholder.LCIMContactItemHolder;
+import de.greenrobot.event.EventBus;
 
 public class LCIMConversationDetailActivity extends AppCompatActivity {
   private static final int REQUEST_CODE_ADD_ADMIN = 10;
@@ -53,9 +58,12 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
   ImageButton blacklistUserButton;
   ImageButton blacklistMoreButton;
   Button inviteButton;
+  Button removeButton;
 
   RecyclerView recyclerView;
   protected LCIMCommonListAdapter<LCChatKitUser> itemAdapter;
+
+  private Set<LCChatKitUser> selectedUsers = new HashSet<>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,7 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
     blacklistUserButton = (ImageButton) findViewById(R.id.BlackListUserButton);
     blacklistMoreButton = (ImageButton) findViewById(R.id.BlackListMoreButton);
     inviteButton = (Button) findViewById(R.id.invite_button);
+    removeButton = (Button) findViewById(R.id.remove_button);
 
     recyclerView = (RecyclerView) findViewById(R.id.convMemberList);
 
@@ -75,17 +84,30 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.addItemDecoration(new LCIMDividerItemDecoration(this));
     itemAdapter = new LCIMCommonListAdapter<LCChatKitUser>(LCIMContactItemHolder.class);
-    itemAdapter.setMode(LCIMCommonListAdapter.ListMode.SHOW);
+    itemAdapter.setMode(LCIMCommonListAdapter.ListMode.SELECT);
     recyclerView.setAdapter(itemAdapter);
 
     adminAddButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(LCIMConversationDetailActivity.this, LCIMUserSelectActivity.class);
-        List<LCChatKitUser> users = LCChatKit.getInstance().getProfileProvider().getAllUsers();
-        intent.putExtra(LCIMUserSelectActivity.KEY_USERS, users.toArray());
-        intent.putExtra(LCIMUserSelectActivity.KEY_TITLE, "Select Admin Member");
-        startActivityForResult(intent, REQUEST_CODE_ADD_ADMIN);
+        if (null == avimConversation) {
+          return;
+        }
+        List<String> members = avimConversation.getMembers();
+        LCChatKit.getInstance().getProfileProvider().fetchProfiles(members, new LCChatProfilesCallBack() {
+          @Override
+          public void done(List<LCChatKitUser> users, Exception exception) {
+            if (null != exception) {
+              ;
+            } else {
+              System.out.println("members: " + JSON.toJSONString(users));
+              final Intent intent = new Intent(LCIMConversationDetailActivity.this, LCIMUserSelectActivity.class);
+              intent.putExtra(LCIMUserSelectActivity.KEY_USERS, JSON.toJSONString(users));
+              intent.putExtra(LCIMUserSelectActivity.KEY_TITLE, "Select Admin Member");
+              startActivityForResult(intent, REQUEST_CODE_ADD_ADMIN);
+            }
+          }
+        });
       }
     });
 
@@ -119,10 +141,34 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(LCIMConversationDetailActivity.this, LCIMUserSelectActivity.class);
-        List<LCChatKitUser> users = LCChatKit.getInstance().getProfileProvider().getAllUsers();
-        intent.putExtra(LCIMUserSelectActivity.KEY_USERS, users.toArray());
         intent.putExtra(LCIMUserSelectActivity.KEY_TITLE, "Contact");
         startActivityForResult(intent, REQUEST_CODE_INVITATION);
+      }
+    });
+
+    removeButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (selectedUsers.size() < 1) {
+          showToast("please select some members at first.");
+        } else {
+          List<String> removeMembers = new ArrayList<>(selectedUsers.size());
+          Iterator<LCChatKitUser> it = selectedUsers.iterator();
+          while(it.hasNext()) {
+            removeMembers.add(it.next().getUserId());
+          }
+          avimConversation.kickMembers(removeMembers, new AVIMConversationCallback() {
+            @Override
+            public void done(AVIMException e) {
+              if (null != e) {
+                showToast("failed to kick members. cause: " + e.getMessage());
+              } else {
+                selectedUsers.clear();
+                refreshMemberList(true);
+              }
+            }
+          });
+        }
       }
     });
 
@@ -131,6 +177,18 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
 
     String conversationId = getIntent().getStringExtra(LCIMConstants.CONVERSATION_ID);
     initConversation(conversationId);
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    EventBus.getDefault().register(this);
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    EventBus.getDefault().unregister(this);
   }
 
   @Override
@@ -302,5 +360,16 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
    */
   private void showToast(String content) {
     Toast.makeText(LCIMConversationDetailActivity.this, content, Toast.LENGTH_SHORT).show();
+  }
+
+  public void onEvent(LCIMMemberSelectedChangeEvent event) {
+    System.out.println("eventHandler. isChecked=" + event.isSelected + ", user=" + event.member);
+    if (null != event && null != event.member) {
+      if (event.isSelected) {
+        this.selectedUsers.add(event.member);
+      } else {
+        this.selectedUsers.remove(event.member);
+      }
+    }
   }
 }

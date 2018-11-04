@@ -85,6 +85,7 @@ public class LCIMContactFragment extends Fragment {
 
   public void setSpecifiedUsers(List<LCChatKitUser> users) {
     this.specifiedUsers = users;
+    itemAdapter.setMemberList(this.specifiedUsers);
   }
 
   public void setListMode(LCIMCommonListAdapter.ListMode mode) {
@@ -93,9 +94,7 @@ public class LCIMContactFragment extends Fragment {
   }
 
   private void refreshMembers() {
-    if (null != this.specifiedUsers && this.specifiedUsers.size() > 0) {
-      itemAdapter.setMemberList(this.specifiedUsers);
-    } else {
+    if (itemAdapter.getItemCount() < 1) {
       itemAdapter.setMemberList(LCChatKit.getInstance().getProfileProvider().getAllUsers());
     }
     itemAdapter.notifyDataSetChanged();
@@ -111,6 +110,10 @@ public class LCIMContactFragment extends Fragment {
 
   @Override
   public boolean onOptionsItemSelected (MenuItem item) {
+    if (android.R.id.home == item.getItemId()) {
+      getActivity().onBackPressed();
+      return true;
+    }
     if (item.getItemId() == R.id.menu_conv_member_saving) {
 
       Intent output = new Intent();

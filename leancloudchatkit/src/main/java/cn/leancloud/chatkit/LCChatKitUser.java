@@ -41,8 +41,8 @@ public final class LCChatKitUser implements Parcelable {
     return avatarUrl;
   }
 
-  public String getUserName() {
-    return name;
+  public String getName() {
+    return null == name? "" : name;
   }
 
   @Override

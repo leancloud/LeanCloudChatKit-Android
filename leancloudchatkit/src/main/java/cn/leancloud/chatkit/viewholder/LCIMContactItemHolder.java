@@ -83,7 +83,7 @@ public class LCIMContactItemHolder extends LCIMCommonViewHolder<LCChatKitUser> {
     } else {
       avatarView.setImageResource(R.drawable.lcim_default_avatar_icon);
     }
-    nameView.setText(lcChatKitUser.getUserName());
+    nameView.setText(lcChatKitUser.getName());
   }
 
   public static ViewHolderCreator HOLDER_CREATOR = new ViewHolderCreator<LCIMContactItemHolder>() {

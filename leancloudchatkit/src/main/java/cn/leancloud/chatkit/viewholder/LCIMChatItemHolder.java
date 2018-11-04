@@ -92,7 +92,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
         if (null != e) {
           LCIMLogUtils.logException(e);
         } else if (null != userProfile) {
-          nameView.setText(userProfile.getUserName());
+          nameView.setText(userProfile.getName());
           final String avatarUrl = userProfile.getAvatarUrl();
           if (!TextUtils.isEmpty(avatarUrl)) {
             Picasso.with(getContext()).load(avatarUrl)

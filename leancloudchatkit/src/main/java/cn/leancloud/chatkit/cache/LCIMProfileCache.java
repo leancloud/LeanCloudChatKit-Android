@@ -166,7 +166,7 @@ public class LCIMProfileCache {
     getCachedUser(id, new AVCallback<LCChatKitUser>() {
       @Override
       protected void internalDone0(LCChatKitUser userProfile, AVException e) {
-        String userName = (null != userProfile ? userProfile.getUserName() : null);
+        String userName = (null != userProfile ? userProfile.getName() : null);
         callback.internalDone(userName, e);
       }
     });
@@ -237,7 +237,7 @@ public class LCIMProfileCache {
    */
   private String getStringFormUserProfile(LCChatKitUser userProfile) {
     JSONObject jsonObject = new JSONObject();
-    jsonObject.put(USER_NAME, userProfile.getUserName());
+    jsonObject.put(USER_NAME, userProfile.getName());
     jsonObject.put(USER_AVATAR, userProfile.getAvatarUrl());
     jsonObject.put(USER_ID, userProfile.getUserId());
     return jsonObject.toJSONString();

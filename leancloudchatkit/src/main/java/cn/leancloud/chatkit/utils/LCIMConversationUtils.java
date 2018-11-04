@@ -54,7 +54,7 @@ public class LCIMConversationUtils {
             List<String> nameList = new ArrayList<String>();
             if (null != lcimUserProfiles) {
               for (LCChatKitUser userProfile : lcimUserProfiles) {
-                nameList.add(userProfile.getUserName());
+                nameList.add(userProfile.getName());
               }
             }
             callback.internalDone(TextUtils.join(",", nameList), e);
