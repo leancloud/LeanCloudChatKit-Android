@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "cn.leancloud.imkitapplication"
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -27,5 +27,4 @@ android {
 dependencies {
     compile project(':leancloudchatkit')
     compile 'com.android.support:design:26.1.0'
-    compile 'com.github.stuxuhai:jpinyin:1.0'
 }

@@ -233,7 +233,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
 
   public static ViewHolderCreator HOLDER_CREATOR = new ViewHolderCreator<LCIMConversationItemHolder>() {
     @Override
-    public LCIMConversationItemHolder createByViewGroupAndType(ViewGroup parent, int viewType) {
+    public LCIMConversationItemHolder createByViewGroupAndType(ViewGroup parent, int viewType, int attachData) {
       return new LCIMConversationItemHolder(parent);
     }
   };

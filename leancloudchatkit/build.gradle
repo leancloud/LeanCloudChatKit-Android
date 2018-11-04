@@ -5,7 +5,7 @@ android {
     buildToolsVersion '28.0.2'
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.8.1'
 
     compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.github.stuxuhai:jpinyin:1.0'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 

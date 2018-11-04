@@ -15,6 +15,18 @@ import cn.leancloud.chatkit.viewholder.LCIMCommonViewHolder;
  * 单类型 item 的 RecyclerView 对应的 Adapter
  */
 public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonViewHolder> {
+  public enum ListMode {
+    SELECT(1),
+    SHOW(2),
+    SHOW_ACTION(3);
+    private int value;
+    ListMode(int v) {
+      this.value = v;
+    }
+    public int intValue() {
+      return this.value;
+    }
+  }
 
   private static HashMap<String, LCIMCommonViewHolder.ViewHolderCreator> creatorHashMap = new HashMap<>();
 
@@ -22,12 +34,18 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
 
   protected List<T> dataList = new ArrayList<T>();
 
+  private ListMode mode = ListMode.SHOW_ACTION;
+
   public LCIMCommonListAdapter() {
     super();
   }
 
   public LCIMCommonListAdapter(Class<?> vhClass) {
     this.vhClass = vhClass;
+  }
+
+  public void setMode(ListMode m) {
+    this.mode = m;
   }
 
   /**
@@ -49,6 +67,7 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
     if (null != datas) {
       dataList.addAll(datas);
     }
+    this.notifyDataSetChanged();
   }
 
   /**
@@ -84,7 +103,7 @@ public class LCIMCommonListAdapter<T> extends RecyclerView.Adapter<LCIMCommonVie
       }
     }
     if (null != creator) {
-      return creator.createByViewGroupAndType(parent, viewType);
+      return creator.createByViewGroupAndType(parent, viewType, this.mode.intValue());
     } else {
       throw new IllegalArgumentException(vhClass.getName() + " HOLDER_CREATOR should be instantiated");
     }

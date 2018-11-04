@@ -1,4 +1,4 @@
-package cn.leancloud.chatkitapplication;
+package cn.leancloud.chatkit.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -16,12 +16,14 @@ import java.util.Locale;
 import java.util.Map;
 
 import cn.leancloud.chatkit.LCChatKitUser;
+import cn.leancloud.chatkit.viewholder.LCIMContactItemHolder;
 
 /**
  * Created by wli on 15/8/14.
  * 成员列表 Adapter
  */
-public class MembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LCIMMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+  private LCIMCommonListAdapter.ListMode showMode = LCIMCommonListAdapter.ListMode.SHOW_ACTION;
 
   /**
    * 所有 Adapter 成员的list
@@ -38,7 +40,11 @@ public class MembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
    */
   Collator cmp = Collator.getInstance(Locale.SIMPLIFIED_CHINESE);
 
-  public MembersAdapter() {}
+  public LCIMMembersAdapter() {}
+
+  public void setShowMode(LCIMCommonListAdapter.ListMode mode) {
+    this.showMode = mode;
+  }
 
   /**
    * 设置成员列表，然后更新索引
@@ -60,12 +66,12 @@ public class MembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return new ContactItemHolder(parent.getContext(), parent);
+    return new LCIMContactItemHolder(parent.getContext(), parent, this.showMode.intValue());
   }
 
   @Override
   public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-      ((ContactItemHolder) holder).bindData(memberList.get(position).lcChatKitUser);
+      ((LCIMContactItemHolder) holder).bindData(memberList.get(position).lcChatKitUser);
   }
 
   @Override

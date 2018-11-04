@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;
+import cn.leancloud.chatkit.activity.LCIMContactFragment;
 import cn.leancloud.chatkit.activity.LCIMConversationActivity;
 import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
 import cn.leancloud.chatkit.utils.LCIMConstants;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
   private void initTabLayout() {
     String[] tabList = new String[]{"会话", "联系人"};
     final Fragment[] fragmentList = new Fragment[] {new LCIMConversationListFragment(),
-      new ContactFragment()};
+      new LCIMContactFragment()};
 
     tabLayout.setTabMode(TabLayout.MODE_FIXED);
     for (int i = 0; i < tabList.length; i++) {

@@ -48,7 +48,9 @@
 
         <service android:name="com.avos.avoscloud.PushService"/>
 
-        <activity android:name=".activity.ConversationDetailActivity">
+        <activity android:name=".activity.LCIMConversationDetailActivity">
+        </activity>
+        <activity android:name=".activity.LCIMUserSelectActivity">
         </activity>
     </application>
 

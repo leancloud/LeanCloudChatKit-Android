@@ -7,5 +7,6 @@ import java.util.List;
  * 用户体系的接口，开发者需要实现此接口来接入 LCChatKit
  */
 public interface LCChatProfileProvider {
-  public void fetchProfiles(List<String> userIdList, LCChatProfilesCallBack profilesCallBack);
+  void fetchProfiles(List<String> userIdList, LCChatProfilesCallBack profilesCallBack);
+  List<LCChatKitUser> getAllUsers();
 }

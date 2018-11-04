@@ -57,6 +57,7 @@ import cn.leancloud.chatkit.event.LCIMMessageUpdateEvent;
 import cn.leancloud.chatkit.event.LCIMMessageUpdatedEvent;
 import cn.leancloud.chatkit.event.LCIMOfflineMessageCountChangeEvent;
 import cn.leancloud.chatkit.utils.LCIMAudioHelper;
+import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import cn.leancloud.chatkit.utils.LCIMNotificationUtils;
 import cn.leancloud.chatkit.utils.LCIMPathUtils;
@@ -179,7 +180,8 @@ public class LCIMConversationFragment extends Fragment {
   @Override
   public boolean onOptionsItemSelected (MenuItem item) {
     if (item.getItemId() == R.id.menu_conv_setting) {
-      Intent intent = new Intent(getActivity(), ConversationDetailActivity.class);
+      Intent intent = new Intent(getActivity(), LCIMConversationDetailActivity.class);
+      intent.putExtra(LCIMConstants.CONVERSATION_ID, imConversation.getConversationId());
       getActivity().startActivity(intent);
       return true;
     }

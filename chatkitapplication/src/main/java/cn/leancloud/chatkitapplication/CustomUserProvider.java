@@ -50,6 +50,7 @@ public class CustomUserProvider implements LCChatProfileProvider {
     callBack.done(userList, null);
   }
 
+  @Override
   public List<LCChatKitUser> getAllUsers() {
     return partUsers;
   }

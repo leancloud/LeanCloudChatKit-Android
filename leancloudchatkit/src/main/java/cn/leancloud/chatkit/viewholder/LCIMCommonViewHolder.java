@@ -41,6 +41,6 @@ public abstract class LCIMCommonViewHolder<T> extends RecyclerView.ViewHolder {
    * @param <VH>
    */
   public interface ViewHolderCreator<VH extends LCIMCommonViewHolder> {
-    public VH createByViewGroupAndType(ViewGroup parent, int viewType);
+    public VH createByViewGroupAndType(ViewGroup parent, int viewType, int attachData);
   }
 }

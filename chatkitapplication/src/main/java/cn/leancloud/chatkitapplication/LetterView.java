@@ -9,13 +9,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.leancloud.chatkit.event.LCIMMemberLetterEvent;
 import de.greenrobot.event.EventBus;
 
 
 /**
  * Created by wli on 15/8/24.
  * 联系人列表，快速滑动字母导航 View
- * 此处仅在滑动或点击时发送 MemberLetterEvent，接收放自己处理相关逻辑
+ * 此处仅在滑动或点击时发送 LCIMMemberLetterEvent，接收放自己处理相关逻辑
  * 注意：因为长按事件等触发，有可能重复发送
  */
 public class LetterView extends LinearLayout {
@@ -58,7 +59,7 @@ public class LetterView extends LinearLayout {
         for (int i = 0; i < getChildCount(); i++) {
           TextView child = (TextView) getChildAt(i);
           if (y > child.getTop() && y < child.getBottom()) {
-            MemberLetterEvent letterEvent = new MemberLetterEvent();
+            LCIMMemberLetterEvent letterEvent = new LCIMMemberLetterEvent();
             letterEvent.letter = child.getText().toString().charAt(0);
             EventBus.getDefault().post(letterEvent);
           }
