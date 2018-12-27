@@ -2,14 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "28.0.2"
 
     defaultConfig {
         applicationId "cn.leancloud.imkitapplication"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
 
     lintOptions {
@@ -26,6 +27,6 @@ android {
 
 dependencies {
     compile project(':leancloudchatkit')
-    compile 'com.android.support:design:23.+'
+    compile 'com.android.support:design:26.1.0'
     compile 'com.github.stuxuhai:jpinyin:1.0'
 }
