@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import cn.leancloud.cache.PersistenceUtil;
+
+import java.io.File;
+
 import cn.leancloud.*;
 import cn.leancloud.callback.SaveCallback;
 import cn.leancloud.im.v2.*;
@@ -28,6 +32,14 @@ public class App extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+    File installationFile = new File(this.getFilesDir(), "installation");
+    if (installationFile.exists()) {
+      String cachedInstallation = PersistenceUtil.sharedInstance().readContentFromFile(installationFile);
+      System.out.println(">>>> " + cachedInstallation);
+    } else {
+      System.out.println(">>>> not found cached installation.");
+    }
+
     LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
     AVOSCloud.setLogLevel(AVLogger.Level.DEBUG);
 //    AVOSCloud.useAVCloudUS();
