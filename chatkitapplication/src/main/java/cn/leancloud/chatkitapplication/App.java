@@ -34,6 +34,8 @@ public class App extends Application {
     super.onCreate();
     File installationFile = new File(this.getFilesDir(), "installation");
     if (installationFile.exists()) {
+      String oldInstallString = "{ \"objectId\":\"4DxgwI9RKKgwVt04VvKKfBKoOGIEQXXB\",\"updatedAt\":null,\"createdAt\":\"2018-12-29T01:49:05.561Z\",\"className\":\"_Installation\",\"serverData\":{\"@type\":\"java.util.concurrent.ConcurrentHashMap\",\"deviceType\":\"android\",\"timeZone\":\"Asia/Shanghai\",\"installationId\":\"df0c633543d24e29fd58293c3d07dfda\"}}";
+      PersistenceUtil.sharedInstance().saveContentToFile(oldInstallString, installationFile);
       String cachedInstallation = PersistenceUtil.sharedInstance().readContentFromFile(installationFile);
       System.out.println(">>>> " + cachedInstallation);
     } else {
