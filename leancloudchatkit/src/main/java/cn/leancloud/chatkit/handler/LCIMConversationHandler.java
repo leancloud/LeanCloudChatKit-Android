@@ -11,6 +11,7 @@ import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
 import cn.leancloud.chatkit.event.LCIMConversationReadStatusEvent;
 import cn.leancloud.chatkit.event.LCIMOfflineMessageCountChangeEvent;
 import cn.leancloud.chatkit.event.LCIMMessageUpdatedEvent;
+import cn.leancloud.chatkit.utils.LCIMLogUtils;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -79,6 +80,7 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
 
   @Override
   public void onMessageUpdated(AVIMClient client, AVIMConversation conversation, AVIMMessage message) {
+    LCIMLogUtils.d("message " + message.getMessageId() + " updated!");
     EventBus.getDefault().post(new LCIMMessageUpdatedEvent(message));
   }
 
