@@ -579,7 +579,16 @@ public class LCIMConversationFragment extends Fragment {
     scrollToBottom();
 
     AVIMMessageOption option = new AVIMMessageOption();
-    option.setReceipt(true);
+    if (message instanceof AVIMTextMessage) {
+      AVIMTextMessage textMessage = (AVIMTextMessage) message;
+      if (textMessage.getText().startsWith("tr:")) {
+        option.setTransient(true);
+      } else {
+        option.setReceipt(true);
+      }
+    } else {
+      option.setReceipt(true);
+    }
     imConversation.sendMessage(message, option, new AVIMConversationCallback() {
       @Override
       public void done(AVIMException e) {
