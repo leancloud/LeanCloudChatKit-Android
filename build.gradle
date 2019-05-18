@@ -5,12 +5,12 @@ buildscript {
         def userHome = System.getenv("HOME")
         google()
         jcenter()
-        maven {
-            url "$userHome/.m2/repository/"
-        }
-        maven {
-            url "http://mvn.leancloud.cn/nexus/content/repositories/releases"
-        }
+//        maven {
+//            url "$userHome/.m2/repository/"
+//        }
+//        maven {
+//            url "http://mvn.leancloud.cn/nexus/content/repositories/releases"
+//        }
         maven {
             url "http://repo.maven.apache.org/maven2"
         }
@@ -29,13 +29,13 @@ allprojects {
         def userHome = System.getenv("HOME")
         google()
         jcenter()
-        maven {
-            url "$userHome/.m2/repository/"
-        }
+//        maven {
+//            url "$userHome/.m2/repository/"
+//        }
 
-        maven {
-            url "http://mvn.leancloud.cn/nexus/content/repositories/releases"
-        }
+//        maven {
+//            url "http://mvn.leancloud.cn/nexus/content/repositories/releases"
+//        }
         maven {
             url "http://repo.maven.apache.org/maven2"
         }
