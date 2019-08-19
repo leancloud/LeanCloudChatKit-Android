@@ -27,7 +27,7 @@ dependencies {
 
 //    implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation('cn.leancloud:realtime-android:5.0.20') {
+    implementation('cn.leancloud:realtime-android:5.0.21') {
         exclude group: 'com.alibaba', module: 'fastjson'
         exclude group: 'org.ligboy.retrofit2', module: 'converter-fastjson'
     }
