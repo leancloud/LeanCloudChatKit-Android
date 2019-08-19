@@ -2,9 +2,9 @@ package cn.leancloud.chatkit.utils;
 
 import android.text.TextUtils;
 
-import com.avos.avoscloud.AVCallback;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.im.v2.AVIMConversation;
+import cn.leancloud.callback.AVCallback;
+import cn.leancloud.AVException;
+import cn.leancloud.im.v2.AVIMConversation;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.avos.avoscloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.AVIMConversation;
 
 import java.util.ArrayList;
 import java.util.List;

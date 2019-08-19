@@ -9,14 +9,15 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.text.TextUtils;
 
-import com.avos.avoscloud.AVCallback;
-import com.avos.avoscloud.AVUtils;
+import cn.leancloud.callback.AVCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
+import cn.leancloud.codec.MD5;
+import cn.leancloud.utils.StringUtil;
 
 /**
  * Created by wli on 16/2/25.
@@ -65,7 +66,7 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
       throw new IllegalArgumentException("clientId can not be null");
     }
 
-    final String md5ClientId = AVUtils.md5(clientId);
+    final String md5ClientId = MD5.computeMD5(clientId);
     this.tableName = tableName + "_" + md5ClientId;
 
     createTable();
@@ -214,7 +215,7 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
   private List<String> getDataSync(List<String> ids) {
     String queryString = "SELECT * FROM " + tableName;
     if (null != ids && !ids.isEmpty()) {
-      queryString += (" WHERE " + TABLE_KEY_ID + " in ('" + AVUtils.joinCollection(ids, "','") + "')");
+      queryString += (" WHERE " + TABLE_KEY_ID + " in ('" + StringUtil.join("','", ids) + "')");
     }
 
     SQLiteDatabase database = getReadableDatabase();

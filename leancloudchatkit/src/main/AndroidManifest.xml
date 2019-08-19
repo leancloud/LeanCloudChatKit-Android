@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
@@ -26,8 +26,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LCIMImageActivity"/>
+        <activity android:name=".activity.LCIMConversationSettingActivity">
+        </activity>
 
-        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+        <receiver android:name="cn.leancloud.push.AVBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.USER_PRESENT"/>
@@ -46,12 +48,13 @@
             </meta-data>
         </provider>
 
-        <service android:name="com.avos.avoscloud.PushService"/>
-
         <activity android:name=".activity.LCIMConversationDetailActivity">
         </activity>
         <activity android:name=".activity.LCIMUserSelectActivity">
         </activity>
+	
+        <service android:name="cn.leancloud.push.PushService"/>
+
     </application>
 
 </manifest>

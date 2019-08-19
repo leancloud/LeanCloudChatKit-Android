@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
+import cn.leancloud.im.v2.AVIMMessage;
+import cn.leancloud.im.v2.messages.AVIMImageMessage;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

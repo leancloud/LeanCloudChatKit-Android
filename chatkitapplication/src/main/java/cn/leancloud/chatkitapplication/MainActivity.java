@@ -13,12 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMChatRoom;
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import cn.leancloud.im.v2.AVIMChatRoom;
+import cn.leancloud.im.v2.AVIMClient;
+import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.AVIMException;
+import cn.leancloud.im.v2.callback.AVIMClientCallback;
+import cn.leancloud.im.v2.callback.AVIMConversationCreatedCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;

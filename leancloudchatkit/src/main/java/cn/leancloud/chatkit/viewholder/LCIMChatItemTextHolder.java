@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import cn.leancloud.im.v2.AVIMMessage;
+import cn.leancloud.im.v2.messages.AVIMTextMessage;
 
 import cn.leancloud.chatkit.R;
 

@@ -3,23 +3,23 @@ package cn.leancloud.chatkit;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.avos.avoscloud.AVCallback;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVUtils;
-import com.avos.avoscloud.SignatureFactory;
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMOptions;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.AVIMMessageManager;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import cn.leancloud.callback.AVCallback;
+import cn.leancloud.AVException;
+import cn.leancloud.AVOSCloud;
+import cn.leancloud.im.AVIMOptions;
+import cn.leancloud.im.SignatureFactory;
+import cn.leancloud.im.v2.AVIMClient;
+import cn.leancloud.im.v2.AVIMException;
+import cn.leancloud.im.v2.AVIMMessageManager;
+import cn.leancloud.im.v2.AVIMTypedMessage;
+import cn.leancloud.im.v2.callback.AVIMClientCallback;
 
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
 import cn.leancloud.chatkit.cache.LCIMProfileCache;
 import cn.leancloud.chatkit.handler.LCIMClientEventHandler;
 import cn.leancloud.chatkit.handler.LCIMConversationHandler;
 import cn.leancloud.chatkit.handler.LCIMMessageHandler;
+import cn.leancloud.utils.StringUtil;
 
 /**
  * Created by wli on 16/2/2.
@@ -64,14 +64,13 @@ public final class LCChatKit {
     // 与网络相关的 handler
     AVIMClient.setClientEventHandler(LCIMClientEventHandler.getInstance());
     AVIMOptions.getGlobalOptions().setResetConnectionWhileBroken(true);
+    AVIMOptions.getGlobalOptions().setUnreadNotificationEnabled(true);
 
     // 和 Conversation 相关的事件的 handler
     AVIMMessageManager.setConversationEventHandler(LCIMConversationHandler.getInstance());
 
-    AVIMClient.setUnreadNotificationEnabled(true);
-
     // 默认设置为离线消息仅推送数量
-    AVIMClient.setOfflineMessagePush(true);
+    AVIMOptions.getGlobalOptions().setUnreadNotificationEnabled(true);
   }
 
   /**
@@ -98,7 +97,7 @@ public final class LCChatKit {
    * @param signatureFactory
    */
   public void setSignatureFactory(SignatureFactory signatureFactory) {
-    AVIMClient.setSignatureFactory(signatureFactory);
+    AVIMOptions.getGlobalOptions().setSignatureFactory(signatureFactory);
   }
 
   /**
@@ -130,8 +129,8 @@ public final class LCChatKit {
       public void done(final AVIMClient avimClient, AVIMException e) {
         if (null == e) {
           currentUserId = userId;
-          LCIMProfileCache.getInstance().initDB(AVOSCloud.applicationContext, userId);
-          LCIMConversationItemCache.getInstance().initDB(AVOSCloud.applicationContext, userId, new AVCallback() {
+          LCIMProfileCache.getInstance().initDB(AVOSCloud.getContext(), userId);
+          LCIMConversationItemCache.getInstance().initDB(AVOSCloud.getContext(), userId, new AVCallback() {
             @Override
             protected void internalDone0(Object o, AVException e) {
               callback.internalDone(avimClient, e);
@@ -143,7 +142,7 @@ public final class LCChatKit {
       }
     };
 
-    if (AVUtils.isBlankContent(tag)) {
+    if (StringUtil.isEmpty(tag)) {
       AVIMClient.getInstance(userId).open(openCallback);
     } else {
       AVIMClient.getInstance(userId, tag).open(openCallback);

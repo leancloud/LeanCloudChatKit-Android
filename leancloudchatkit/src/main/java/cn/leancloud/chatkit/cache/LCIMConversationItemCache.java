@@ -3,8 +3,8 @@ package cn.leancloud.chatkit.cache;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.avos.avoscloud.AVCallback;
-import com.avos.avoscloud.AVException;
+import cn.leancloud.callback.AVCallback;
+import cn.leancloud.AVException;
 
 import java.util.ArrayList;
 import java.util.Arrays;

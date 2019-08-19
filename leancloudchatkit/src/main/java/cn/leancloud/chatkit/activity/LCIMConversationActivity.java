@@ -4,19 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVCallback;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.AVIMChatRoom;
-import com.avos.avoscloud.im.v2.AVIMTemporaryConversation;
-import com.avos.avoscloud.im.v2.AVIMConversationsQuery;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import cn.leancloud.callback.AVCallback;
+import cn.leancloud.AVException;
+import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.AVIMException;
+import cn.leancloud.im.v2.AVIMChatRoom;
+import cn.leancloud.im.v2.AVIMTemporaryConversation;
+import cn.leancloud.im.v2.AVIMConversationsQuery;
+import cn.leancloud.im.v2.callback.AVIMConversationCreatedCallback;
+import cn.leancloud.im.v2.callback.AVIMConversationQueryCallback;
+import cn.leancloud.im.v2.callback.AVIMConversationCallback;
 
 import java.util.Arrays;
 import java.util.List;
@@ -91,9 +92,20 @@ public class LCIMConversationActivity extends AppCompatActivity {
   }
 
   @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_setting, menu);
+    return true;
+  }
+
+  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     if (android.R.id.home == item.getItemId()) {
       onBackPressed();
+      return true;
+    }
+    if (item.getItemId() == R.id.menu_conv_setting) {
+      Intent intent = new Intent(this, LCIMConversationSettingActivity.class);
+      startActivity(intent);
       return true;
     }
     return super.onOptionsItemSelected(item);

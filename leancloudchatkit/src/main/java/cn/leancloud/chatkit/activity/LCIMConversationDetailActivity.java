@@ -13,15 +13,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationMemberQueryCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationSimpleResultCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMOperationFailure;
-import com.avos.avoscloud.im.v2.callback.AVIMOperationPartiallySucceededCallback;
-import com.avos.avoscloud.im.v2.conversation.AVIMConversationMemberInfo;
-import com.avos.avoscloud.im.v2.conversation.ConversationMemberRole;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,6 +29,15 @@ import cn.leancloud.chatkit.event.LCIMMemberSelectedChangeEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.view.LCIMDividerItemDecoration;
 import cn.leancloud.chatkit.viewholder.LCIMContactItemHolder;
+import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.AVIMException;
+import cn.leancloud.im.v2.callback.AVIMConversationCallback;
+import cn.leancloud.im.v2.callback.AVIMConversationMemberQueryCallback;
+import cn.leancloud.im.v2.callback.AVIMConversationSimpleResultCallback;
+import cn.leancloud.im.v2.callback.AVIMOperationFailure;
+import cn.leancloud.im.v2.callback.AVIMOperationPartiallySucceededCallback;
+import cn.leancloud.im.v2.conversation.AVIMConversationMemberInfo;
+import cn.leancloud.im.v2.conversation.ConversationMemberRole;
 import de.greenrobot.event.EventBus;
 
 public class LCIMConversationDetailActivity extends AppCompatActivity {

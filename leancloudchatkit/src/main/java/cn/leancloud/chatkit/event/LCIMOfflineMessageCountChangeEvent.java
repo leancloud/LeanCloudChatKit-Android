@@ -1,7 +1,7 @@
 package cn.leancloud.chatkit.event;
 
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMMessage;
+import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.AVIMMessage;
 
 /**
  * Created by wli on 16/3/7.

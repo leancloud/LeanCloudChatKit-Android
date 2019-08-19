@@ -1,7 +1,7 @@
 package cn.leancloud.chatkit.handler;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMClientEventHandler;
+import cn.leancloud.im.v2.AVIMClient;
+import cn.leancloud.im.v2.AVIMClientEventHandler;
 
 import cn.leancloud.chatkit.event.LCIMConnectionChangeEvent;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
