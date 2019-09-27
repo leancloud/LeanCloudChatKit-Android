@@ -28,7 +28,7 @@ android {
 dependencies {
 
     implementation project(':leancloudchatkit')
-    implementation('cn.leancloud:realtime-android:5.0.21') {
+    implementation('cn.leancloud:realtime-android:5.0.26') {
         exclude group: 'com.alibaba', module: 'fastjson'
         exclude group: 'org.ligboy.retrofit2', module: 'converter-fastjson'
     }
