@@ -48,7 +48,7 @@ public final class LCChatKit {
    * @param appId
    * @param appKey
    */
-  public void init(Context context, String appId, String appKey) {
+  public void init(Context context, String appId, String appKey, String serverUrl) {
     if (TextUtils.isEmpty(appId)) {
       throw new IllegalArgumentException("appId can not be empty!");
     }
@@ -56,7 +56,7 @@ public final class LCChatKit {
       throw new IllegalArgumentException("appKey can not be empty!");
     }
 
-    AVOSCloud.initialize(context.getApplicationContext(), appId, appKey);
+    AVOSCloud.initialize(context.getApplicationContext(), appId, appKey, serverUrl);
 
     // 消息处理 handler
     AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new LCIMMessageHandler(context));

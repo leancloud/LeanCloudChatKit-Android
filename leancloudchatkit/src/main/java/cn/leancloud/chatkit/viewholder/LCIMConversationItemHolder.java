@@ -4,7 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import cn.leancloud.callback.AVCallback;
 import cn.leancloud.AVException;
@@ -26,18 +25,14 @@ import cn.leancloud.im.v2.AVIMServiceConversation;
 import cn.leancloud.im.v2.AVIMTemporaryConversation;
 import cn.leancloud.im.v2.AVIMTypedMessage;
 import cn.leancloud.im.v2.callback.AVIMConversationCallback;
-import cn.leancloud.im.v2.callback.AVIMMessagesQueryCallback;
-import cn.leancloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import cn.leancloud.im.v2.messages.AVIMTextMessage;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import cn.leancloud.chatkit.LCChatMessageInterface;
 import cn.leancloud.chatkit.R;
-import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
 import cn.leancloud.chatkit.event.LCIMConversationItemLongClickEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.utils.LCIMConversationUtils;

@@ -1,7 +1,7 @@
 package cn.leancloud.chatkit.adapter;
 
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.ViewGroup;
 
 import cn.leancloud.im.v2.AVIMMessage;
@@ -9,7 +9,6 @@ import cn.leancloud.im.v2.AVIMReservedMessageType;
 import cn.leancloud.im.v2.AVIMTypedMessage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

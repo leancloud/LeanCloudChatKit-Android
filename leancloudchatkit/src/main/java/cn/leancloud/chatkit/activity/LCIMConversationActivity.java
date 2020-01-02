@@ -2,8 +2,8 @@ package cn.leancloud.chatkit.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -12,15 +12,10 @@ import cn.leancloud.callback.AVCallback;
 import cn.leancloud.AVException;
 import cn.leancloud.im.v2.AVIMConversation;
 import cn.leancloud.im.v2.AVIMException;
-import cn.leancloud.im.v2.AVIMChatRoom;
 import cn.leancloud.im.v2.AVIMTemporaryConversation;
-import cn.leancloud.im.v2.AVIMConversationsQuery;
 import cn.leancloud.im.v2.callback.AVIMConversationCreatedCallback;
-import cn.leancloud.im.v2.callback.AVIMConversationQueryCallback;
-import cn.leancloud.im.v2.callback.AVIMConversationCallback;
 
 import java.util.Arrays;
-import java.util.List;
 
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.R;

@@ -47,7 +47,7 @@ public class App extends Application {
     LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
     AVOSCloud.setLogLevel(AVLogger.Level.DEBUG);
 //    AVOSCloud.useAVCloudUS();
-    LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY);
+    LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY, "https://dyrq8yfh.lc-cn-n1-shared.com");
 
     PushService.setDefaultPushCallback(this, MainActivity.class);
     PushService.setAutoWakeUp(true);

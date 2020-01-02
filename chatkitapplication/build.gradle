@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
     buildToolsVersion "28.0.3"
 
     defaultConfig {
@@ -42,6 +42,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'de.greenrobot:eventbus:2.4.0'
 
-    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.github.stuxuhai:jpinyin:1.0'
 }
