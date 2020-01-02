@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import cn.leancloud.im.v2.AVIMClient;
 import cn.leancloud.im.v2.AVIMConversation;
 import cn.leancloud.im.v2.AVIMException;
 import cn.leancloud.im.v2.callback.AVIMClientCallback;
+import cn.leancloud.im.v2.callback.AVIMClientStatusCallback;
 import cn.leancloud.im.v2.callback.AVIMConversationCreatedCallback;
 
 import java.util.ArrayList;
@@ -61,8 +63,19 @@ public class MainActivity extends AppCompatActivity {
     setTitle(R.string.app_name);
     setSupportActionBar(toolbar);
     initTabLayout();
+    Log.d("MainActivity", "onCreate finished.");
   }
 
+  @Override
+  protected void onStart() {
+    super.onStart();
+    Log.d("MainActivity", "onStart finished.");
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+  }
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_square, menu);

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "28.0.2"
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "cn.leancloud.imkitapplication"
@@ -28,12 +28,15 @@ android {
 dependencies {
 
     implementation project(':leancloudchatkit')
-    implementation('cn.leancloud:realtime-android:5.0.26') {
+    implementation('cn.leancloud:realtime-android:6.1.7') {
+        exclude group: 'cn.leancloud', module: 'realtime-core'
+    }
+    implementation('cn.leancloud:realtime-core:6.1.7') {
         exclude group: 'com.alibaba', module: 'fastjson'
         exclude group: 'org.ligboy.retrofit2', module: 'converter-fastjson'
     }
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'com.alibaba:fastjson:1.1.70.android'
+    implementation 'com.alibaba:fastjson:1.1.71.android'
     implementation 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'

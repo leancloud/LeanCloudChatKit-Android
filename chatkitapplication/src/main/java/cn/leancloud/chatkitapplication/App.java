@@ -4,6 +4,7 @@ import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import cn.leancloud.cache.PersistenceUtil;
@@ -32,6 +33,7 @@ public class App extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+    Log.i(App.class.getSimpleName(), "App#onCreate()");
     File installationFile = new File(this.getFilesDir(), "installation");
     if (installationFile.exists()) {
       String oldInstallString = "{ \"objectId\":\"4DxgwI9RKKgwVt04VvKKfBKoOGIEQXXB\",\"updatedAt\":null,\"createdAt\":\"2018-12-29T01:49:05.561Z\",\"className\":\"_Installation\",\"serverData\":{\"@type\":\"java.util.concurrent.ConcurrentHashMap\",\"deviceType\":\"android\",\"timeZone\":\"Asia/Shanghai\",\"installationId\":\"df0c633543d24e29fd58293c3d07dfda\"}}";

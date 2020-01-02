@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import cn.leancloud.im.AVIMOptions;
 import cn.leancloud.im.v2.AVIMClient;
 import cn.leancloud.im.v2.AVIMException;
 import cn.leancloud.im.v2.callback.AVIMClientCallback;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
       return;
     }
 
+    AVIMOptions.getGlobalOptions().setAutoOpen(true);
     LCChatKit.getInstance().open(clientId, new AVIMClientCallback() {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
