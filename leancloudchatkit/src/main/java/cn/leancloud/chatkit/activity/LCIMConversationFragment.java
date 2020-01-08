@@ -292,6 +292,9 @@ public class LCIMConversationFragment extends Fragment {
         case LCIMInputBottomBarEvent.INPUTBOTTOMBAR_CAMERA_ACTION:
           dispatchTakePictureIntent();
           break;
+        case LCIMInputBottomBarEvent.INPUTBOTTOMBAR_FACETIME_ACTION:
+          dispatchFacetimeIntent();
+          break;
         default:
           break;
       }
@@ -466,6 +469,11 @@ public class LCIMConversationFragment extends Fragment {
     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, null);
     photoPickerIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
     startActivityForResult(photoPickerIntent, REQUEST_IMAGE_PICK);
+  }
+
+  private void dispatchFacetimeIntent() {
+    Intent facetimeIntent = new Intent(getActivity(), VideoChatViewActivity.class);
+    startActivity(facetimeIntent);
   }
 
   @Override

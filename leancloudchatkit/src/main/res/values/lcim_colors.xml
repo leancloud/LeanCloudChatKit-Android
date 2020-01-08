@@ -6,4 +6,12 @@
 
     <color name="lcim_bottom_bar_text_black">#3e3e39</color>
     <color name="lcim_divider_line_color">#afafaf</color>
+
+    <!-- Chat Activity -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="localBackground">#827b92</color>
+    <color name="remoteBackground">#484258</color>
 </resources>

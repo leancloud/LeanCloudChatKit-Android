@@ -9,6 +9,7 @@
     <string name="lcim_message_is_null">消息不能为空</string>
     <string name="lcim_chat_bottom_picture">照片</string>
     <string name="lcim_chat_bottom_camera">拍摄</string>
+    <string name="lcim_chat_bottom_audio">音视频</string>
     <string name="lcim_chat_bottom_location">位置</string>
     <string name="lcim_chat_record_button_slideUpToCancel">手指上滑，取消发送</string>
     <string name="lcim_chat_record_button_releaseToCancel">松开手指，取消录音</string>

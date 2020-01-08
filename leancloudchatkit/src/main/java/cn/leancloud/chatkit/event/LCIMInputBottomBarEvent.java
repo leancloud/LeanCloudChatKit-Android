@@ -11,6 +11,7 @@ public class LCIMInputBottomBarEvent {
   public static final int INPUTBOTTOMBAR_LOCATION_ACTION = 2;
   public static final int INPUTBOTTOMBAR_SEND_TEXT_ACTION = 3;
   public static final int INPUTBOTTOMBAR_SEND_AUDIO_ACTION = 4;
+  public static final int INPUTBOTTOMBAR_FACETIME_ACTION = 5;
 
   public int eventAction;
   public Object tag;
