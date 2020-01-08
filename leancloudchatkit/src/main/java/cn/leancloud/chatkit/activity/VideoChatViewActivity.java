@@ -49,6 +49,8 @@ public class VideoChatViewActivity extends AppCompatActivity {
   private ImageView mMuteBtn;
   private ImageView mSwitchCameraBtn;
 
+  private String channel;
+
   /**
    * Event handler registered into RTC engine for RTC callbacks.
    * Note that UI operations needs to be in UI thread because RTC
@@ -126,6 +128,8 @@ public class VideoChatViewActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_video_chat_view);
+
+    channel = getIntent().getStringExtra("channel");
 
     initUI();
 
@@ -249,7 +253,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
     if (TextUtils.isEmpty(token) || TextUtils.equals(token, "#YOUR ACCESS TOKEN#")) {
       token = null; // default, no token
     }
-    mRtcEngine.joinChannel(token, "demoChannel1", "Extra Optional Data", 0);
+    mRtcEngine.joinChannel(token, channel, "Extra Optional Data", 0);
   }
 
   @Override

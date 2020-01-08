@@ -28,6 +28,7 @@ import android.widget.Toast;
 import android.widget.EditText;
 
 import cn.leancloud.AVException;
+import cn.leancloud.chatkit.LCFacetimeInvitation;
 import cn.leancloud.im.v2.AVIMConversation;
 import cn.leancloud.im.v2.AVIMException;
 import cn.leancloud.im.v2.AVIMMessage;
@@ -472,8 +473,19 @@ public class LCIMConversationFragment extends Fragment {
   }
 
   private void dispatchFacetimeIntent() {
-    Intent facetimeIntent = new Intent(getActivity(), VideoChatViewActivity.class);
-    startActivity(facetimeIntent);
+    LCFacetimeInvitation invitation = new LCFacetimeInvitation();
+    imConversation.sendMessage(invitation, new AVIMConversationCallback() {
+      @Override
+      public void done(AVIMException e) {
+        if (e != null) {
+          System.out.println("failed to send invitation message.");
+        } else {
+          Intent facetimeIntent = new Intent(getActivity(), VideoChatViewActivity.class);
+          facetimeIntent.putExtra("channel", imConversation.getConversationId());
+          startActivity(facetimeIntent);
+        }
+      }
+    });
   }
 
   @Override
