@@ -22,5 +22,5 @@ LeanCloud 即时通讯支持发送普通的文本、图片、音频、视频、�
 
 ## 实时音视频聊天
 LeanCloud 与声网是深度合作伙伴，推荐开发者接入声网 SDK 实现实时音视频通讯功能。
-本 Demo 已经做了集成(参见分支：https://github.com/leancloud/LeanCloudChatKit-Android/tree/agora)，希望可以给大家提供一些参考价值。
+本 Demo 已经做了集成(参见分支：https://github.com/leancloud/LeanCloudChatKit-Android/tree/agora )，希望可以给大家提供一些参考价值。
 
