@@ -36,7 +36,7 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
   @Override
   public void initView() {
     super.initView();
-    conventLayout.addView(View.inflate(getContext(), R.layout.lcim_chat_item_image_layout, null));
+    contentLayout.addView(View.inflate(getContext(), R.layout.lcim_chat_item_image_layout, null));
     contentView = (ImageView) itemView.findViewById(R.id.chat_item_image_view);
     if (isLeft) {
       contentView.setBackgroundResource(R.drawable.lcim_chat_item_left_bg);

@@ -73,6 +73,7 @@ public class LCIMConversationFragment extends Fragment {
 
   private static final int REQUEST_IMAGE_CAPTURE = 1;
   private static final int REQUEST_IMAGE_PICK = 2;
+  private static final int REQUEST_FACETIME_CHAT = 3;
 
   protected AVIMConversation imConversation;
 
@@ -474,6 +475,7 @@ public class LCIMConversationFragment extends Fragment {
 
   private void dispatchFacetimeIntent() {
     LCFacetimeInvitation invitation = new LCFacetimeInvitation();
+    invitation.setStatus(LCFacetimeInvitation.Status_Open);
     imConversation.sendMessage(invitation, new AVIMConversationCallback() {
       @Override
       public void done(AVIMException e) {
@@ -482,7 +484,7 @@ public class LCIMConversationFragment extends Fragment {
         } else {
           Intent facetimeIntent = new Intent(getActivity(), VideoChatViewActivity.class);
           facetimeIntent.putExtra("channel", imConversation.getConversationId());
-          startActivity(facetimeIntent);
+          startActivityForResult(facetimeIntent, REQUEST_FACETIME_CHAT);
         }
       }
     });
@@ -491,7 +493,20 @@ public class LCIMConversationFragment extends Fragment {
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     System.out.println("requestCode=" + requestCode + ", resultCode=" + resultCode);
-    if (Activity.RESULT_OK == resultCode) {
+    if (REQUEST_FACETIME_CHAT == requestCode) {
+      LCFacetimeInvitation invitation = new LCFacetimeInvitation();
+      invitation.setStatus(LCFacetimeInvitation.Status_Closed);
+      imConversation.sendMessage(invitation, new AVIMConversationCallback() {
+        @Override
+        public void done(AVIMException e) {
+          if (null != e) {
+            System.out.println("failed to exit video chat. cause: " + e.getMessage());
+          } else {
+            System.out.println("succeed to exit video chat.");
+          }
+        }
+      });
+    } else if (Activity.RESULT_OK == resultCode) {
       switch (requestCode) {
         case REQUEST_IMAGE_CAPTURE:
           sendImage(localCameraPath);

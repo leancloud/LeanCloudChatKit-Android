@@ -58,8 +58,12 @@ public final class LCChatKit {
 
     AVOSCloud.initialize(context.getApplicationContext(), appId, appKey, serverUrl);
 
+    // register sub message.
+    AVIMMessageManager.registerAVIMMessageType(LCFacetimeInvitation.class);
+
     // 消息处理 handler
     AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new LCIMMessageHandler(context));
+    AVIMMessageManager.registerMessageHandler(LCFacetimeInvitation.class, new LCIMMessageHandler(context));
 
     // 与网络相关的 handler
     AVIMClient.setClientEventHandler(LCIMClientEventHandler.getInstance());

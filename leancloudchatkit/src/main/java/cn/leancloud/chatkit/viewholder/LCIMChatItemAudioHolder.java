@@ -33,9 +33,9 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
   public void initView() {
     super.initView();
     if (isLeft) {
-      conventLayout.addView(View.inflate(getContext(), R.layout.lcim_chat_item_left_audio_layout, null));
+      contentLayout.addView(View.inflate(getContext(), R.layout.lcim_chat_item_left_audio_layout, null));
     } else {
-      conventLayout.addView(View.inflate(getContext(), R.layout.lcim_chat_item_right_audio_layout, null));
+      contentLayout.addView(View.inflate(getContext(), R.layout.lcim_chat_item_right_audio_layout, null));
     }
     playButton = (LCIMPlayButton) itemView.findViewById(R.id.chat_item_audio_play_btn);
     durationView = (TextView) itemView.findViewById(R.id.chat_item_audio_duration_view);

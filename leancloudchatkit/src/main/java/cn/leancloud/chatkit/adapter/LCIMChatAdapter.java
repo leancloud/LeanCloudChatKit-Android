@@ -4,6 +4,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.ViewGroup;
 
+import cn.leancloud.chatkit.LCFacetimeInvitation;
+import cn.leancloud.chatkit.viewholder.LCIMChatItemFacetimeHolder;
 import cn.leancloud.im.v2.AVIMMessage;
 import cn.leancloud.im.v2.AVIMReservedMessageType;
 import cn.leancloud.im.v2.AVIMTypedMessage;
@@ -33,12 +35,14 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private final int ITEM_LEFT_IMAGE = 102;
   private final int ITEM_LEFT_AUDIO = 103;
   private final int ITEM_LEFT_LOCATION = 104;
+  private final int ITEM_LEFT_FACETIME = 105;
 
   private final int ITEM_RIGHT = 200;
   private final int ITEM_RIGHT_TEXT = 201;
   private final int ITEM_RIGHT_IMAGE = 202;
   private final int ITEM_RIGHT_AUDIO = 203;
   private final int ITEM_RIGHT_LOCATION = 204;
+  private final int ITEM_RIGHT_FACETIME = 205;
 
   private final int ITEM_UNKNOWN = 300;
 
@@ -134,6 +138,10 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return new LCIMChatItemAudioHolder(parent.getContext(), parent, false);
       case ITEM_RIGHT_LOCATION:
         return new LCIMChatItemLocationHolder(parent.getContext(), parent, false);
+      case ITEM_LEFT_FACETIME:
+        return new LCIMChatItemFacetimeHolder(parent.getContext(), parent, true);
+      case ITEM_RIGHT_FACETIME:
+        return new LCIMChatItemFacetimeHolder(parent.getContext(), parent, false);
       default:
         return new LCIMChatItemTextHolder(parent.getContext(), parent, true);
     }
@@ -166,6 +174,8 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return isMe ? ITEM_RIGHT_IMAGE : ITEM_LEFT_IMAGE;
       } else if (typedMessage.getMessageType() == AVIMReservedMessageType.LocationMessageType.getType()) {
         return isMe ? ITEM_RIGHT_LOCATION : ITEM_LEFT_LOCATION;
+      } else if (typedMessage.getMessageType() == 1) {
+        return isMe? ITEM_RIGHT_FACETIME : ITEM_LEFT_FACETIME;
       } else {
         return isMe ? ITEM_RIGHT : ITEM_LEFT;
       }

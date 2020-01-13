@@ -42,7 +42,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
   protected ImageView avatarView;
   protected TextView timeView;
   protected TextView nameView;
-  protected LinearLayout conventLayout;
+  protected LinearLayout contentLayout;
   protected FrameLayout statusLayout;
   protected ProgressBar progressBar;
   protected TextView statusView;
@@ -59,7 +59,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
       avatarView = (ImageView) itemView.findViewById(R.id.chat_left_iv_avatar);
       timeView = (TextView) itemView.findViewById(R.id.chat_left_tv_time);
       nameView = (TextView) itemView.findViewById(R.id.chat_left_tv_name);
-      conventLayout = (LinearLayout) itemView.findViewById(R.id.chat_left_layout_content);
+      contentLayout = (LinearLayout) itemView.findViewById(R.id.chat_left_layout_content);
       statusLayout = (FrameLayout) itemView.findViewById(R.id.chat_left_layout_status);
       statusView = (TextView) itemView.findViewById(R.id.chat_left_tv_status);
       progressBar = (ProgressBar) itemView.findViewById(R.id.chat_left_progressbar);
@@ -68,7 +68,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
       avatarView = (ImageView) itemView.findViewById(R.id.chat_right_iv_avatar);
       timeView = (TextView) itemView.findViewById(R.id.chat_right_tv_time);
       nameView = (TextView) itemView.findViewById(R.id.chat_right_tv_name);
-      conventLayout = (LinearLayout) itemView.findViewById(R.id.chat_right_layout_content);
+      contentLayout = (LinearLayout) itemView.findViewById(R.id.chat_right_layout_content);
       statusLayout = (FrameLayout) itemView.findViewById(R.id.chat_right_layout_status);
       progressBar = (ProgressBar) itemView.findViewById(R.id.chat_right_progressbar);
       errorView = (ImageView) itemView.findViewById(R.id.chat_right_tv_error);
@@ -182,7 +182,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
   }
 
   private void setUpdateMessageEvent() {
-    conventLayout.setOnLongClickListener(new View.OnLongClickListener() {
+    contentLayout.setOnLongClickListener(new View.OnLongClickListener() {
       @Override
       public boolean onLongClick(View v) {
         LCIMMessageUpdateEvent event = new LCIMMessageUpdateEvent();
