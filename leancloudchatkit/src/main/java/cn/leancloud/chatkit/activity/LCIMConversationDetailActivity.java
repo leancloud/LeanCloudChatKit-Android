@@ -157,9 +157,9 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
           while(it.hasNext()) {
             removeMembers.add(it.next().getUserId());
           }
-          avimConversation.kickMembers(removeMembers, new AVIMConversationCallback() {
+          avimConversation.kickMembers(removeMembers, new AVIMOperationPartiallySucceededCallback() {
             @Override
-            public void done(AVIMException e) {
+            public void done(AVIMException e, List<String> successfulClientIds, List<AVIMOperationFailure> failures) {
               if (null != e) {
                 showToast("failed to kick members. cause: " + e.getMessage());
               } else {
@@ -205,9 +205,9 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
       for (LCChatKitUser m : users) {
         userIds.add(m.getUserId());
       }
-      this.avimConversation.addMembers(userIds, new AVIMConversationCallback() {
+      this.avimConversation.addMembers(userIds, new AVIMOperationPartiallySucceededCallback() {
         @Override
-        public void done(AVIMException e) {
+        public void done(AVIMException e, List<String> successfulClientIds, List<AVIMOperationFailure> failures) {
           if (null != e) {
             showToast("failed to add member. cause: " + e.getMessage());
           } else {
