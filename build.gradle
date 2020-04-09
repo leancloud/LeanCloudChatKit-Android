@@ -4,7 +4,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenCentral()
+        mavenLocal()
 //        def home = System.getenv("HOME")
 //        maven {
 //            url "$home/.m2/repository/"
@@ -26,7 +26,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        mavenCentral()
+        mavenLocal()
 //        def home = System.getenv("HOME")
 //        maven {
 //            url "$home/.m2/repository/"

@@ -13,6 +13,7 @@ import java.io.File;
 
 import cn.leancloud.*;
 import cn.leancloud.callback.SaveCallback;
+import cn.leancloud.im.AVIMOptions;
 import cn.leancloud.im.v2.*;
 import cn.leancloud.im.v2.callback.*;
 import cn.leancloud.push.PushService;
@@ -47,6 +48,7 @@ public class App extends Application {
     LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
     AVOSCloud.setLogLevel(AVLogger.Level.DEBUG);
 //    AVOSCloud.useAVCloudUS();
+    AVIMOptions.getGlobalOptions().setDisableAutoLogin4Push(true);
     LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY, "https://dyrq8yfh.lc-cn-n1-shared.com");
 
     PushService.setDefaultPushCallback(this, MainActivity.class);

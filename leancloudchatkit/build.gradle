@@ -27,16 +27,11 @@ dependencies {
 
 //    implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation('cn.leancloud:realtime-android:6.4.0') {
-//        exclude group: 'cn.leancloud', module: 'realtime-core'
-//    }
-//    implementation('cn.leancloud:realtime-core:6.2.0') {
-        exclude group: 'com.alibaba', module: 'fastjson'
-        exclude group: 'org.ligboy.retrofit2', module: 'converter-fastjson'
-    }
+    implementation 'cn.leancloud:realtime-android:6.5.0'
+    implementation 'cn.leancloud:storage-android:6.5.0'
+    implementation 'cn.leancloud:realtime-core:6.5.0'
+    implementation 'cn.leancloud:storage-core:6.5.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'com.alibaba:fastjson:1.1.71.android'
-    implementation 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.github.stuxuhai:jpinyin:1.0'
