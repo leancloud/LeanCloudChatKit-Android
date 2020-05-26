@@ -28,14 +28,14 @@ android {
 dependencies {
 
     implementation project(':leancloudchatkit')
-    implementation('cn.leancloud:realtime-android:6.5.0') {
+    implementation('cn.leancloud:realtime-android:6.5.3') {
         exclude group: 'cn.leancloud', module: 'realtime-core'
     }
-    implementation('cn.leancloud:storage-android:6.5.0') {
+    implementation('cn.leancloud:storage-android:6.5.3') {
         exclude group: 'cn.leancloud', module: 'realtime-core'
     }
-    implementation 'cn.leancloud:realtime-core:6.5.0'
-    implementation 'cn.leancloud:storage-core:6.5.0'
+    implementation 'cn.leancloud:realtime-core:6.5.4'
+    implementation 'cn.leancloud:storage-core:6.5.4'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
