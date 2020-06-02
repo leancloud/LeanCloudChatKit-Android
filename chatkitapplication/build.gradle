@@ -25,6 +25,15 @@ android {
 }
 
 dependencies {
-    compile project(':leancloudchatkit')
-    compile 'com.android.support:design:26.1.0'
+    implementation project(':leancloudchatkit')
+
+    //avoscloud-sdk 为 LeanCloud基础包
+    implementation('cn.leancloud.android:avoscloud-sdk:4.7.15')
+    //avoscloud-push 为推送与实时聊天需要的包
+    implementation('cn.leancloud.android:avoscloud-push:4.7.15@aar') { transitive = true }
+
+    implementation 'com.alibaba:fastjson:1.1.70.android'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+
+    implementation 'com.android.support:design:26.1.0'
 }
