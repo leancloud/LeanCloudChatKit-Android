@@ -13,6 +13,11 @@ android {
         multiDexEnabled true
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     lintOptions {
         abortOnError false
     }
@@ -27,12 +32,17 @@ dependencies {
 
 //    implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation ('cn.leancloud:realtime-android:6.5.3') {
+    implementation ('cn.leancloud:realtime-android:6.5.7') {
         exclude group: 'cn.leancloud', module: 'realtime-core'
     }
-    implementation 'cn.leancloud:storage-android:6.5.3'
-    implementation 'cn.leancloud:realtime-core:6.5.4'
-    implementation 'cn.leancloud:storage-core:6.5.4'
+    implementation 'cn.leancloud:storage-android:6.5.7'
+
+    implementation ('cn.leancloud:realtime-core:6.5.7')
+    implementation 'cn.leancloud:storage-core:6.5.7'
+
+
+    implementation 'com.alibaba:fastjson:1.2.70'
+
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
