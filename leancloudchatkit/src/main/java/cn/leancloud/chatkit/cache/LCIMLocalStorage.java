@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
-import cn.leancloud.codec.MD5;
+import cn.leancloud.codec.MDFive;
 import cn.leancloud.utils.StringUtil;
 
 /**
@@ -66,7 +66,7 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
       throw new IllegalArgumentException("clientId can not be null");
     }
 
-    final String md5ClientId = MD5.computeMD5(clientId);
+    final String md5ClientId = MDFive.computeMD5(clientId);
     this.tableName = tableName + "_" + md5ClientId;
 
     createTable();

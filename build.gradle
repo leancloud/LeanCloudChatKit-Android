@@ -5,17 +5,12 @@ buildscript {
         google()
         jcenter()
         mavenLocal()
-//        def home = System.getenv("HOME")
-//        maven {
-//            url "$home/.m2/repository/"
-//        }
-//        def androidHome = System.getenv("ANDROID_HOME")
-//        maven {
-//            url "$androidHome/extras/android/m2repository/"
-//        }
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.5.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,13 +22,8 @@ allprojects {
         google()
         jcenter()
         mavenLocal()
-//        def home = System.getenv("HOME")
-//        maven {
-//            url "$home/.m2/repository/"
-//        }
-//        def androidHome = System.getenv("ANDROID_HOME")
-//        maven {
-//            url "$androidHome/extras/android/m2repository/"
-//        }
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
 }

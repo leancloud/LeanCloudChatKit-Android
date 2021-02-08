@@ -32,13 +32,13 @@ dependencies {
 
 //    implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation ('cn.leancloud:realtime-android:6.5.7') {
+    implementation ('cn.leancloud:realtime-android:7.2.2') {
         exclude group: 'cn.leancloud', module: 'realtime-core'
     }
-    implementation 'cn.leancloud:storage-android:6.5.7'
+    implementation 'cn.leancloud:storage-android:7.2.2'
 
-    implementation ('cn.leancloud:realtime-core:6.5.7')
-    implementation 'cn.leancloud:storage-core:6.5.7'
+    implementation ('cn.leancloud:realtime-core:7.2.2')
+    implementation 'cn.leancloud:storage-core:7.2.2'
 
 
     implementation 'com.alibaba:fastjson:1.2.70'
