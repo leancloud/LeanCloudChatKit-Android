@@ -33,13 +33,13 @@ android {
 dependencies {
 
     implementation project(':leancloudchatkit')
-    implementation('cn.leancloud:realtime-android:7.0.0-SNAPSHOT') {
+    implementation('cn.leancloud:realtime-android:7.2.2') {
         exclude group: 'cn.leancloud', module: 'realtime-core'
     }
-    implementation('cn.leancloud:storage-android:7.0.0-SNAPSHOT') {
+    implementation('cn.leancloud:storage-android:7.2.2') {
         exclude group: 'cn.leancloud', module: 'realtime-core'
     }
-    implementation ('cn.leancloud:realtime-core:7.0.0-SNAPSHOT')
+    implementation ('cn.leancloud:realtime-core:7.2.2')
     implementation 'cn.leancloud:storage-core:7.0.0-SNAPSHOT'
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
