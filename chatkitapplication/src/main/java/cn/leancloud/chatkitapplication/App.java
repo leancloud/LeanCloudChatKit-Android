@@ -13,7 +13,7 @@ import java.io.File;
 
 import cn.leancloud.*;
 import cn.leancloud.callback.SaveCallback;
-import cn.leancloud.im.AVIMOptions;
+import cn.leancloud.im.LCIMOptions;
 import cn.leancloud.im.v2.*;
 import cn.leancloud.im.v2.callback.*;
 import cn.leancloud.push.PushService;
@@ -37,24 +37,24 @@ public class App extends Application {
     Log.i(App.class.getSimpleName(), "App#onCreate()");
 
     LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
-    AVOSCloud.setLogLevel(AVLogger.Level.DEBUG);
+    LeanCloud.setLogLevel(LCLogger.Level.DEBUG);
 //    AVOSCloud.useAVCloudUS();
-    AVIMOptions.getGlobalOptions().setDisableAutoLogin4Push(true);
+    LCIMOptions.getGlobalOptions().setDisableAutoLogin4Push(true);
     LCChatKit.getInstance().init(getApplicationContext(), APP_ID, APP_KEY, "https://dyrq8yfh.lc-cn-n1-shared.com");
 
     PushService.setDefaultPushCallback(this, MainActivity.class);
     PushService.setAutoWakeUp(true);
     PushService.setDefaultChannelId(this, "default");
 
-    AVInstallation.getCurrentInstallation().saveInBackground().subscribe(new Observer<AVObject>() {
+    LCInstallation.getCurrentInstallation().saveInBackground().subscribe(new Observer<LCObject>() {
       @Override
       public void onSubscribe(Disposable d) {
 
       }
 
       @Override
-      public void onNext(AVObject avObject) {
-        String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+      public void onNext(LCObject abject) {
+        String installationId = LCInstallation.getCurrentInstallation().getInstallationId();
         System.out.println("---  " + installationId);
       }
 

@@ -9,10 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import cn.leancloud.im.AVIMOptions;
-import cn.leancloud.im.v2.AVIMClient;
-import cn.leancloud.im.v2.AVIMException;
-import cn.leancloud.im.v2.callback.AVIMClientCallback;
+import cn.leancloud.im.LCIMOptions;
+import cn.leancloud.im.v2.LCIMClient;
+import cn.leancloud.im.v2.LCIMException;
+import cn.leancloud.im.v2.callback.LCIMClientCallback;
 
 import cn.leancloud.chatkit.LCChatKit;
 
@@ -46,10 +46,10 @@ public class LoginActivity extends AppCompatActivity {
       return;
     }
 
-    AVIMOptions.getGlobalOptions().setAutoOpen(true);
-    LCChatKit.getInstance().open(clientId, new AVIMClientCallback() {
+    LCIMOptions.getGlobalOptions().setAutoOpen(true);
+    LCChatKit.getInstance().open(clientId, new LCIMClientCallback() {
       @Override
-      public void done(AVIMClient avimClient, AVIMException e) {
+      public void done(LCIMClient LCIMClient, LCIMException e) {
         if (null == e) {
           Intent intent = new Intent(LoginActivity.this, MainActivity.class);
           startActivity(intent);

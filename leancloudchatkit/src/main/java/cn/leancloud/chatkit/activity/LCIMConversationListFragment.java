@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.im.v2.LCIMConversation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class LCIMConversationListFragment extends Fragment {
   protected SwipeRefreshLayout refreshLayout;
   protected RecyclerView recyclerView;
 
-  protected LCIMCommonListAdapter<AVIMConversation> itemAdapter;
+  protected LCIMCommonListAdapter<LCIMConversation> itemAdapter;
   protected LinearLayoutManager layoutManager;
 
   @Override
@@ -47,7 +47,7 @@ public class LCIMConversationListFragment extends Fragment {
     layoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.addItemDecoration(new LCIMDividerItemDecoration(getActivity()));
-    itemAdapter = new LCIMCommonListAdapter<AVIMConversation>(LCIMConversationItemHolder.class);
+    itemAdapter = new LCIMCommonListAdapter<LCIMConversation>(LCIMConversationItemHolder.class);
     recyclerView.setAdapter(itemAdapter);
     EventBus.getDefault().register(this);
     return view;
@@ -97,7 +97,7 @@ public class LCIMConversationListFragment extends Fragment {
    */
   private void updateConversationList() {
     List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
-    List<AVIMConversation> conversationList = new ArrayList<>();
+    List<LCIMConversation> conversationList = new ArrayList<>();
     for (String convId : convIdList) {
       conversationList.add(LCChatKit.getInstance().getClient().getConversation(convId));
     }

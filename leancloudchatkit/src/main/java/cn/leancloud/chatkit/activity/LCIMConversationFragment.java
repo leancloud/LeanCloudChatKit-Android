@@ -27,19 +27,19 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import android.widget.EditText;
 
-import cn.leancloud.AVException;
-import cn.leancloud.im.v2.AVIMConversation;
-import cn.leancloud.im.v2.AVIMException;
-import cn.leancloud.im.v2.AVIMMessage;
-import cn.leancloud.im.v2.AVIMMessageOption;
-import cn.leancloud.im.v2.callback.AVIMConversationCallback;
-import cn.leancloud.im.v2.callback.AVIMMessagesQueryCallback;
-import cn.leancloud.im.v2.callback.AVIMMessageRecalledCallback;
-import cn.leancloud.im.v2.callback.AVIMMessageUpdatedCallback;
-import cn.leancloud.im.v2.messages.AVIMAudioMessage;
-import cn.leancloud.im.v2.messages.AVIMImageMessage;
-import cn.leancloud.im.v2.messages.AVIMTextMessage;
-import cn.leancloud.im.v2.messages.AVIMRecalledMessage;
+import cn.leancloud.LCException;
+import cn.leancloud.im.v2.LCIMConversation;
+import cn.leancloud.im.v2.LCIMException;
+import cn.leancloud.im.v2.LCIMMessage;
+import cn.leancloud.im.v2.LCIMMessageOption;
+import cn.leancloud.im.v2.callback.LCIMConversationCallback;
+import cn.leancloud.im.v2.callback.LCIMMessagesQueryCallback;
+import cn.leancloud.im.v2.callback.LCIMMessageRecalledCallback;
+import cn.leancloud.im.v2.callback.LCIMMessageUpdatedCallback;
+import cn.leancloud.im.v2.messages.LCIMAudioMessage;
+import cn.leancloud.im.v2.messages.LCIMImageMessage;
+import cn.leancloud.im.v2.messages.LCIMTextMessage;
+import cn.leancloud.im.v2.messages.LCIMRecalledMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +73,7 @@ public class LCIMConversationFragment extends Fragment {
   private static final int REQUEST_IMAGE_CAPTURE = 1;
   private static final int REQUEST_IMAGE_PICK = 2;
 
-  protected AVIMConversation imConversation;
+  protected LCIMConversation imConversation;
 
   /**
    * recyclerView 对应的 Adapter
@@ -121,13 +121,13 @@ public class LCIMConversationFragment extends Fragment {
     refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
       public void onRefresh() {
-        AVIMMessage message = itemAdapter.getFirstMessage();
+        LCIMMessage message = itemAdapter.getFirstMessage();
         if (null == message) {
           refreshLayout.setRefreshing(false);
         } else {
-          imConversation.queryMessages(message.getMessageId(), message.getTimestamp(), 20, new AVIMMessagesQueryCallback() {
+          imConversation.queryMessages(message.getMessageId(), message.getTimestamp(), 20, new LCIMMessagesQueryCallback() {
             @Override
-            public void done(List<AVIMMessage> list, AVIMException e) {
+            public void done(List<LCIMMessage> list, LCIMException e) {
               refreshLayout.setRefreshing(false);
               if (filterException(e)) {
                 if (null != list && list.size() > 0) {
@@ -188,7 +188,7 @@ public class LCIMConversationFragment extends Fragment {
     return super.onOptionsItemSelected(item);
   }
 
-  public void setConversation(final AVIMConversation conversation) {
+  public void setConversation(final LCIMConversation conversation) {
     imConversation = conversation;
     refreshLayout.setEnabled(true);
     inputBottomBar.setTag(imConversation.getConversationId());
@@ -197,9 +197,9 @@ public class LCIMConversationFragment extends Fragment {
     LCIMNotificationUtils.addTag(conversation.getConversationId());
     if (!conversation.isTransient()) {
       if (conversation.getMembers().size() == 0) {
-        conversation.fetchInfoInBackground(new AVIMConversationCallback() {
+        conversation.fetchInfoInBackground(new LCIMConversationCallback() {
           @Override
-          public void done(AVIMException e) {
+          public void done(LCIMException e) {
             if (null != e) {
               LCIMLogUtils.logException(e);
               Toast.makeText(getContext(), "encounter network error, please try later.", Toast.LENGTH_SHORT);
@@ -219,9 +219,9 @@ public class LCIMConversationFragment extends Fragment {
    * 拉取消息，必须加入 conversation 后才能拉取消息
    */
   private void fetchMessages() {
-    imConversation.queryMessages(new AVIMMessagesQueryCallback() {
+    imConversation.queryMessages(new LCIMMessagesQueryCallback() {
       @Override
-      public void done(List<AVIMMessage> messageList, AVIMException e) {
+      public void done(List<LCIMMessage> messageList, LCIMException e) {
         if (filterException(e)) {
           itemAdapter.setMessageList(messageList);
           recyclerView.setAdapter(itemAdapter);
@@ -236,7 +236,7 @@ public class LCIMConversationFragment extends Fragment {
   }
 
   /**
-   * 输入事件处理，接收后构造成 AVIMTextMessage 然后发送
+   * 输入事件处理，接收后构造成 LCIMTextMessage 然后发送
    * 因为不排除某些特殊情况会受到其他页面过来的无效消息，所以此处加了 tag 判断
    */
   public void onEvent(LCIMInputBottomBarTextEvent textEvent) {
@@ -271,7 +271,7 @@ public class LCIMConversationFragment extends Fragment {
   public void onEvent(LCIMMessageResendEvent resendEvent) {
     if (null != imConversation && null != resendEvent &&
       null != resendEvent.message && imConversation.getConversationId().equals(resendEvent.message.getConversationId())) {
-      if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == resendEvent.message.getMessageStatus()
+      if (LCIMMessage.MessageStatus.StatusFailed == resendEvent.message.getMessageStatus()
         && imConversation.getConversationId().equals(resendEvent.message.getConversationId())) {
         sendMessage(resendEvent.message, false);
       }
@@ -363,18 +363,18 @@ public class LCIMConversationFragment extends Fragment {
     paddingNewMessage(event.conversation);
   }
 
-  private void paddingNewMessage(AVIMConversation currentConversation) {
+  private void paddingNewMessage(LCIMConversation currentConversation) {
     if (null == currentConversation || currentConversation.getUnreadMessagesCount() < 1) {
       return;
     }
     final int queryLimit = currentConversation.getUnreadMessagesCount() > 100 ? 100 : currentConversation.getUnreadMessagesCount();
-    currentConversation.queryMessages(queryLimit, new AVIMMessagesQueryCallback() {
+    currentConversation.queryMessages(queryLimit, new LCIMMessagesQueryCallback() {
       @Override
-      public void done(List<AVIMMessage> list, AVIMException e) {
+      public void done(List<LCIMMessage> list, LCIMException e) {
         if (null != e) {
           return;
         }
-        for (AVIMMessage m: list) {
+        for (LCIMMessage m: list) {
           itemAdapter.addMessage(m);
         }
         itemAdapter.notifyDataSetChanged();
@@ -383,7 +383,7 @@ public class LCIMConversationFragment extends Fragment {
     });
   }
 
-  private void showUpdateMessageDialog(final AVIMMessage message) {
+  private void showUpdateMessageDialog(final LCIMMessage message) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     final EditText editText = new EditText(getActivity());
     builder.setView(editText);
@@ -405,10 +405,10 @@ public class LCIMConversationFragment extends Fragment {
     builder.show();
   }
 
-  private void recallMessage(AVIMMessage message) {
-    imConversation.recallMessage(message, new AVIMMessageRecalledCallback() {
+  private void recallMessage(LCIMMessage message) {
+    imConversation.recallMessage(message, new LCIMMessageRecalledCallback() {
       @Override
-      public void done(AVIMRecalledMessage recalledMessage, AVException e) {
+      public void done(LCIMRecalledMessage recalledMessage, LCException e) {
         if (null == e) {
           itemAdapter.updateMessage(recalledMessage);
         } else {
@@ -418,12 +418,12 @@ public class LCIMConversationFragment extends Fragment {
     });
   }
 
-  private void updateMessage(AVIMMessage message, String newContent) {
-    AVIMTextMessage textMessage = new AVIMTextMessage();
+  private void updateMessage(LCIMMessage message, String newContent) {
+    LCIMTextMessage textMessage = new LCIMTextMessage();
     textMessage.setText(newContent);
-    imConversation.updateMessage(message, textMessage, new AVIMMessageUpdatedCallback() {
+    imConversation.updateMessage(message, textMessage, new LCIMMessageUpdatedCallback() {
         @Override
-        public void done(AVIMMessage message, AVException e) {
+        public void done(LCIMMessage message, LCException e) {
           if (null == e) {
             itemAdapter.updateMessage(message);
           } else {
@@ -529,7 +529,7 @@ public class LCIMConversationFragment extends Fragment {
    * @param content
    */
   protected void sendText(String content) {
-    AVIMTextMessage message = new AVIMTextMessage();
+    LCIMTextMessage message = new LCIMTextMessage();
     message.setText(content);
     sendMessage(message);
   }
@@ -542,7 +542,7 @@ public class LCIMConversationFragment extends Fragment {
    */
   protected void sendImage(String imagePath) {
     try {
-      sendMessage(new AVIMImageMessage(imagePath));
+      sendMessage(new LCIMImageMessage(imagePath));
     } catch (IOException e) {
       LCIMLogUtils.logException(e);
     }
@@ -555,14 +555,14 @@ public class LCIMConversationFragment extends Fragment {
    */
   protected void sendAudio(String audioPath) {
     try {
-      AVIMAudioMessage audioMessage = new AVIMAudioMessage(audioPath);
+      LCIMAudioMessage audioMessage = new LCIMAudioMessage(audioPath);
       sendMessage(audioMessage);
     } catch (IOException e) {
       LCIMLogUtils.logException(e);
     }
   }
 
-  public void sendMessage(AVIMMessage message) {
+  public void sendMessage(LCIMMessage message) {
     sendMessage(message, true);
   }
 
@@ -571,16 +571,16 @@ public class LCIMConversationFragment extends Fragment {
    *
    * @param message
    */
-  public void sendMessage(AVIMMessage message, boolean addToList) {
+  public void sendMessage(LCIMMessage message, boolean addToList) {
     if (addToList) {
       itemAdapter.addMessage(message);
     }
     itemAdapter.notifyDataSetChanged();
     scrollToBottom();
 
-    AVIMMessageOption option = new AVIMMessageOption();
-    if (message instanceof AVIMTextMessage) {
-      AVIMTextMessage textMessage = (AVIMTextMessage) message;
+    LCIMMessageOption option = new LCIMMessageOption();
+    if (message instanceof LCIMTextMessage) {
+      LCIMTextMessage textMessage = (LCIMTextMessage) message;
       if (textMessage.getText().startsWith("tr:")) {
         option.setTransient(true);
       } else {
@@ -589,9 +589,9 @@ public class LCIMConversationFragment extends Fragment {
     } else {
       option.setReceipt(true);
     }
-    imConversation.sendMessage(message, option, new AVIMConversationCallback() {
+    imConversation.sendMessage(message, option, new LCIMConversationCallback() {
       @Override
-      public void done(AVIMException e) {
+      public void done(LCIMException e) {
         itemAdapter.notifyDataSetChanged();
         if (null != e) {
           LCIMLogUtils.logException(e);

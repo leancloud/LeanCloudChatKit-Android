@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import cn.leancloud.im.v2.AVIMMessage;
-import cn.leancloud.im.v2.messages.AVIMImageMessage;
+import cn.leancloud.im.v2.LCIMMessage;
+import cn.leancloud.im.v2.messages.LCIMImageMessage;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -50,8 +50,8 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
         try {
           Intent intent = new Intent(getContext(), LCIMImageActivity.class);
           intent.setPackage(getContext().getPackageName());
-          intent.putExtra(LCIMConstants.IMAGE_LOCAL_PATH, ((AVIMImageMessage) message).getLocalFilePath());
-          intent.putExtra(LCIMConstants.IMAGE_URL, ((AVIMImageMessage) message).getFileUrl());
+          intent.putExtra(LCIMConstants.IMAGE_LOCAL_PATH, ((LCIMImageMessage) message).getLocalFilePath());
+          intent.putExtra(LCIMConstants.IMAGE_URL, ((LCIMImageMessage) message).getFileUrl());
           getContext().startActivity(intent);
         } catch (ActivityNotFoundException exception) {
           Log.i(LCIMConstants.LCIM_LOG_TAG, exception.toString());
@@ -64,9 +64,9 @@ public class LCIMChatItemImageHolder extends LCIMChatItemHolder {
   public void bindData(Object o) {
     super.bindData(o);
     contentView.setImageResource(0);
-    AVIMMessage message = (AVIMMessage) o;
-    if (message instanceof AVIMImageMessage) {
-      AVIMImageMessage imageMsg = (AVIMImageMessage) message;
+    LCIMMessage message = (LCIMMessage) o;
+    if (message instanceof LCIMImageMessage) {
+      LCIMImageMessage imageMsg = (LCIMImageMessage) message;
       String localFilePath = imageMsg.getLocalFilePath();
 
       // 图片的真实高度与宽度

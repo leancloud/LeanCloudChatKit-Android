@@ -13,9 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import cn.leancloud.callback.AVCallback;
-import cn.leancloud.AVException;
-import cn.leancloud.im.v2.AVIMMessage;
+import cn.leancloud.callback.LCCallback;
+import cn.leancloud.LCException;
+import cn.leancloud.im.v2.LCIMMessage;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +38,7 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
 
   protected boolean isLeft;
 
-  protected AVIMMessage message;
+  protected LCIMMessage message;
   protected ImageView avatarView;
   protected TextView timeView;
   protected TextView nameView;
@@ -82,13 +82,13 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
 
   @Override
   public void bindData(Object o) {
-    message = (AVIMMessage) o;
+    message = (LCIMMessage) o;
     timeView.setText(millisecsToDateString(message.getTimestamp()));
     nameView.setText("");
     avatarView.setImageResource(R.drawable.lcim_default_avatar_icon);
-    LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCChatKitUser>() {
+    LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new LCCallback<LCChatKitUser>() {
       @Override
-      protected void internalDone0(LCChatKitUser userProfile, AVException e) {
+      protected void internalDone0(LCChatKitUser userProfile, LCException e) {
         if (null != e) {
           LCIMLogUtils.logException(e);
         } else if (null != userProfile) {
@@ -103,27 +103,27 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
     });
 
     switch (message.getMessageStatus()) {
-      case AVIMMessageStatusFailed:
+      case StatusFailed:
         statusLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         statusView.setVisibility(View.GONE);
         errorView.setVisibility(View.VISIBLE);
         break;
-      case AVIMMessageStatusSent:
+      case StatusSent:
         statusLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         statusView.setVisibility(View.VISIBLE);
         statusView.setVisibility(View.GONE);
         errorView.setVisibility(View.GONE);
         break;
-      case AVIMMessageStatusSending:
+      case StatusSending:
         statusLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         statusView.setVisibility(View.GONE);
         errorView.setVisibility(View.GONE);
         break;
-      case AVIMMessageStatusNone:
-      case AVIMMessageStatusReceipt:
+      case StatusNone:
+      case StatusReceipt:
         statusLayout.setVisibility(View.GONE);
         break;
     }
@@ -131,8 +131,8 @@ public class LCIMChatItemHolder extends LCIMCommonViewHolder {
 
   public void setHolderOption(LCIMChatHolderOption option) {
     if (null != option && !isLeft &&
-      (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusSent == message.getMessageStatus() ||
-      AVIMMessage.AVIMMessageStatus.AVIMMessageStatusReceipt == message.getMessageStatus())) {
+      (LCIMMessage.MessageStatus.StatusSent == message.getMessageStatus() ||
+      LCIMMessage.MessageStatus.StatusReceipt == message.getMessageStatus())) {
       timeView.setVisibility(option.isShowTime() ? View.VISIBLE : View.GONE);
       nameView.setVisibility(option.isShowName() ? View.VISIBLE : View.GONE);
       statusView.setVisibility(option.isShowDelivered() || option.isShowRead() ? View.VISIBLE : View.GONE);

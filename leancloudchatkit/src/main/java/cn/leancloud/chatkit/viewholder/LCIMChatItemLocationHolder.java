@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import cn.leancloud.im.v2.AVIMMessage;
-import cn.leancloud.im.v2.messages.AVIMLocationMessage;
+import cn.leancloud.im.v2.LCIMMessage;
+import cn.leancloud.im.v2.messages.LCIMLocationMessage;
 
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.event.LCIMLocationItemClickEvent;
@@ -43,9 +43,9 @@ public class LCIMChatItemLocationHolder extends LCIMChatItemHolder {
   @Override
   public void bindData(Object o) {
     super.bindData(o);
-    AVIMMessage message = (AVIMMessage) o;
-    if (message instanceof AVIMLocationMessage) {
-      final AVIMLocationMessage locMsg = (AVIMLocationMessage) message;
+    LCIMMessage message = (LCIMMessage) o;
+    if (message instanceof LCIMLocationMessage) {
+      final LCIMLocationMessage locMsg = (LCIMLocationMessage) message;
       contentView.setText(locMsg.getText());
     }
   }

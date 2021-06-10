@@ -1,9 +1,9 @@
 package cn.leancloud.chatkit.handler;
 
-import cn.leancloud.im.v2.AVIMClient;
-import cn.leancloud.im.v2.AVIMMessage;
-import cn.leancloud.im.v2.AVIMConversation;
-import cn.leancloud.im.v2.AVIMConversationEventHandler;
+import cn.leancloud.im.v2.LCIMClient;
+import cn.leancloud.im.v2.LCIMMessage;
+import cn.leancloud.im.v2.LCIMConversation;
+import cn.leancloud.im.v2.LCIMConversationEventHandler;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by wli on 15/12/1.
  * 和 Conversation 相关的事件的 handler
- * 需要应用主动调用  AVIMMessageManager.setConversationEventHandler
+ * 需要应用主动调用  LCIMMessageManager.setConversationEventHandler
  * 关于回调会何时执行可以参见 https://leancloud.cn/docs/realtime_guide-android.html#添加其他成员
  */
-public class LCIMConversationHandler extends AVIMConversationEventHandler {
+public class LCIMConversationHandler extends LCIMConversationEventHandler {
 
   private static LCIMConversationHandler eventHandler;
 
@@ -35,51 +35,51 @@ public class LCIMConversationHandler extends AVIMConversationEventHandler {
   }
 
   @Override
-  public void onUnreadMessagesCountUpdated(AVIMClient client, AVIMConversation conversation) {
+  public void onUnreadMessagesCountUpdated(LCIMClient client, LCIMConversation conversation) {
     LCIMConversationItemCache.getInstance().insertConversation(conversation.getConversationId());
-    AVIMMessage lastMessage = conversation.getLastMessage();
+    LCIMMessage lastMessage = conversation.getLastMessage();
     System.out.println("LCIMConversationHandler#onUnreadMessagesCountUpdated conv=" + conversation.getConversationId() + ", lastMsg: " + lastMessage.getContent());
     EventBus.getDefault().post(new LCIMOfflineMessageCountChangeEvent(conversation, lastMessage));
   }
 
   @Override
-  public void onLastDeliveredAtUpdated(AVIMClient client, AVIMConversation conversation) {
+  public void onLastDeliveredAtUpdated(LCIMClient client, LCIMConversation conversation) {
     LCIMConversationReadStatusEvent event = new LCIMConversationReadStatusEvent();
     event.conversationId = conversation.getConversationId();
     EventBus.getDefault().post(event);
   }
 
   @Override
-  public void onLastReadAtUpdated(AVIMClient client, AVIMConversation conversation) {
+  public void onLastReadAtUpdated(LCIMClient client, LCIMConversation conversation) {
     LCIMConversationReadStatusEvent event = new LCIMConversationReadStatusEvent();
     event.conversationId = conversation.getConversationId();
     EventBus.getDefault().post(event);
   }
 
   @Override
-  public void onMemberLeft(AVIMClient client, AVIMConversation conversation, List<String> members, String kickedBy) {
+  public void onMemberLeft(LCIMClient client, LCIMConversation conversation, List<String> members, String kickedBy) {
     // 因为不同用户需求不同，此处暂不做默认处理，如有需要，用户可以通过自定义 Handler 实现
   }
 
   @Override
-  public void onMemberJoined(AVIMClient client, AVIMConversation conversation, List<String> members, String invitedBy) {
+  public void onMemberJoined(LCIMClient client, LCIMConversation conversation, List<String> members, String invitedBy) {
   }
 
   @Override
-  public void onKicked(AVIMClient client, AVIMConversation conversation, String kickedBy) {
+  public void onKicked(LCIMClient client, LCIMConversation conversation, String kickedBy) {
   }
 
   @Override
-  public void onInvited(AVIMClient client, AVIMConversation conversation, String operator) {
+  public void onInvited(LCIMClient client, LCIMConversation conversation, String operator) {
   }
 
   @Override
-  public void onMessageRecalled(AVIMClient client, AVIMConversation conversation, AVIMMessage message) {
+  public void onMessageRecalled(LCIMClient client, LCIMConversation conversation, LCIMMessage message) {
     EventBus.getDefault().post(new LCIMMessageUpdatedEvent(message));
   }
 
   @Override
-  public void onMessageUpdated(AVIMClient client, AVIMConversation conversation, AVIMMessage message) {
+  public void onMessageUpdated(LCIMClient client, LCIMConversation conversation, LCIMMessage message) {
     LCIMLogUtils.d("message " + message.getMessageId() + " updated!");
     EventBus.getDefault().post(new LCIMMessageUpdatedEvent(message));
   }

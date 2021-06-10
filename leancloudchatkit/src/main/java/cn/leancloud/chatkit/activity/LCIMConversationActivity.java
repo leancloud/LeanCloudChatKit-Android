@@ -8,12 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import cn.leancloud.callback.AVCallback;
-import cn.leancloud.AVException;
-import cn.leancloud.im.v2.AVIMConversation;
-import cn.leancloud.im.v2.AVIMException;
-import cn.leancloud.im.v2.AVIMTemporaryConversation;
-import cn.leancloud.im.v2.callback.AVIMConversationCreatedCallback;
+import cn.leancloud.callback.LCCallback;
+import cn.leancloud.LCException;
+import cn.leancloud.im.v2.LCIMConversation;
+import cn.leancloud.im.v2.LCIMException;
+import cn.leancloud.im.v2.LCIMTemporaryConversation;
+import cn.leancloud.im.v2.callback.LCIMConversationCreatedCallback;
 
 import java.util.Arrays;
 
@@ -111,16 +111,16 @@ public class LCIMConversationActivity extends AppCompatActivity {
    *
    * @param conversation
    */
-  protected void updateConversation(AVIMConversation conversation) {
+  protected void updateConversation(LCIMConversation conversation) {
     if (null != conversation) {
-      if (conversation instanceof AVIMTemporaryConversation) {
-        System.out.println("Conversation expired flag: " + ((AVIMTemporaryConversation)conversation).isExpired());
+      if (conversation instanceof LCIMTemporaryConversation) {
+        System.out.println("Conversation expired flag: " + ((LCIMTemporaryConversation)conversation).isExpired());
       }
       conversationFragment.setConversation(conversation);
       LCIMConversationItemCache.getInstance().insertConversation(conversation.getConversationId());
-      LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
+      LCIMConversationUtils.getConversationName(conversation, new LCCallback<String>() {
         @Override
-        protected void internalDone0(String s, AVException e) {
+        protected void internalDone0(String s, LCException e) {
           if (null != e) {
             LCIMLogUtils.logException(e);
           } else {
@@ -137,9 +137,9 @@ public class LCIMConversationActivity extends AppCompatActivity {
    */
   protected void getConversation(final String memberId) {
     LCChatKit.getInstance().getClient().createConversation(
-        Arrays.asList(memberId), "", null, false, true, new AVIMConversationCreatedCallback() {
+        Arrays.asList(memberId), "", null, false, true, new LCIMConversationCreatedCallback() {
           @Override
-          public void done(AVIMConversation avimConversation, AVIMException e) {
+          public void done(LCIMConversation avimConversation, LCIMException e) {
             if (null != e) {
               showToast(e.getMessage());
             } else {

@@ -47,7 +47,7 @@ public class LCIMRecordButton extends Button {
   private long startTime;
   private Dialog recordIndicator;
   private View view;
-  private AVIMAudioRecorder audioRecorder;
+  private LCIMAudioRecorder audioRecorder;
   private ObtainDecibelThread thread;
   private Handler volumeHandler;
   private ImageView imageView;
@@ -187,7 +187,7 @@ public class LCIMRecordButton extends Button {
     try {
       if (null == audioRecorder) {
         final String localFilePath = outputPath;
-        audioRecorder = new AVIMAudioRecorder(localFilePath, new AVIMAudioRecorder.RecordEventListener(){
+        audioRecorder = new LCIMAudioRecorder(localFilePath, new LCIMAudioRecorder.RecordEventListener(){
         @Override
         public void onFinishedRecord(long milliSeconds, String reason){
           if (status == RELEASE_TO_CANCEL) {

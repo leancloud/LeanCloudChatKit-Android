@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.ViewGroup;
 
-import cn.leancloud.im.v2.AVIMMessage;
-import cn.leancloud.im.v2.AVIMReservedMessageType;
-import cn.leancloud.im.v2.AVIMTypedMessage;
+import cn.leancloud.im.v2.LCIMMessage;
+import cn.leancloud.im.v2.LCIMReservedMessageType;
+import cn.leancloud.im.v2.LCIMTypedMessage;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,7 +45,7 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   // 时间间隔最小为十分钟
   private final static long TIME_INTERVAL = 1000 * 60 * 3;
   private boolean isShowUserName = true;
-  protected List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
+  protected List<LCIMMessage> messageList = new ArrayList<LCIMMessage>();
   private Set<String> messageIdSet = new HashSet<>();
 
   private long lastDeliveredAt = 0;
@@ -55,11 +55,11 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     super();
   }
 
-  public void setMessageList(List<AVIMMessage> messages) {
+  public void setMessageList(List<LCIMMessage> messages) {
     messageList.clear();
     messageIdSet.clear();
     if (null != messages) {
-      for (AVIMMessage msg : messages) {
+      for (LCIMMessage msg : messages) {
         if (messageIdSet.add(msg.getMessageId())) {
           messageList.add(msg);
         }
@@ -71,9 +71,9 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * 添加多条消息记录
    * @param messages
    */
-  public void addMessageList(List<AVIMMessage> messages) {
+  public void addMessageList(List<LCIMMessage> messages) {
     for (int i = messages.size(); i> 0; i--) {
-      AVIMMessage msg = messages.get(i - 1);
+      LCIMMessage msg = messages.get(i - 1);
       if (messageIdSet.add(msg.getMessageId())) {
         messageList.add(0, msg);
       }
@@ -84,13 +84,13 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * 添加消息记录
    * @param message
    */
-  public void addMessage(AVIMMessage message) {
+  public void addMessage(LCIMMessage message) {
     if (messageIdSet.add(message.getMessageId())) {
       messageList.add(message);
     }
   }
 
-  public void updateMessage(AVIMMessage message) {
+  public void updateMessage(LCIMMessage message) {
     for (int i = 0; i < messageList.size(); i++) {
       if (messageList.get(i).getMessageId().equals(message.getMessageId())) {
         messageList.remove(i);
@@ -105,7 +105,7 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * 获取第一条消息记录，方便下拉时刷新数据
    * @return
    */
-  public AVIMMessage getFirstMessage() {
+  public LCIMMessage getFirstMessage() {
     if (null != messageList && messageList.size() > 0) {
       return messageList.get(0);
     } else {
@@ -154,17 +154,17 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override
   public int getItemViewType(int position) {
-    AVIMMessage message = messageList.get(position);
-    if (null != message && message instanceof AVIMTypedMessage) {
-      AVIMTypedMessage typedMessage = (AVIMTypedMessage) message;
+    LCIMMessage message = messageList.get(position);
+    if (null != message && message instanceof LCIMTypedMessage) {
+      LCIMTypedMessage typedMessage = (LCIMTypedMessage) message;
       boolean isMe = fromMe(typedMessage);
-      if (typedMessage.getMessageType() == AVIMReservedMessageType.TextMessageType.getType()) {
+      if (typedMessage.getMessageType() == LCIMReservedMessageType.TextMessageType.getType()) {
         return isMe ? ITEM_RIGHT_TEXT : ITEM_LEFT_TEXT;
-      } else if (typedMessage.getMessageType() == AVIMReservedMessageType.AudioMessageType.getType()) {
+      } else if (typedMessage.getMessageType() == LCIMReservedMessageType.AudioMessageType.getType()) {
         return isMe ? ITEM_RIGHT_AUDIO : ITEM_LEFT_AUDIO;
-      } else if (typedMessage.getMessageType() == AVIMReservedMessageType.ImageMessageType.getType()) {
+      } else if (typedMessage.getMessageType() == LCIMReservedMessageType.ImageMessageType.getType()) {
         return isMe ? ITEM_RIGHT_IMAGE : ITEM_LEFT_IMAGE;
-      } else if (typedMessage.getMessageType() == AVIMReservedMessageType.LocationMessageType.getType()) {
+      } else if (typedMessage.getMessageType() == LCIMReservedMessageType.LocationMessageType.getType()) {
         return isMe ? ITEM_RIGHT_LOCATION : ITEM_LEFT_LOCATION;
       } else {
         return isMe ? ITEM_RIGHT : ITEM_LEFT;
@@ -268,7 +268,7 @@ public class LCIMChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * @param msg
    * @return
    */
-  protected boolean fromMe(AVIMTypedMessage msg) {
+  protected boolean fromMe(LCIMTypedMessage msg) {
     String selfId = LCChatKit.getInstance().getCurrentUserId();
     return msg.getFrom() != null && msg.getFrom().equals(selfId);
   }

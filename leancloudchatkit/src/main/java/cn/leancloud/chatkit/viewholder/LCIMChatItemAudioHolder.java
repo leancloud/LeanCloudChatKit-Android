@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import cn.leancloud.im.v2.messages.AVIMAudioMessage;
+import cn.leancloud.im.v2.messages.LCIMAudioMessage;
 
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMLocalCacheUtils;
@@ -48,8 +48,8 @@ public class LCIMChatItemAudioHolder extends LCIMChatItemHolder {
   @Override
   public void bindData(Object o) {
     super.bindData(o);
-    if (o instanceof AVIMAudioMessage) {
-      AVIMAudioMessage audioMessage = (AVIMAudioMessage) o;
+    if (o instanceof LCIMAudioMessage) {
+      LCIMAudioMessage audioMessage = (LCIMAudioMessage) o;
       durationView.setText(String.format("%.0f\"", audioMessage.getDuration()));
       double duration = audioMessage.getDuration();
       int width = getWidthInPixels(duration);

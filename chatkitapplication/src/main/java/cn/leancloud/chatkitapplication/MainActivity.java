@@ -14,12 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import cn.leancloud.im.v2.AVIMChatRoom;
-import cn.leancloud.im.v2.AVIMClient;
-import cn.leancloud.im.v2.AVIMConversation;
-import cn.leancloud.im.v2.AVIMException;
-import cn.leancloud.im.v2.callback.AVIMClientCallback;
-import cn.leancloud.im.v2.callback.AVIMConversationCreatedCallback;
+import cn.leancloud.im.v2.LCIMChatRoom;
+import cn.leancloud.im.v2.LCIMClient;
+import cn.leancloud.im.v2.LCIMConversation;
+import cn.leancloud.im.v2.LCIMException;
+import cn.leancloud.im.v2.callback.LCIMClientCallback;
+import cn.leancloud.im.v2.callback.LCIMConversationCreatedCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
     if (menuId == R.id.menu_square_members) {
       gotoSquareConversation();
     } else if (menuId == R.id.menu_quit) {
-      LCChatKit.getInstance().close(new AVIMClientCallback() {
+      LCChatKit.getInstance().close(new LCIMClientCallback() {
         @Override
-        public void done(AVIMClient avimClient, AVIMException e) {
+        public void done(LCIMClient LCIMClient, LCIMException e) {
           if (null!= e) {
             e.printStackTrace();
           } else {
@@ -179,12 +179,12 @@ public class MainActivity extends AppCompatActivity {
       idList.add(user.getUserId());
     }
     LCChatKit.getInstance().getClient().createChatRoom(
-      idList, getString(R.string.square), null, true, new AVIMConversationCreatedCallback() {
+      idList, getString(R.string.square), null, true, new LCIMConversationCreatedCallback() {
         @Override
-        public void done(AVIMConversation avimConversation, AVIMException e) {
-          if (avimConversation instanceof AVIMChatRoom) {
+        public void done(LCIMConversation LCIMConversation, LCIMException e) {
+          if (LCIMConversation instanceof LCIMChatRoom) {
             Intent intent = new Intent(MainActivity.this, LCIMConversationActivity.class);
-            intent.putExtra(LCIMConstants.CONVERSATION_ID, avimConversation.getConversationId());
+            intent.putExtra(LCIMConstants.CONVERSATION_ID, LCIMConversation.getConversationId());
             startActivity(intent);
           } else {
             logger.log(Level.WARNING, "createChatRoom is wrong!");

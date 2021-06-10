@@ -14,18 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import cn.leancloud.callback.AVCallback;
-import cn.leancloud.AVException;
-import cn.leancloud.im.v2.AVIMChatRoom;
-import cn.leancloud.im.v2.AVIMConversation;
-import cn.leancloud.im.v2.AVIMException;
-import cn.leancloud.im.v2.AVIMMessage;
-import cn.leancloud.im.v2.AVIMReservedMessageType;
-import cn.leancloud.im.v2.AVIMServiceConversation;
-import cn.leancloud.im.v2.AVIMTemporaryConversation;
-import cn.leancloud.im.v2.AVIMTypedMessage;
-import cn.leancloud.im.v2.callback.AVIMConversationCallback;
-import cn.leancloud.im.v2.messages.AVIMTextMessage;
+import cn.leancloud.callback.LCCallback;
+import cn.leancloud.LCException;
+import cn.leancloud.im.v2.LCIMChatRoom;
+import cn.leancloud.im.v2.LCIMConversation;
+import cn.leancloud.im.v2.LCIMException;
+import cn.leancloud.im.v2.LCIMMessage;
+import cn.leancloud.im.v2.LCIMReservedMessageType;
+import cn.leancloud.im.v2.LCIMServiceConversation;
+import cn.leancloud.im.v2.LCIMTemporaryConversation;
+import cn.leancloud.im.v2.LCIMTypedMessage;
+import cn.leancloud.im.v2.callback.LCIMConversationCallback;
+import cn.leancloud.im.v2.messages.LCIMTextMessage;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -73,12 +73,12 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
   @Override
   public void bindData(Object o) {
     reset();
-    final AVIMConversation conversation = (AVIMConversation) o;
+    final LCIMConversation conversation = (LCIMConversation) o;
     if (null != conversation) {
       if (null == conversation.getCreatedAt()) {
-        conversation.fetchInfoInBackground(new AVIMConversationCallback() {
+        conversation.fetchInfoInBackground(new LCIMConversationCallback() {
           @Override
-          public void done(AVIMException e) {
+          public void done(LCIMException e) {
             if (e != null) {
               LCIMLogUtils.logException(e);
             } else {
@@ -92,11 +92,11 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
         updateIcon(conversation);
       }
 
-      if (conversation instanceof AVIMServiceConversation) {
+      if (conversation instanceof LCIMServiceConversation) {
         typeView.setText("S");
-      } else if (conversation instanceof AVIMTemporaryConversation) {
+      } else if (conversation instanceof LCIMTemporaryConversation) {
         typeView.setText("T");
-      } else if (conversation instanceof AVIMChatRoom) {
+      } else if (conversation instanceof LCIMChatRoom) {
         typeView.setText("R");
       } else {
         typeView.setText("C");
@@ -144,10 +144,10 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    *
    * @param conversation
    */
-  private void updateName(final AVIMConversation conversation) {
-    LCIMConversationUtils.getConversationName(conversation, new AVCallback<String>() {
+  private void updateName(final LCIMConversation conversation) {
+    LCIMConversationUtils.getConversationName(conversation, new LCCallback<String>() {
       @Override
-      protected void internalDone0(String s, AVException e) {
+      protected void internalDone0(String s, LCException e) {
         if (null != e) {
           LCIMLogUtils.logException(e);
         } else {
@@ -165,14 +165,14 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    *
    * @param conversation
    */
-  private void updateIcon(AVIMConversation conversation) {
+  private void updateIcon(LCIMConversation conversation) {
     if (null != conversation) {
       if (conversation.isTransient() || conversation.getMembers().size() > 2) {
         avatarView.setImageResource(R.drawable.lcim_group_icon);
       } else {
-        LCIMConversationUtils.getConversationPeerIcon(conversation, new AVCallback<String>() {
+        LCIMConversationUtils.getConversationPeerIcon(conversation, new LCCallback<String>() {
           @Override
-          protected void internalDone0(String s, AVException e) {
+          protected void internalDone0(String s, LCException e) {
             if (null != e) {
               LCIMLogUtils.logException(e);
             }
@@ -193,7 +193,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    *
    * @param conversation
    */
-  private void updateUnreadCount(AVIMConversation conversation) {
+  private void updateUnreadCount(LCIMConversation conversation) {
     int num = conversation.getUnreadMessagesCount();
     unreadView.setText(num + "");
     unreadView.setVisibility(num > 0 ? View.VISIBLE : View.GONE);
@@ -204,7 +204,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
    *
    * @param message
    */
-  private void updateLastMessage(AVIMMessage message) {
+  private void updateLastMessage(LCIMMessage message) {
     if (null != message) {
       Date date = new Date(message.getTimestamp());
       SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
@@ -213,7 +213,7 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
     }
   }
 
-  private void onConversationItemClick(AVIMConversation conversation) {
+  private void onConversationItemClick(LCIMConversation conversation) {
     try {
       Intent intent = new Intent();
       intent.setPackage(getContext().getPackageName());
@@ -233,13 +233,13 @@ public class LCIMConversationItemHolder extends LCIMCommonViewHolder {
     }
   };
 
-  private static CharSequence getMessageeShorthand(Context context, AVIMMessage message) {
-    if (message instanceof AVIMTypedMessage) {
-      AVIMReservedMessageType type = AVIMReservedMessageType.getAVIMReservedMessageType(
-        ((AVIMTypedMessage) message).getMessageType());
+  private static CharSequence getMessageeShorthand(Context context, LCIMMessage message) {
+    if (message instanceof LCIMTypedMessage) {
+      LCIMReservedMessageType type = LCIMReservedMessageType.getLCIMReservedMessageType(
+        ((LCIMTypedMessage) message).getMessageType());
       switch (type) {
         case TextMessageType:
-          return ((AVIMTextMessage) message).getText();
+          return ((LCIMTextMessage) message).getText();
         case ImageMessageType:
           return context.getString(R.string.lcim_message_shorthand_image);
         case LocationMessageType:

@@ -29,14 +29,14 @@ import cn.leancloud.chatkit.event.LCIMMemberSelectedChangeEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.view.LCIMDividerItemDecoration;
 import cn.leancloud.chatkit.viewholder.LCIMContactItemHolder;
-import cn.leancloud.im.v2.AVIMConversation;
-import cn.leancloud.im.v2.AVIMException;
-import cn.leancloud.im.v2.callback.AVIMConversationCallback;
-import cn.leancloud.im.v2.callback.AVIMConversationMemberQueryCallback;
-import cn.leancloud.im.v2.callback.AVIMConversationSimpleResultCallback;
-import cn.leancloud.im.v2.callback.AVIMOperationFailure;
-import cn.leancloud.im.v2.callback.AVIMOperationPartiallySucceededCallback;
-import cn.leancloud.im.v2.conversation.AVIMConversationMemberInfo;
+import cn.leancloud.im.v2.LCIMConversation;
+import cn.leancloud.im.v2.LCIMException;
+import cn.leancloud.im.v2.callback.LCIMConversationCallback;
+import cn.leancloud.im.v2.callback.LCIMConversationMemberQueryCallback;
+import cn.leancloud.im.v2.callback.LCIMConversationSimpleResultCallback;
+import cn.leancloud.im.v2.callback.LCIMOperationFailure;
+import cn.leancloud.im.v2.callback.LCIMOperationPartiallySucceededCallback;
+import cn.leancloud.im.v2.conversation.LCIMConversationMemberInfo;
 import cn.leancloud.im.v2.conversation.ConversationMemberRole;
 import de.greenrobot.event.EventBus;
 
@@ -47,7 +47,7 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
   private static final int REQUEST_CODE_MANAGE_BLACKLIST = 25;
   private static final int REQUEST_CODE_INVITATION = 30;
 
-  AVIMConversation avimConversation;
+  LCIMConversation LCIMConversation;
   List<String> adminMembers = new ArrayList<>();
   List<String> blockedUsers = new ArrayList<>();
 
@@ -90,10 +90,10 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
     adminAddButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (null == avimConversation) {
+        if (null == LCIMConversation) {
           return;
         }
-        List<String> members = avimConversation.getMembers();
+        List<String> members = LCIMConversation.getMembers();
         LCChatKit.getInstance().getProfileProvider().fetchProfiles(members, new LCChatProfilesCallBack() {
           @Override
           public void done(List<LCChatKitUser> users, Exception exception) {
@@ -157,9 +157,9 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
           while(it.hasNext()) {
             removeMembers.add(it.next().getUserId());
           }
-          avimConversation.kickMembers(removeMembers, new AVIMOperationPartiallySucceededCallback() {
+          LCIMConversation.kickMembers(removeMembers, new LCIMOperationPartiallySucceededCallback() {
             @Override
-            public void done(AVIMException e, List<String> successfulClientIds, List<AVIMOperationFailure> failures) {
+            public void done(LCIMException e, List<String> successfulClientIds, List<LCIMOperationFailure> failures) {
               if (null != e) {
                 showToast("failed to kick members. cause: " + e.getMessage());
               } else {
@@ -205,9 +205,9 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
       for (LCChatKitUser m : users) {
         userIds.add(m.getUserId());
       }
-      this.avimConversation.addMembers(userIds, new AVIMOperationPartiallySucceededCallback() {
+      this.LCIMConversation.addMembers(userIds, new LCIMOperationPartiallySucceededCallback() {
         @Override
-        public void done(AVIMException e, List<String> successfulClientIds, List<AVIMOperationFailure> failures) {
+        public void done(LCIMException e, List<String> successfulClientIds, List<LCIMOperationFailure> failures) {
           if (null != e) {
             showToast("failed to add member. cause: " + e.getMessage());
           } else {
@@ -218,9 +218,9 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
     } else if (REQUEST_CODE_ADD_ADMIN == requestCode) {
       System.out.println("add admins: " + users);
       for (LCChatKitUser m : users) {
-        this.avimConversation.updateMemberRole(m.getUserId(), ConversationMemberRole.MANAGER, new AVIMConversationCallback() {
+        this.LCIMConversation.updateMemberRole(m.getUserId(), ConversationMemberRole.MANAGER, new LCIMConversationCallback() {
           @Override
-          public void done(AVIMException e) {
+          public void done(LCIMException e) {
             if (null != e) {
               showToast("failed to promote admin. cause:" + e.getMessage());
             }
@@ -233,9 +233,9 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
       for (LCChatKitUser m : users) {
         userIds.add(m.getUserId());
       }
-      this.avimConversation.blockMembers(userIds, new AVIMOperationPartiallySucceededCallback() {
+      this.LCIMConversation.blockMembers(userIds, new LCIMOperationPartiallySucceededCallback() {
         @Override
-        public void done(AVIMException e, List<String> list, List<AVIMOperationFailure> list1) {
+        public void done(LCIMException e, List<String> list, List<LCIMOperationFailure> list1) {
           if (null != e) {
             showToast("failed to block user. cause: " + e.getMessage());
           }
@@ -270,18 +270,18 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
   }
 
   private void initConversation(String conversationId) {
-    avimConversation = LCChatKit.getInstance().getClient().getConversation(conversationId);
+    LCIMConversation = LCChatKit.getInstance().getClient().getConversation(conversationId);
 
     adminMembers.clear();
     blockedUsers.clear();
 
-    avimConversation.getAllMemberInfo(0, 100, new AVIMConversationMemberQueryCallback() {
+    LCIMConversation.getAllMemberInfo(0, 100, new LCIMConversationMemberQueryCallback() {
       @Override
-      public void done(List<AVIMConversationMemberInfo> list, AVIMException e) {
+      public void done(List<LCIMConversationMemberInfo> list, LCIMException e) {
         if (null != e) {
           showToast("faied to query memberInfo. cause: " + e.getMessage());
         } else if (null != list && list.size() > 0) {
-          for (AVIMConversationMemberInfo m: list) {
+          for (LCIMConversationMemberInfo m: list) {
             if (ConversationMemberRole.MANAGER == m.getRole()) {
               adminMembers.add(m.getMemberId());
             } else {
@@ -298,9 +298,9 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
         }
       }
     });
-    avimConversation.queryBlockedMembers(0, 100, new AVIMConversationSimpleResultCallback() {
+    LCIMConversation.queryBlockedMembers(0, 100, new LCIMConversationSimpleResultCallback() {
       @Override
-      public void done(List<String> list, AVIMException e) {
+      public void done(List<String> list, LCIMException e) {
         if (null != e) {
           showToast("faied to query blocked memberInfo. cause: " + e.getMessage());
         } else if (null != list && list.size() > 0) {
@@ -321,11 +321,11 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
 
   private void refreshMemberList(boolean forceUpdate) {
     if (forceUpdate) {
-      avimConversation.updateInfoInBackground(new AVIMConversationCallback() {
+      LCIMConversation.updateInfoInBackground(new LCIMConversationCallback() {
         @Override
-        public void done(AVIMException e) {
+        public void done(LCIMException e) {
           if (null == e) {
-            List<String> members = avimConversation.getMembers();
+            List<String> members = LCIMConversation.getMembers();
             LCChatKit.getInstance().getProfileProvider().fetchProfiles(members, new LCChatProfilesCallBack() {
               @Override
               public void done(List<LCChatKitUser> userList, Exception exception) {
@@ -340,7 +340,7 @@ public class LCIMConversationDetailActivity extends AppCompatActivity {
         }
       });
     } else {
-      List<String> members = avimConversation.getMembers();
+      List<String> members = LCIMConversation.getMembers();
       LCChatKit.getInstance().getProfileProvider().fetchProfiles(members, new LCChatProfilesCallBack() {
         @Override
         public void done(List<LCChatKitUser> userList, Exception exception) {

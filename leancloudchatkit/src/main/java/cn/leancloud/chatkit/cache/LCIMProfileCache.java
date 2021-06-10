@@ -3,8 +3,8 @@ package cn.leancloud.chatkit.cache;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
-import cn.leancloud.callback.AVCallback;
-import cn.leancloud.AVException;
+import cn.leancloud.callback.LCCallback;
+import cn.leancloud.LCException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,10 +67,10 @@ public class LCIMProfileCache {
    * @param id
    * @param callback
    */
-  public synchronized void getCachedUser(final String id, final AVCallback<LCChatKitUser> callback) {
-    getCachedUsers(Arrays.asList(id), new AVCallback<List<LCChatKitUser>>() {
+  public synchronized void getCachedUser(final String id, final LCCallback<LCChatKitUser> callback) {
+    getCachedUsers(Arrays.asList(id), new LCCallback<List<LCChatKitUser>>() {
       @Override
-      protected void internalDone0(List<LCChatKitUser> lcimUserProfiles, AVException e) {
+      protected void internalDone0(List<LCChatKitUser> lcimUserProfiles, LCException e) {
         LCChatKitUser LCChatKitUser =
           (null != lcimUserProfiles && !lcimUserProfiles.isEmpty() ? lcimUserProfiles.get(0) : null);
         callback.internalDone(LCChatKitUser, e);
@@ -85,10 +85,10 @@ public class LCIMProfileCache {
    * @param idList
    * @param callback
    */
-  public synchronized void getCachedUsers(List<String> idList, final AVCallback<List<LCChatKitUser>> callback) {
+  public synchronized void getCachedUsers(List<String> idList, final LCCallback<List<LCChatKitUser>> callback) {
     if (null != callback) {
       if (null == idList || idList.isEmpty()) {
-        callback.internalDone(null, new AVException(new Throwable("idList is empty!")));
+        callback.internalDone(null, new LCException(new Throwable("idList is empty!")));
       } else {
         final List<LCChatKitUser> profileList = new ArrayList<LCChatKitUser>();
         final List<String> unCachedIdList = new ArrayList<String>();
@@ -104,9 +104,9 @@ public class LCIMProfileCache {
         if (unCachedIdList.isEmpty()) {
           callback.internalDone(profileList, null);
         } else if (null != profileDBHelper) {
-          profileDBHelper.getData(idList, new AVCallback<List<String>>() {
+          profileDBHelper.getData(idList, new LCCallback<List<String>>() {
             @Override
-            protected void internalDone0(List<String> strings, AVException e) {
+            protected void internalDone0(List<String> strings, LCException e) {
               if (null != strings && !strings.isEmpty() && strings.size() == unCachedIdList.size()) {
                 List<LCChatKitUser> profileList = new ArrayList<LCChatKitUser>();
                 for (String data : strings) {
@@ -136,7 +136,7 @@ public class LCIMProfileCache {
    * @param callback
    */
   private void getProfilesFromProvider(List<String> idList, final List<LCChatKitUser> profileList,
-                                       final AVCallback<List<LCChatKitUser>> callback) {
+                                       final LCCallback<List<LCChatKitUser>> callback) {
     LCChatProfileProvider profileProvider = LCChatKit.getInstance().getProfileProvider();
     if (null != profileProvider) {
       profileProvider.fetchProfiles(idList, new LCChatProfilesCallBack() {
@@ -148,11 +148,11 @@ public class LCIMProfileCache {
             }
           }
           profileList.addAll(userList);
-          callback.internalDone(profileList, null != e ? new AVException(e) : null);
+          callback.internalDone(profileList, null != e ? new LCException(e) : null);
         }
       });
     } else {
-      callback.internalDone(null, new AVException(new Throwable("please setProfileProvider first!")));
+      callback.internalDone(null, new LCException(new Throwable("please setProfileProvider first!")));
     }
   }
 
@@ -162,10 +162,10 @@ public class LCIMProfileCache {
    * @param id
    * @param callback
    */
-  public void getUserName(String id, final AVCallback<String> callback) {
-    getCachedUser(id, new AVCallback<LCChatKitUser>() {
+  public void getUserName(String id, final LCCallback<String> callback) {
+    getCachedUser(id, new LCCallback<LCChatKitUser>() {
       @Override
-      protected void internalDone0(LCChatKitUser userProfile, AVException e) {
+      protected void internalDone0(LCChatKitUser userProfile, LCException e) {
         String userName = (null != userProfile ? userProfile.getName() : null);
         callback.internalDone(userName, e);
       }
@@ -178,10 +178,10 @@ public class LCIMProfileCache {
    * @param id
    * @param callback
    */
-  public void getUserAvatar(String id, final AVCallback<String> callback) {
-    getCachedUser(id, new AVCallback<LCChatKitUser>() {
+  public void getUserAvatar(String id, final LCCallback<String> callback) {
+    getCachedUser(id, new LCCallback<LCChatKitUser>() {
       @Override
-      protected void internalDone0(LCChatKitUser userProfile, AVException e) {
+      protected void internalDone0(LCChatKitUser userProfile, LCException e) {
         String avatarUrl = (null != userProfile ? userProfile.getAvatarUrl() : null);
         callback.internalDone(avatarUrl, e);
       }

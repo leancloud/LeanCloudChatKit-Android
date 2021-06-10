@@ -3,8 +3,8 @@ package cn.leancloud.chatkit.cache;
 import android.content.Context;
 import android.text.TextUtils;
 
-import cn.leancloud.callback.AVCallback;
-import cn.leancloud.AVException;
+import cn.leancloud.callback.LCCallback;
+import cn.leancloud.LCException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +48,7 @@ public class LCIMConversationItemCache {
    * 避免 getInstance 传入过多参数
    * 因为需要同步数据，所以此处需要有回调
    */
-  public synchronized void initDB(Context context, String clientId, AVCallback callback) {
+  public synchronized void initDB(Context context, String clientId, LCCallback callback) {
     conversationItemDBHelper = new LCIMLocalStorage(context, clientId, CONVERSATION_ITEM_TABLE_NAME);
     conversationItemMap.clear();
     syncData(callback);
@@ -114,13 +114,13 @@ public class LCIMConversationItemCache {
   /**
    * 同步 db 数据到内存中
    */
-  private void syncData(final AVCallback callback) {
-    conversationItemDBHelper.getIds(new AVCallback<List<String>>() {
+  private void syncData(final LCCallback callback) {
+    conversationItemDBHelper.getIds(new LCCallback<List<String>>() {
       @Override
-      protected void internalDone0(final List<String> idList, AVException e) {
-        conversationItemDBHelper.getData(idList, new AVCallback<List<String>>() {
+      protected void internalDone0(final List<String> idList, LCException e) {
+        conversationItemDBHelper.getData(idList, new LCCallback<List<String>>() {
           @Override
-          protected void internalDone0(final List<String> dataList, AVException e) {
+          protected void internalDone0(final List<String> dataList, LCException e) {
             if (null != dataList) {
               for (int i = 0; i < dataList.size(); i++) {
                 LCIMConversationItem conversationItem = LCIMConversationItem.fromJsonString(dataList.get(i));

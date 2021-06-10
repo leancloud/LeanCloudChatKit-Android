@@ -3,13 +3,13 @@ package cn.leancloud.chatkit.handler;
 import android.content.Context;
 import android.content.Intent;
 
-import cn.leancloud.callback.AVCallback;
-import cn.leancloud.AVException;
-import cn.leancloud.im.v2.AVIMClient;
-import cn.leancloud.im.v2.AVIMConversation;
-import cn.leancloud.im.v2.AVIMTypedMessage;
-import cn.leancloud.im.v2.AVIMTypedMessageHandler;
-import cn.leancloud.im.v2.messages.AVIMTextMessage;
+import cn.leancloud.callback.LCCallback;
+import cn.leancloud.LCException;
+import cn.leancloud.im.v2.LCIMClient;
+import cn.leancloud.im.v2.LCIMConversation;
+import cn.leancloud.im.v2.LCIMTypedMessage;
+import cn.leancloud.im.v2.LCIMTypedMessageHandler;
+import cn.leancloud.im.v2.messages.LCIMTextMessage;
 
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;
@@ -24,11 +24,11 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by zhangxiaobo on 15/4/20.
- * AVIMTypedMessage 的 handler，socket 过来的 AVIMTypedMessage 都会通过此 handler 与应用交互
+ * LCIMTypedMessage 的 handler，socket 过来的 LCIMTypedMessage 都会通过此 handler 与应用交互
  * 需要应用主动调用 AVIMMessageManager.registerMessageHandler 来注册
  * 当然，自定义的消息也可以通过这种方式来处理
  */
-public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
+public class LCIMMessageHandler extends LCIMTypedMessageHandler<LCIMTypedMessage> {
 
   private Context context;
 
@@ -37,7 +37,7 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
   }
 
   @Override
-  public void onMessage(AVIMTypedMessage message, AVIMConversation conversation, AVIMClient client) {
+  public void onMessage(LCIMTypedMessage message, LCIMConversation conversation, LCIMClient client) {
     if (message == null || message.getMessageId() == null) {
       LCIMLogUtils.d("may be SDK Bug, message or message id is null");
       return;
@@ -62,7 +62,7 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
   }
 
   @Override
-  public void onMessageReceipt(AVIMTypedMessage message, AVIMConversation conversation, AVIMClient client) {
+  public void onMessageReceipt(LCIMTypedMessage message, LCIMConversation conversation, LCIMClient client) {
     super.onMessageReceipt(message, conversation, client);
   }
 
@@ -72,20 +72,20 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
    * @param message
    * @param conversation
    */
-  private void sendEvent(AVIMTypedMessage message, AVIMConversation conversation) {
+  private void sendEvent(LCIMTypedMessage message, LCIMConversation conversation) {
     LCIMIMTypeMessageEvent event = new LCIMIMTypeMessageEvent();
     event.message = message;
     event.conversation = conversation;
     EventBus.getDefault().post(event);
   }
 
-  private void sendNotification(final AVIMTypedMessage message, final AVIMConversation conversation) {
+  private void sendNotification(final LCIMTypedMessage message, final LCIMConversation conversation) {
     if (null != conversation && null != message) {
-      final String notificationContent = message instanceof AVIMTextMessage ?
-        ((AVIMTextMessage) message).getText() : context.getString(R.string.lcim_unspport_message_type);
-      LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new AVCallback<LCChatKitUser>() {
+      final String notificationContent = message instanceof LCIMTextMessage ?
+        ((LCIMTextMessage) message).getText() : context.getString(R.string.lcim_unspport_message_type);
+      LCIMProfileCache.getInstance().getCachedUser(message.getFrom(), new LCCallback<LCChatKitUser>() {
         @Override
-        protected void internalDone0(LCChatKitUser userProfile, AVException e) {
+        protected void internalDone0(LCChatKitUser userProfile, LCException e) {
           if (e != null) {
             LCIMLogUtils.logException(e);
           } else if (null != userProfile) {

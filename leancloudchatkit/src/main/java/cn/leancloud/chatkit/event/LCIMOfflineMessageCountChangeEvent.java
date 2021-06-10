@@ -1,19 +1,19 @@
 package cn.leancloud.chatkit.event;
 
-import cn.leancloud.im.v2.AVIMConversation;
-import cn.leancloud.im.v2.AVIMMessage;
+import cn.leancloud.im.v2.LCIMConversation;
+import cn.leancloud.im.v2.LCIMMessage;
 
 /**
  * Created by wli on 16/3/7.
  * 离线消息数量发生变化的事件
  */
 public class LCIMOfflineMessageCountChangeEvent {
-  public AVIMConversation conversation;
-  public AVIMMessage lastMessage;
+  public LCIMConversation conversation;
+  public LCIMMessage lastMessage;
   private LCIMOfflineMessageCountChangeEvent() {
     ;
   }
-  public LCIMOfflineMessageCountChangeEvent(AVIMConversation conversation, AVIMMessage lastMessage) {
+  public LCIMOfflineMessageCountChangeEvent(LCIMConversation conversation, LCIMMessage lastMessage) {
     this.conversation = conversation;
     this.lastMessage = lastMessage;
   }

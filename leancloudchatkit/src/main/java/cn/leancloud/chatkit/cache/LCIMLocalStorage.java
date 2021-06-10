@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.text.TextUtils;
 
-import cn.leancloud.callback.AVCallback;
+import cn.leancloud.callback.LCCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,7 +105,7 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    *
    * @param callback 获取后会执行此回调
    */
-  public void getIds(final AVCallback<List<String>> callback) {
+  public void getIds(final LCCallback<List<String>> callback) {
     if (null != callback) {
       readDbHandler.post(new Runnable() {
         @Override
@@ -123,7 +123,7 @@ class LCIMLocalStorage extends SQLiteOpenHelper {
    * @param ids      需要的获取数据的 key
    * @param callback 获取后会执行此回调
    */
-  public void getData(final List<String> ids, final AVCallback<List<String>> callback) {
+  public void getData(final List<String> ids, final LCCallback<List<String>> callback) {
     if (null != callback) {
       if (null != ids && ids.size() > 0) {
         readDbHandler.post(new Runnable() {

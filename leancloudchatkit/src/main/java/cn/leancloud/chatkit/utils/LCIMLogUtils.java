@@ -2,7 +2,7 @@ package cn.leancloud.chatkit.utils;
 
 import android.util.Log;
 
-import cn.leancloud.AVOSCloud;
+import cn.leancloud.LeanCloud;
 
 /**
  * Created by wli on 16/4/6.

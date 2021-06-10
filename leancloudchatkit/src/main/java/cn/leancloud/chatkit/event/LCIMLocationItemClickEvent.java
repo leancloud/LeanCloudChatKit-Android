@@ -1,6 +1,6 @@
 package cn.leancloud.chatkit.event;
 
-import cn.leancloud.im.v2.AVIMMessage;
+import cn.leancloud.im.v2.LCIMMessage;
 
 /**
  * Created by wli on 15/9/20.
@@ -8,5 +8,5 @@ import cn.leancloud.im.v2.AVIMMessage;
  * 其实这些 item 都可以放到一个 event 处理，因为兼容以前的逻辑，暂时分开
  */
 public class LCIMLocationItemClickEvent {
-  public AVIMMessage message;
+  public LCIMMessage message;
 }

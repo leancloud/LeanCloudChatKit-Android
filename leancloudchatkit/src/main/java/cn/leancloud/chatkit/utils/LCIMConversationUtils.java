@@ -2,9 +2,9 @@ package cn.leancloud.chatkit.utils;
 
 import android.text.TextUtils;
 
-import cn.leancloud.callback.AVCallback;
-import cn.leancloud.AVException;
-import cn.leancloud.im.v2.AVIMConversation;
+import cn.leancloud.callback.LCCallback;
+import cn.leancloud.LCException;
+import cn.leancloud.im.v2.LCIMConversation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +29,12 @@ public class LCIMConversationUtils {
    * @param conversation
    * @param callback
    */
-  public static void getConversationName(final AVIMConversation conversation, final AVCallback<String> callback) {
+  public static void getConversationName(final LCIMConversation conversation, final LCCallback<String> callback) {
     if (null == callback) {
       return;
     }
     if (null == conversation) {
-      callback.internalDone(null, new AVException(new Throwable("conversation can not be null!")));
+      callback.internalDone(null, new LCException(new Throwable("conversation can not be null!")));
       return;
     }
     if (conversation.isTemporary()) {
@@ -48,9 +48,9 @@ public class LCIMConversationUtils {
       if (!TextUtils.isEmpty(conversation.getName())) {
         callback.internalDone(conversation.getName(), null);
       } else {
-        LCIMProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new AVCallback<List<LCChatKitUser>>() {
+        LCIMProfileCache.getInstance().getCachedUsers(conversation.getMembers(), new LCCallback<List<LCChatKitUser>>() {
           @Override
-          protected void internalDone0(List<LCChatKitUser> lcimUserProfiles, AVException e) {
+          protected void internalDone0(List<LCChatKitUser> lcimUserProfiles, LCException e) {
             List<String> nameList = new ArrayList<String>();
             if (null != lcimUserProfiles) {
               for (LCChatKitUser userProfile : lcimUserProfiles) {
@@ -72,7 +72,7 @@ public class LCIMConversationUtils {
    * @param conversation
    * @param callback
    */
-  public static void getConversationPeerIcon(final AVIMConversation conversation, AVCallback<String> callback) {
+  public static void getConversationPeerIcon(final LCIMConversation conversation, LCCallback<String> callback) {
     if (null != conversation && !conversation.isTransient() && !conversation.getMembers().isEmpty()) {
       String peerId = getConversationPeerId(conversation);
       if (1 == conversation.getMembers().size()) {
@@ -82,7 +82,7 @@ public class LCIMConversationUtils {
     } else if (null != conversation) {
       callback.internalDone("", null);
     } else {
-      callback.internalDone(null, new AVException(new Throwable("cannot find icon!")));
+      callback.internalDone(null, new LCException(new Throwable("cannot find icon!")));
     }
   }
 
@@ -92,7 +92,7 @@ public class LCIMConversationUtils {
    * @param conversation
    * @return
    */
-  private static String getConversationPeerId(AVIMConversation conversation) {
+  private static String getConversationPeerId(LCIMConversation conversation) {
     if (null != conversation && 2 == conversation.getMembers().size()) {
       String currentUserId = LCChatKit.getInstance().getCurrentUserId();
       String firstMemeberId = conversation.getMembers().get(0);
