@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
+import cn.leancloud.json.JSON;
 
 import java.util.ArrayList;
 import java.util.HashSet;

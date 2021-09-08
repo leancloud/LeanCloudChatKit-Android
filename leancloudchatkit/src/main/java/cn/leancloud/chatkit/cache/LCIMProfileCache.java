@@ -2,7 +2,8 @@ package cn.leancloud.chatkit.cache;
 
 import android.content.Context;
 
-import com.alibaba.fastjson.JSONObject;
+import cn.leancloud.json.JSON;
+import cn.leancloud.json.JSONObject;
 import cn.leancloud.callback.LCCallback;
 import cn.leancloud.LCException;
 
@@ -219,7 +220,7 @@ public class LCIMProfileCache {
    */
   private LCChatKitUser getUserProfileFromJson(String str) {
     try {
-      JSONObject jsonObject = JSONObject.parseObject(str);
+      JSONObject jsonObject = JSON.parseObject(str);
       String userName = jsonObject.getString(USER_NAME);
       String userId = jsonObject.getString(USER_ID);
       String userAvatar = jsonObject.getString(USER_AVATAR);
@@ -236,7 +237,7 @@ public class LCIMProfileCache {
    * @return
    */
   private String getStringFormUserProfile(LCChatKitUser userProfile) {
-    JSONObject jsonObject = new JSONObject();
+    JSONObject jsonObject = JSONObject.Builder.create(new HashMap<>());
     jsonObject.put(USER_NAME, userProfile.getName());
     jsonObject.put(USER_AVATAR, userProfile.getAvatarUrl());
     jsonObject.put(USER_ID, userProfile.getUserId());

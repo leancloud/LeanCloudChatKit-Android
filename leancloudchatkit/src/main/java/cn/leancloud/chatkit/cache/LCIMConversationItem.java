@@ -1,6 +1,9 @@
 package cn.leancloud.chatkit.cache;
 
-import com.alibaba.fastjson.JSONObject;
+import java.util.HashMap;
+
+import cn.leancloud.json.JSON;
+import cn.leancloud.json.JSONObject;
 
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
 
@@ -22,7 +25,7 @@ class LCIMConversationItem implements Comparable {
   }
 
   public String toJsonString() {
-    JSONObject jsonObject = new JSONObject();
+    JSONObject jsonObject = JSONObject.Builder.create(new HashMap<>());
     jsonObject.put(ITEM_KEY_CONVCERSATION_ID, conversationId);
     jsonObject.put(ITEM_KEY_UNDATE_TIME, updateTime);
     return jsonObject.toJSONString();
@@ -32,7 +35,7 @@ class LCIMConversationItem implements Comparable {
     LCIMConversationItem item = new LCIMConversationItem();
     JSONObject jsonObject = null;
     try {
-      jsonObject = JSONObject.parseObject(json);
+      jsonObject = JSON.parseObject(json);
       item.conversationId = jsonObject.getString(ITEM_KEY_CONVCERSATION_ID);
       item.updateTime = jsonObject.getLong(ITEM_KEY_UNDATE_TIME);
     } catch (Exception e) {

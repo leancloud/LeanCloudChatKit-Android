@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.fastjson.JSON;
+import cn.leancloud.json.JSON;
 
 import java.util.HashSet;
 import java.util.List;

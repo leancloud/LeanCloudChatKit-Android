@@ -4,7 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.alibaba.fastjson.JSON;
+import cn.leancloud.json.JSON;
 
 import java.util.List;
 
