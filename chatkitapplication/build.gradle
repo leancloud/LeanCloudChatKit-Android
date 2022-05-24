@@ -33,15 +33,18 @@ android {
 dependencies {
 
     implementation project(':leancloudchatkit')
-    implementation('cn.leancloud:realtime-android:8.1.0') {
+    implementation('cn.leancloud:realtime-android:8.2.9') {
         exclude group: 'cn.leancloud', module: 'realtime-core'
     }
-    implementation('cn.leancloud:storage-android:8.1.0') {
+    implementation('cn.leancloud:storage-android:8.2.9') {
         exclude group: 'cn.leancloud', module: 'realtime-core'
     }
-    implementation ('cn.leancloud:realtime-core:8.1.0')
-    implementation 'cn.leancloud:storage-core:8.1.0'
+    implementation ('cn.leancloud:realtime-core:8.2.9')
+//    implementation('cn.leancloud:storage-core:8.2.9') {
+//        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+//    }
 
+//    implementation("com.squareup.okhttp3:okhttp:3.14.9") // just test for okhttp 3.x
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
